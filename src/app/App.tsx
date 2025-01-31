@@ -1,19 +1,21 @@
-import Home from '@pages/home'
-import Match from '@pages/match'
-import Settings from '@pages/settings'
-import Tournament from '@pages/tournament'
-import { Route, Router } from '@solidjs/router'
 import type { Component } from 'solid-js'
-import Layout from './Layout'
+import './index.css'
+import {
+  ColorModeProvider,
+  ColorModeScript,
+  createLocalStorageManager
+} from '@kobalte/core'
+import Pages from '@pages/index'
 
 const App: Component = () => {
+  const storageManager = createLocalStorageManager('vite-ui-theme')
   return (
-    <Router root={Layout}>
-      <Route path={'/'} component={Home} />
-      <Route path={'/settings'} component={Settings} />
-      <Route path={'/tournament'} component={Tournament} />
-      <Route path={'/match'} component={Match} />
-    </Router>
+    <>
+      <ColorModeScript storageType={storageManager.type} />
+      <ColorModeProvider storageManager={storageManager}>
+        <Pages />
+      </ColorModeProvider>
+    </>
   )
 }
 

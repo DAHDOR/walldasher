@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import MinusIcon from '@assets/MinusIcon'
-import Square2StackIcon from '@assets/Square2StackIcon'
-import StopIcon from '@assets/StopIcon'
-import XMarkIcon from '@assets/XMarkIcon'
+import { Button } from '@components/ui/button'
 import { getCurrentWindow } from '@tauri-apps/api/window'
+import { Icon } from 'solid-heroicons'
+import { square_2Stack, stop, xMark } from 'solid-heroicons/outline'
+import { minus } from 'solid-heroicons/solid'
 import { Component, createSignal, Match, Switch } from 'solid-js'
 
 const Topbar: Component = () => {
@@ -27,33 +27,19 @@ const Topbar: Component = () => {
 
   return (
     <div data-tauri-drag-region class="flex h-8 flex-row">
-      <div data-tauri-drag-region class="flex grow flex-row items-center"></div>
+      <div data-tauri-drag-region class="flex grow flex-row items-center">
+        <div class="pl-4 font-semibold">Walldasher</div>
+      </div>
       <div class="flex flex-row items-center justify-center">
-        <div
-          class="flex h-full w-10 items-center justify-center p-3 text-white transition-all duration-100 ease-in hover:cursor-default hover:bg-white hover:bg-opacity-10"
-          onClick={minimize}
-        >
-          <MinusIcon />
-        </div>
-        <div
-          class="flex h-full w-10 items-center justify-center p-3 text-white transition-all duration-100 ease-in hover:cursor-default hover:bg-white hover:bg-opacity-10"
-          onClick={toggleMaximize}
-        >
-          <Switch>
-            <Match when={maximized()}>
-              <Square2StackIcon />
-            </Match>
-            <Match when={!maximized()}>
-              <StopIcon />
-            </Match>
-          </Switch>
-        </div>
-        <div
-          class="flex h-full w-10 items-center justify-center p-[11px] text-white transition-all duration-100 ease-in hover:cursor-default hover:bg-red-500 hover:bg-opacity-70"
-          onClick={close}
-        >
-          <XMarkIcon />
-        </div>
+        <Button variant="ghost" onclick={minimize}>
+          <Icon path={minus} />
+        </Button>
+        <Button variant="ghost" onclick={toggleMaximize}>
+          <Icon path={maximized() ? square_2Stack : stop} />
+        </Button>
+        <Button variant="ghost" onclick={close} class="hover:bg-red-500">
+          <Icon path={xMark} />
+        </Button>
       </div>
     </div>
   )
