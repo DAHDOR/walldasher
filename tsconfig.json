@@ -16,6 +16,7 @@
       "@assets/*": ["./src/assets/*"],
       "@assets": ["./src/assets"],
       "@pages/*": ["./src/pages/*"],
+      "@lib/*": ["./src/lib/*"],
       "@/*": ["./src/*"]
     }
   },

@@ -1,0 +1,20 @@
+query UserID {
+  currentUser {
+    id
+  }
+}
+
+query Tournaments {
+  currentUser {
+    tournaments {
+      nodes {
+        id
+        name
+        slug
+        admins {
+          id
+        }
+      }
+    }
+  }
+}

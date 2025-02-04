@@ -1,9 +1,31 @@
+// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+mod start;
+use reqwest::Client;
+use start::{
+    protocol::{build_client, Start, StartInner},
+    query::{set_start_key, tournaments},
+};
+use tauri::Manager;
+use tauri_plugin_store::StoreExt;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-  tauri::Builder::default()
-    // .plugin( /* Add your Tauri plugin here */ )
-    // Add your commands here that you will call from your JS code  
-    // .invoke_handler(tauri::generate_handler![ /* Add your commands here */ ])
-    .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+    tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_store::Builder::new().build())
+        .setup(|app| {
+            let store = app.store("store.json").unwrap();
+
+            let client = match store.get("key") {
+                Some(key) => build_client(key.as_str().unwrap_or_default()).unwrap_or_default(),
+                None => Client::default(),
+            };
+
+            app.manage(Start::new(StartInner { client }));
+
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![set_start_key, tournaments])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }

@@ -8,7 +8,7 @@ const Layout: Component<ParentProps> = props => {
       <Topbar />
       <div class="flex grow flex-row">
         <Explorer />
-        <div class="r- flex h-full grow flex-col rounded-tl-md bg-neutral-950">
+        <div class="flex h-full grow flex-col rounded-tl-md bg-zinc-900">
           {props.children}
         </div>
       </div>
