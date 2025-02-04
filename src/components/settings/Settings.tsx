@@ -10,7 +10,6 @@ import { Icon } from 'solid-heroicons'
 import { cog_6Tooth } from 'solid-heroicons/solid'
 import { Component } from 'solid-js'
 import APIForm from './api/APIForm'
-import { validateStart } from './api/validation'
 
 const Settings: Component = () => {
   return (
@@ -27,13 +26,11 @@ const Settings: Component = () => {
             label="Start.gg"
             placeholder="Llave de la API de Start.gg"
             info='Obtén tu llave de la API en los "Developer Settings" de Start.gg'
-            validate={validateStart}
           />
           <APIForm
             label="Rocket League"
             placeholder="ws://localhost:49322"
             info="Ruta de conexión al servidor WS de Rocket League"
-            validate={validateStart}
           />
         </div>
       </DialogContent>

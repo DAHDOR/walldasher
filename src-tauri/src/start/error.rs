@@ -1,20 +1,16 @@
-use std::sync::PoisonError;
-
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("IO error: {0}")]
+    #[error(transparent)]
     Io(#[from] std::io::Error),
-    #[error("Reqwest error: {0}")]
+    #[error(transparent)]
     Reqwest(#[from] reqwest::Error),
-    #[error("Invalid header value: {0}")]
+    #[error(transparent)]
     HeaderValue(#[from] reqwest::header::InvalidHeaderValue),
-    #[error("Serde JSON error: {0}")]
+    #[error(transparent)]
     SerdeJson(#[from] serde_json::Error),
     #[error("Invalid key")]
     InvalidKey(String),
-    #[error("Poison error: {0}")]
-    Poison(String),
-    #[error("Tauri store error: {0}")]
+    #[error(transparent)]
     TauriStore(#[from] tauri_plugin_store::Error),
     #[error("Error: {0}")]
     Custom(String),
@@ -28,7 +24,6 @@ enum ErrorKind {
     HeaderValue(String),
     SerdeJson(String),
     InvalidKey(String),
-    Poison(String),
     TauriStore(String),
     Custom(String),
 }
@@ -44,16 +39,9 @@ impl serde::Serialize for Error {
             Self::HeaderValue(_) => ErrorKind::HeaderValue(error_message),
             Self::SerdeJson(_) => ErrorKind::SerdeJson(error_message),
             Self::InvalidKey(_) => ErrorKind::InvalidKey(error_message),
-            Self::Poison(_) => ErrorKind::Poison(error_message),
             Self::TauriStore(_) => ErrorKind::TauriStore(error_message),
             Self::Custom(_) => ErrorKind::Custom(error_message),
         };
         error_kind.serialize(serializer)
-    }
-}
-
-impl<T> From<PoisonError<T>> for Error {
-    fn from(err: PoisonError<T>) -> Self {
-        Error::Poison(err.to_string())
     }
 }

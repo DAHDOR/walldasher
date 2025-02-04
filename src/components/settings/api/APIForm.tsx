@@ -2,6 +2,8 @@ import { Spinner } from '@assets'
 import { Button } from '@components/ui/button'
 import { TextField, TextFieldInput, TextFieldLabel } from '@components/ui/text-field'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
+import { ErrorKind } from '@lib/error'
+import { invoke } from '@tauri-apps/api/core'
 import { Icon } from 'solid-heroicons'
 import { arrowUpTray, checkCircle, xCircle } from 'solid-heroicons/outline'
 import { Accessor, Component, createSignal, Match, Setter, Switch } from 'solid-js'
@@ -48,10 +50,9 @@ interface APIFormProps {
   label: string
   placeholder: string
   info: string
-  validate: (key: string) => Promise<boolean>
 }
 
-const APIForm: Component<APIFormProps> = ({ label, placeholder, info, validate }) => {
+const APIForm: Component<APIFormProps> = ({ label, placeholder, info }) => {
   const { value, setValue, state, setState, errors, setErrors } = createAPIFormControl('')
 
   const onInput = (e: Event) => {
@@ -62,13 +63,16 @@ const APIForm: Component<APIFormProps> = ({ label, placeholder, info, validate }
   const onValidate = () => {
     setState(VALIDATING)
     setErrors([])
-    validate(value())
+    invoke('set_start_key', { key: value() })
       .then(res => (res ? setState(VALID) : setState(INVALID)))
-      .catch(error => {
-        setErrors(errors => [...errors, error as string])
-        setState(INVALID)
+      .catch((error: ErrorKind) => {
+        if (error.kind === 'invalidKey') {
+          setErrors(['Llave inválida'])
+        } else {
+          console.error(error)
+          setErrors(['Error desconocido'])
+        }
       })
-    console.error(errors())
   }
 
   return (
@@ -90,6 +94,7 @@ const APIForm: Component<APIFormProps> = ({ label, placeholder, info, validate }
         disabled={state() != DIRTY || value() == ''}
         onclick={onValidate}
         type="submit"
+        class="w-20 px-2 py-0"
       >
         <Switch>
           <Match when={state() === DIRTY}>
@@ -99,10 +104,10 @@ const APIForm: Component<APIFormProps> = ({ label, placeholder, info, validate }
             <Spinner />
           </Match>
           <Match when={state() === VALID}>
-            <Icon path={checkCircle} />
+            <Icon path={checkCircle} class="!w-5 !h-5" />
           </Match>
           <Match when={state() === INVALID}>
-            <Icon path={xCircle} class="!max-h-10" />
+            <Icon path={xCircle} class="!w-5 !h-5" />
           </Match>
         </Switch>
       </Button>

@@ -376,34 +376,24 @@
       "description": "Permission identifier",
       "oneOf": [
         {
-          "description": "Enables the echo command without any pre-configured scope.",
+          "description": "Enables the set_start_key command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-echo"
+          "const": "allow-set-start-key"
         },
         {
-          "description": "Enables the log_operation command without any pre-configured scope.",
+          "description": "Enables the tournaments command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-log-operation"
+          "const": "allow-tournaments"
         },
         {
-          "description": "Enables the perform_request command without any pre-configured scope.",
+          "description": "Denies the set_start_key command without any pre-configured scope.",
           "type": "string",
-          "const": "allow-perform-request"
+          "const": "deny-set-start-key"
         },
         {
-          "description": "Denies the echo command without any pre-configured scope.",
+          "description": "Denies the tournaments command without any pre-configured scope.",
           "type": "string",
-          "const": "deny-echo"
-        },
-        {
-          "description": "Denies the log_operation command without any pre-configured scope.",
-          "type": "string",
-          "const": "deny-log-operation"
-        },
-        {
-          "description": "Denies the perform_request command without any pre-configured scope.",
-          "type": "string",
-          "const": "deny-perform-request"
+          "const": "deny-tournaments"
         },
         {
           "description": "Enables the popup command without any pre-configured scope.",

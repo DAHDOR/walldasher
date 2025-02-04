@@ -4,7 +4,7 @@ use super::{
 };
 use graphql_client::GraphQLQuery;
 use serde_json::{from_value, Value};
-use tauri::Manager;
+use tauri::State;
 use tauri_plugin_store::StoreExt;
 
 #[derive(GraphQLQuery)]
@@ -23,6 +23,7 @@ struct UserID;
 #[tauri::command]
 pub async fn set_start_key<R: tauri::Runtime>(
     app: tauri::AppHandle<R>,
+    start: State<'_, Start>,
     key: &str,
 ) -> Result<i64, Error> {
     let client = build_client(key)?;
@@ -50,7 +51,6 @@ pub async fn set_start_key<R: tauri::Runtime>(
             store.set("key", key.to_string());
             store.set("user_id", id.clone());
 
-            let start = app.state::<Start>();
             start.lock().await.client = client;
 
             Ok(id)
@@ -79,22 +79,36 @@ pub async fn tournaments(app: tauri::AppHandle) -> Result<Value, Error> {
 #[cfg(test)]
 mod tests {
     use super::super::protocol::{Start, StartInner};
-    use super::set_start_key;
+    use super::*;
     use reqwest::Client;
     use tauri::Manager;
 
+    fn create_app() -> tauri::App<tauri::test::MockRuntime> {
+        tauri::test::mock_builder()
+            .plugin(tauri_plugin_shell::init())
+            .plugin(tauri_plugin_store::Builder::new().build())
+            .invoke_handler(tauri::generate_handler![set_start_key])
+            .build(tauri::generate_context!())
+            .expect("error while running tauri application")
+    }
+
     #[tokio::test]
     async fn test_set_start_key() {
-        let app = tauri::test::mock_app();
-        let client = Client::new();
+        let app = create_app();
+
+        let client = Client::default();
         app.manage(Start::new(StartInner { client }));
+
         let app_handle = app.handle().clone();
-        let id = set_start_key::<tauri::test::MockRuntime>(
+
+        let id = set_start_key(
             app_handle,
+            app.state::<Start>(),
             "a1f9a2bf90a62e3931df098c02ad7126",
         )
         .await
         .unwrap();
+
         assert_eq!(id, 2001252);
     }
 }

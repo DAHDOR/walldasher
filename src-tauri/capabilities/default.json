@@ -2,10 +2,10 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": [
-    "main"
-  ],
+  "windows": ["main"],
   "permissions": [
+    "allow-set-start-key",
+    "allow-tournaments",
     "core:path:default",
     "core:event:default",
     "core:window:default",
