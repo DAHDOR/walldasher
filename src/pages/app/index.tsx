@@ -1,6 +1,10 @@
 import Explorer from '@components/explorer'
 import Topbar from '@components/topbar'
+import { Route } from '@solidjs/router'
 import { Component, ParentProps } from 'solid-js'
+import Home from './home'
+import Match from './match'
+import Tournament from './tournament'
 
 const Layout: Component<ParentProps> = props => {
   return (
@@ -16,4 +20,14 @@ const Layout: Component<ParentProps> = props => {
   )
 }
 
-export default Layout
+const AppPages = () => {
+  return (
+    <Route path="/app" component={Layout}>
+      <Route path="/" component={Home} />
+      <Route path="/tournament" component={Tournament} />
+      <Route path="/match" component={Match} />
+    </Route>
+  )
+}
+
+export default AppPages
