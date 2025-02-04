@@ -2,7 +2,7 @@ import Settings from '@components/settings'
 import { Button } from '@components/ui/button'
 import { useNavigate } from '@solidjs/router'
 import { Icon } from 'solid-heroicons'
-import { home, presentationChartBar } from 'solid-heroicons/solid'
+import { home, lifebuoy, presentationChartBar } from 'solid-heroicons/solid'
 import { Component } from 'solid-js'
 
 const Explorer: Component = () => {
@@ -13,9 +13,16 @@ const Explorer: Component = () => {
         <Button
           class="w-full rounded-none"
           variant="ghost"
-          onclick={() => navigate('/app/home')}
+          onclick={() => navigate('/app')}
         >
           <Icon path={home} />
+        </Button>
+        <Button
+          class="w-full rounded-none"
+          variant="ghost"
+          onclick={() => navigate('/app/match')}
+        >
+          <Icon path={lifebuoy} />
         </Button>
         <Button
           class="w-full rounded-none"

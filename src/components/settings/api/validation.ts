@@ -12,3 +12,8 @@ export const validateStart = async (key: string) => {
       }
     })
 }
+
+export const validateRL = (url: string) => {
+  // TODO
+  console.log(url)
+}

@@ -11,6 +11,7 @@ const Pages: Component = () => {
       <Route path="/" component={() => <Navigate href="/app" />} />
       <AppPages />
       <OverlayPages />
+      <Route path="*" component={() => <Navigate href="/app" />} />
     </Router>
   )
 }

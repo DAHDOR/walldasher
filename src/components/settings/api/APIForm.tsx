@@ -1,6 +1,7 @@
 import { Spinner } from '@assets'
 import { Button } from '@components/ui/button'
 import { TextField, TextFieldInput, TextFieldLabel } from '@components/ui/text-field'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { Icon } from 'solid-heroicons'
 import { arrowUpTray, checkCircle, xCircle } from 'solid-heroicons/outline'
 import { Accessor, Component, createSignal, Match, Setter, Switch } from 'solid-js'
@@ -46,10 +47,11 @@ function createAPIFormControl(initial: string) {
 interface APIFormProps {
   label: string
   placeholder: string
+  info: string
   validate: (key: string) => Promise<boolean>
 }
 
-const APIForm: Component<APIFormProps> = ({ label, placeholder, validate }) => {
+const APIForm: Component<APIFormProps> = ({ label, placeholder, info, validate }) => {
   const { value, setValue, state, setState, errors, setErrors } = createAPIFormControl('')
 
   const onInput = (e: Event) => {
@@ -71,7 +73,13 @@ const APIForm: Component<APIFormProps> = ({ label, placeholder, validate }) => {
 
   return (
     <TextField class="flex flex-row items-center gap-4 w-full">
-      <TextFieldLabel>{label}</TextFieldLabel>
+      <Tooltip>
+        <TextFieldLabel class="min-w-24 text-right">
+          <TooltipTrigger>{label}</TooltipTrigger>
+        </TextFieldLabel>
+        <TooltipContent>{info}</TooltipContent>
+      </Tooltip>
+
       <TextFieldInput
         value={value()}
         onInput={onInput}

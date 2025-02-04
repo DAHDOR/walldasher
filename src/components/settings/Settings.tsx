@@ -18,14 +18,21 @@ const Settings: Component = () => {
       <DialogTrigger as={Button<'button'>} variant="ghost" class="p-1 w-7 h-7">
         <Icon path={cog_6Tooth} class="!max-w-full" />
       </DialogTrigger>
-      <DialogContent class="max-w-md">
+      <DialogContent class="max-w-lg">
         <DialogHeader>
           <DialogTitle>Configuración</DialogTitle>
         </DialogHeader>
-        <div class="flex gap-4 p-4">
+        <div class="flex flex-col gap-4 p-4">
           <APIForm
             label="Start.gg"
             placeholder="Llave de la API de Start.gg"
+            info='Obtén tu llave de la API en los "Developer Settings" de Start.gg'
+            validate={validateStart}
+          />
+          <APIForm
+            label="Rocket League"
+            placeholder="ws://localhost:49322"
+            info="Ruta de conexión al servidor WS de Rocket League"
             validate={validateStart}
           />
         </div>
