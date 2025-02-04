@@ -7,7 +7,7 @@ import {
 } from '@kobalte/core'
 import Pages from '@pages/index'
 
-const View: Component = () => {
+const Main: Component = () => {
   const storageManager = createLocalStorageManager('vite-ui-theme')
   return (
     <>
@@ -19,4 +19,4 @@ const View: Component = () => {
   )
 }
 
-export default View
+export default Main

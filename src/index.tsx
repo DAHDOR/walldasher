@@ -1,4 +1,4 @@
 import { render } from 'solid-js/web'
-import View from './view'
+import Main from './main'
 
-render(() => <View />, document.getElementById('root'))
+render(() => <Main />, document.getElementById('root'))
