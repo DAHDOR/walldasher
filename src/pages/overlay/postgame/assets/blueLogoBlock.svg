@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="500"
+   height="200"
+   viewBox="0 0 500 200"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient9">
+      <stop
+         style="stop-color:#1a1a1a;stop-opacity:1;"
+         offset="0"
+         id="stop9" />
+      <stop
+         style="stop-color:#0d6efd;stop-opacity:1;"
+         offset="0.31"
+         id="stop10" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient9"
+       id="linearGradient10"
+       x1="72.866074"
+       y1="-87.133926"
+       x2="434.99966"
+       y2="274.99966"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     id="layer1">
+    <path
+       style="fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-opacity:1"
+       d="M 2,-2 51.984694,198 H 502 V -2 Z"
+       id="path5" />
+    <rect
+       style="display:none;fill:#0d6efd;fill-opacity:1;stroke:none;stroke-width:12.3566;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       id="rect6"
+       width="20"
+       height="20"
+       x="0"
+       y="-20" />
+    <rect
+       style="display:none;fill:#0d6efd;fill-opacity:1;stroke:none;stroke-width:12.3566;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       id="rect6-1"
+       width="20"
+       height="20"
+       x="49.984695"
+       y="180" />
+    <rect
+       style="display:none;fill:#0d6efd;fill-opacity:1;stroke:none;stroke-width:12.3566;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       id="rect6-5"
+       width="20"
+       height="20"
+       x="480"
+       y="180" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:url(#linearGradient10);stroke-width:20;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="M 10,0 57.707355,190 H 500"
+       id="path6" />
+  </g>
+</svg>
