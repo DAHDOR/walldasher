@@ -8,7 +8,7 @@ Walldasher es una aplicación para manejar overlays de transmisiones en vivo de 
 
 ### 🏢 Diagrama ER
 
-![Diagrama ER](https://github.com/user-attachments/assets/8e8e62bb-9319-43d6-b6a6-fbbc20bf6a5b)
+![Diagrama ER](https://github.com/user-attachments/assets/b5e251d3-15f2-4c8c-8f73-31e84c4f0fec)
 
 ## 🗺️ Arquitectura de Software
 
