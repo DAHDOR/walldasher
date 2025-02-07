@@ -18,6 +18,11 @@
     "core:window:allow-close",
     "core:window:allow-start-dragging",
     "shell:default",
-    "store:default"
+    "store:default",
+    "sql:default",
+    "sql:allow-load",
+    "sql:allow-execute",
+    "sql:allow-select",
+    "sql:allow-close"
   ]
 }

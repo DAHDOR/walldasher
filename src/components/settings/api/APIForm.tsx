@@ -72,6 +72,7 @@ const APIForm: Component<APIFormProps> = ({ label, placeholder, info }) => {
           console.error(error)
           setErrors(['Error desconocido'])
         }
+        setState(INVALID)
       })
   }
 
