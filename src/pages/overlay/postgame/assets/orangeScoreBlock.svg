@@ -7,40 +7,44 @@
    viewBox="0 0 500 200"
    version="1.1"
    id="svg1"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   sodipodi:docname="orangeScoreBlock.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="2.1406553"
+     inkscape:cx="271.17864"
+     inkscape:cy="145.04904"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="1699"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
   <defs
      id="defs1" />
   <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
      id="layer1">
-    <rect
-       style="display:none;fill:#0d6efd;fill-opacity:1;stroke:none;stroke-width:12.3566;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-       id="rect6"
-       width="20"
-       height="20"
-       x="0"
-       y="-20" />
-    <rect
-       style="display:none;fill:#0d6efd;fill-opacity:1;stroke:none;stroke-width:12.3566;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-       id="rect6-1"
-       width="20"
-       height="20"
-       x="49.984695"
-       y="180" />
-    <rect
-       style="display:none;fill:#0d6efd;fill-opacity:1;stroke:none;stroke-width:12.3566;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-       id="rect6-5"
-       width="20"
-       height="20"
-       x="480"
-       y="180" />
     <path
-       style="fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-opacity:1"
-       d="M 216.66293,200 266.64762,0 h 450.01531 v 200 z"
-       id="path5" />
+       style="fill:#1a1a1a;fill-opacity:1;stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8"
+       d="M 80,0 10,190 H 500 V 0 Z"
+       id="path3" />
     <path
-       style="fill:none;fill-opacity:1;stroke:#fd7e14;stroke-width:20;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-       d="m 260.52868,0 -47.70735,190 h 495.8416"
-       id="path6" />
+       style="fill:#ff8a15;fill-opacity:1;stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8"
+       d="M 80,0 0,200 H 500 V 190 H 10 Z"
+       id="path4" />
   </g>
 </svg>

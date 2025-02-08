@@ -7,25 +7,50 @@
    viewBox="0 0 500 200"
    version="1.1"
    id="svg1"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   sodipodi:docname="orangeNameBlock.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="2.1406553"
+     inkscape:cx="261.83571"
+     inkscape:cy="124.02744"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="1699"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
   <defs
      id="defs1" />
   <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#1a1a1a;fill-opacity:1"
-       id="rect1"
+       style="fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:58.3099;stroke-linecap:square;stroke-miterlimit:5.8"
+       id="rect4"
        width="500"
-       height="200"
-       x="0"
-       y="0" />
+       height="190.0878"
+       x="2.8421709e-14"
+       y="1.4210855e-14" />
     <rect
-       style="fill:#fd7e14;fill-opacity:1;stroke-width:0.86568"
-       id="rect2"
-       width="500.00781"
-       height="20"
-       x="-0.00390625"
-       y="180" />
+       style="fill:#ff8a15;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8"
+       id="rect5"
+       width="500"
+       height="9.9122009"
+       x="2.8421709e-14"
+       y="190.0878" />
   </g>
 </svg>
