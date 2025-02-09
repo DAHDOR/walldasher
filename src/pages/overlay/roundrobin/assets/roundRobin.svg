@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1000"
+   height="500"
+   viewBox="0 0 1000 500"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   sodipodi:docname="roundRobin.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="1.0703276"
+     inkscape:cx="489.10257"
+     inkscape:cy="317.19259"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="1699"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#1a1a1a;fill-opacity:1;stroke-width:28.2843;stroke-linecap:square;stroke-miterlimit:5.8"
+       id="rect14"
+       width="1000"
+       height="500"
+       x="5.0000006e-07"
+       y="1.7763568e-14" />
+    <path
+       style="display:inline;opacity:1;fill:#22b0ff;fill-opacity:1;stroke-width:28.2843;stroke-linecap:square;stroke-miterlimit:5.8"
+       d="M 5e-7,500 10.000001,0 5e-7,0 Z"
+       id="path19"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="display:inline;fill:#22b0ff;fill-opacity:1;stroke-width:28.2843;stroke-linecap:square;stroke-miterlimit:5.8"
+       d="M 1000,0 -5e-7,10 V 0 Z"
+       id="path19-9" />
+    <path
+       style="display:inline;opacity:1;fill:#ff8a15;fill-opacity:1;stroke-width:28.2843;stroke-linecap:square;stroke-miterlimit:5.8"
+       d="m 1000,0 -10,500 h 10 z"
+       id="path20"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="display:inline;fill:#ff8a15;fill-opacity:1;stroke-width:28.2843;stroke-linecap:square;stroke-miterlimit:5.8"
+       d="M 5e-7,500 1000,490 v 10 z"
+       id="path20-8" />
+  </g>
+</svg>
