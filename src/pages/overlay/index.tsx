@@ -4,6 +4,7 @@ import InGame from './ingame'
 import NextUp from './nextup'
 import Phase from './phase'
 import PostGame from './postgame'
+import RoundRobin from './roundrobin'
 
 const Layout: Component<ParentProps> = props => {
   return (
@@ -20,6 +21,7 @@ const OverlayPages = () => {
       <Route path="/nextup" component={NextUp} />
       <Route path="/ingame" component={InGame} />
       <Route path="/postgame" component={PostGame} />
+      <Route path="/roundrobin" component={RoundRobin} />
     </Route>
   )
 }
