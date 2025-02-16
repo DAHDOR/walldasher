@@ -1,10 +1,10 @@
 use super::{
+    client::{build, fetch, request, Start},
     error::Error,
-    protocol::{build_client, data, request_client, Start},
 };
 use graphql_client::GraphQLQuery;
 use serde_json::{from_value, Value};
-use tauri::State;
+use tauri::Manager;
 use tauri_plugin_store::StoreExt;
 
 #[derive(GraphQLQuery)]
@@ -23,14 +23,13 @@ struct UserID;
 #[tauri::command]
 pub async fn set_start_key<R: tauri::Runtime>(
     app: tauri::AppHandle<R>,
-    start: State<'_, Start>,
     key: &str,
 ) -> Result<i64, Error> {
-    let client = build_client(key)?;
+    let client = build(key)?;
 
     let body = UserID::build_query(user_id::Variables {});
 
-    let res = request_client(&client, &body).await?;
+    let res = request(&client, &body).await?;
 
     let data: user_id::ResponseData = match res.get("data") {
         Some(data) => match from_value(data.clone()) {
@@ -51,7 +50,7 @@ pub async fn set_start_key<R: tauri::Runtime>(
             store.set("key", key.to_string());
             store.set("user_id", id.clone());
 
-            start.lock().await.client = client;
+            app.state::<Start>().lock().await.client = client;
 
             Ok(id)
         }
@@ -71,14 +70,14 @@ struct Tournaments;
 pub async fn tournaments(app: tauri::AppHandle) -> Result<Value, Error> {
     let body = Tournaments::build_query(tournaments::Variables {});
 
-    let data = data(&app, &body).await?;
+    let data = fetch(&app, &body).await?;
 
     Ok(data)
 }
 
 #[cfg(test)]
 mod tests {
-    use super::super::protocol::{Start, StartInner};
+    use super::super::client::{Start, StartInner};
     use super::*;
     use reqwest::Client;
     use tauri::Manager;
@@ -101,13 +100,9 @@ mod tests {
 
         let app_handle = app.handle().clone();
 
-        let id = set_start_key(
-            app_handle,
-            app.state::<Start>(),
-            "a1f9a2bf90a62e3931df098c02ad7126",
-        )
-        .await
-        .unwrap();
+        let id = set_start_key(app_handle, "a1f9a2bf90a62e3931df098c02ad7126")
+            .await
+            .unwrap();
 
         assert_eq!(id, 2001252);
     }

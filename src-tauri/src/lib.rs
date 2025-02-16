@@ -1,9 +1,11 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 mod db;
+mod rl;
+mod router;
 mod start;
 use reqwest::Client;
 use start::{
-    protocol::{build_client, Start, StartInner},
+    client::{build, Start, StartInner},
     query::{set_start_key, tournaments},
 };
 use tauri::Manager;
@@ -24,11 +26,15 @@ pub fn run() {
             let store = app.store("store.json").unwrap();
 
             let client = match store.get("key") {
-                Some(key) => build_client(key.as_str().unwrap_or_default()).unwrap_or_default(),
+                Some(key) => build(key.as_str().unwrap_or_default()).unwrap_or_default(),
                 None => Client::default(),
             };
 
             app.manage(Start::new(StartInner { client }));
+
+            // TODO: el cliente panickea si falla la conexión. implementar reconexión
+            tauri::async_runtime::spawn(rl::client::init());
+            tauri::async_runtime::spawn(router::server::init());
 
             Ok(())
         })
