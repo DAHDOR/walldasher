@@ -2,10 +2,8 @@ use futures_util::StreamExt;
 use tokio::io::AsyncWriteExt;
 use tokio_tungstenite::connect_async;
 
-pub async fn init() {
-    let url = "ws://localhost:49122".to_string();
-
-    let (ws_stream, _) = connect_async(&url).await.expect("Failed to connect");
+async fn connect(url: &String) {
+    let (ws_stream, _) = connect_async(url).await.expect("Failed to connect");
     println!("WebSocket handshake has been successfully completed");
 
     let (_, read) = ws_stream.split();
@@ -18,4 +16,10 @@ pub async fn init() {
     };
 
     ws_to_stdout.await;
+}
+
+pub async fn init() {
+    let url = "ws://localhost:49122".to_string();
+
+    connect(&url).await;
 }

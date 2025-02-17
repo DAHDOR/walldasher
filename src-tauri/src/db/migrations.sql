@@ -4,7 +4,6 @@
 -- Text encoding used: System (UTF-8)
 --
 PRAGMA foreign_keys = off;
-BEGIN TRANSACTION;
 
 -- Table: bracket
 CREATE TABLE IF NOT EXISTS bracket (
@@ -209,6 +208,4 @@ CREATE TABLE IF NOT EXISTS tournament (
     pfp  TEXT
 );
 
-
-COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;

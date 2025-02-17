@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-event-players"
+description = "Enables the event_players command without any pre-configured scope."
+commands.allow = ["event_players"]
+
+[[permission]]
+identifier = "deny-event-players"
+description = "Denies the event_players command without any pre-configured scope."
+commands.deny = ["event_players"]

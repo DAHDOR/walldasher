@@ -10,6 +10,10 @@ pub enum Error {
     SerdeJson(#[from] serde_json::Error),
     #[error("Invalid key")]
     InvalidKey(String),
+    #[error("Data too big")]
+    TooBig(String),
+    #[error("GraphQL errors: {0}")]
+    GraphQL(String),
     #[error(transparent)]
     TauriStore(#[from] tauri_plugin_store::Error),
     #[error("Error: {0}")]
@@ -24,6 +28,8 @@ enum ErrorKind {
     HeaderValue(String),
     SerdeJson(String),
     InvalidKey(String),
+    TooBig(String),
+    GraphQL(String),
     TauriStore(String),
     Custom(String),
 }
@@ -39,6 +45,8 @@ impl serde::Serialize for Error {
             Self::HeaderValue(_) => ErrorKind::HeaderValue(error_message),
             Self::SerdeJson(_) => ErrorKind::SerdeJson(error_message),
             Self::InvalidKey(_) => ErrorKind::InvalidKey(error_message),
+            Self::TooBig(_) => ErrorKind::TooBig(error_message),
+            Self::GraphQL(_) => ErrorKind::GraphQL(error_message),
             Self::TauriStore(_) => ErrorKind::TauriStore(error_message),
             Self::Custom(_) => ErrorKind::Custom(error_message),
         };

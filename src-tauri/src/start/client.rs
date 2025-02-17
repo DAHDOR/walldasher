@@ -2,7 +2,7 @@ use super::error::Error;
 use reqwest::{header, Client};
 use serde::Serialize;
 use serde_json::Value;
-use tauri::Manager;
+use tauri::{Manager, Runtime};
 use tokio::sync::Mutex;
 
 pub type Start = Mutex<StartInner>;
@@ -63,11 +63,22 @@ pub async fn request<T: Serialize>(client: &Client, body: &T) -> Result<Value, E
 ///
 /// This function will return an error if the request fails, if the response cannot be parsed,
 /// or if the response contains GraphQL errors.
-pub async fn fetch<T: Serialize>(app: &tauri::AppHandle, body: &T) -> Result<Value, Error> {
+pub async fn fetch<T: Serialize, R: Runtime>(
+    app: &tauri::AppHandle<R>,
+    body: &T,
+) -> Result<Value, Error> {
     let res = request(&app.state::<Start>().lock().await.client, &body).await?;
 
     if let Some(errors) = res.get("errors") {
-        return Err(Error::Custom(format!("GraphQL errors: {:?}", errors)));
+        return Err(Error::GraphQL(format!("GraphQL errors: {:?}", errors)));
+    }
+
+    if let Some(msg) = res.get("message") {
+        if msg.to_string().contains("Rate limit exceeded")
+            || msg.to_string().contains("Query complexity too high")
+        {
+            return Err(Error::TooBig(msg.to_string()));
+        };
     }
 
     match res.get("data") {

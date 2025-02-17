@@ -376,9 +376,24 @@
       "description": "Permission identifier",
       "oneOf": [
         {
+          "description": "Enables the bracket_matches command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-bracket-matches"
+        },
+        {
+          "description": "Enables the event_players command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-event-players"
+        },
+        {
           "description": "Enables the set_start_key command without any pre-configured scope.",
           "type": "string",
           "const": "allow-set-start-key"
+        },
+        {
+          "description": "Enables the tournament command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-tournament"
         },
         {
           "description": "Enables the tournaments command without any pre-configured scope.",
@@ -386,9 +401,24 @@
           "const": "allow-tournaments"
         },
         {
+          "description": "Denies the bracket_matches command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-bracket-matches"
+        },
+        {
+          "description": "Denies the event_players command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-event-players"
+        },
+        {
           "description": "Denies the set_start_key command without any pre-configured scope.",
           "type": "string",
           "const": "deny-set-start-key"
+        },
+        {
+          "description": "Denies the tournament command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-tournament"
         },
         {
           "description": "Denies the tournaments command without any pre-configured scope.",

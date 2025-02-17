@@ -1,10 +1,12 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
-  "identifier": "default",
-  "description": "Capability for the main window",
-  "windows": ["main"],
+  "identifier": "overlay",
+  "description": "Capability for the overlay window",
+  "windows": ["overlay"],
+  "remote": {
+    "urls": ["http://localhost:9527"]
+  },
   "permissions": [
-    "allow-set-start-key",
     "allow-tournaments",
     "allow-tournament",
     "allow-bracket-matches",
@@ -16,11 +18,6 @@
     "core:resources:default",
     "core:menu:default",
     "core:tray:default",
-    "core:window:allow-minimize",
-    "core:window:allow-toggle-maximize",
-    "core:window:allow-close",
-    "core:window:allow-start-dragging",
-    "shell:default",
     "store:default",
     "sql:default",
     "sql:allow-load",

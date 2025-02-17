@@ -9,9 +9,13 @@ fn main() {
                 "app-menu",
                 tauri_build::InlinedPlugin::new().commands(&["toggle", "popup"]),
             )
-            .app_manifest(
-                tauri_build::AppManifest::new().commands(&["set_start_key", "tournaments"]),
-            ),
+            .app_manifest(tauri_build::AppManifest::new().commands(&[
+                "set_start_key",
+                "tournaments",
+                "tournament",
+                "bracket_matches",
+                "event_players",
+            ])),
     )
     .expect("failed to run tauri-build");
 
