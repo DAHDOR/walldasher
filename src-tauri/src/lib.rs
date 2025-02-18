@@ -3,7 +3,8 @@ mod relay;
 mod rl;
 mod start;
 use reqwest::Client;
-use rl::client::connect_to_rl;
+use rl::client::{connect_to_rl, RLInner, RL};
+use serde_json::from_value;
 use start::{
     client::{build, Start, StartInner},
     query::{bracket_matches, event_players, set_start_key, tournament, tournaments},
@@ -15,6 +16,7 @@ use tauri_plugin_store::StoreExt;
 pub fn run() {
     let port: u16 = 9527;
     tauri::Builder::default()
+        .plugin(tauri_plugin_websocket::init())
         .plugin(tauri_plugin_sql::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
         .plugin(
@@ -34,7 +36,15 @@ pub fn run() {
 
             app.manage(Start::new(StartInner { client }));
 
-            // TODO: el cliente panickea si falla la conexión. implementar reconexión
+            let url = match store.get("rl_url") {
+                Some(url) => from_value::<String>(url).unwrap_or("localhost:49122".to_string()),
+                None => "localhost:49122".to_string(),
+            };
+
+            store.set("rl_url", url);
+
+            app.manage(RL::new(RLInner { handle: None }));
+
             let app_handle = app.handle().clone();
             tauri::async_runtime::spawn(relay::server::init(app_handle));
 

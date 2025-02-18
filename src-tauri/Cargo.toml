@@ -36,6 +36,7 @@ tokio-tungstenite = "0.26.1"
 futures = "0.3.31"
 futures-util = "0.3.31"
 tauri-plugin-localhost = "2"
+tauri-plugin-websocket = "2"
 
 [features]
 default = [ "custom-protocol" ]

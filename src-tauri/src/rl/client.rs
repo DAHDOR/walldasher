@@ -4,16 +4,29 @@ use futures_util::{future::FutureExt, SinkExt, StreamExt};
 use serde_json::json;
 use serde_json::Value;
 use std::time::Duration;
+use tauri::async_runtime::JoinHandle;
 use tauri::{Manager, Runtime};
+use tauri_plugin_store::StoreExt;
 use tokio::io::AsyncWriteExt;
 use tokio::net::TcpListener;
+use tokio::sync::Mutex;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
+
+pub type RL = Mutex<RLInner>;
+
+pub struct RLInner {
+    pub handle: Option<JoinHandle<()>>,
+}
 
 async fn connect(url: &String, server: UnboundedSender<Message>) {
     server
-        .unbounded_send(json!({"event": "rl:connecting"}).to_string().into())
+        .unbounded_send(
+            json!({"event": "rl:connecting", "data": ""})
+                .to_string()
+                .into(),
+        )
         .unwrap();
-    let ws_stream = match connect_async(url).await {
+    let ws_stream = match connect_async(format!("ws://{}", url)).await {
         Ok((ws_stream, _)) => ws_stream,
         Err(e) => {
             println!("Failed to connect to WebSocket: {}", e);
@@ -22,7 +35,11 @@ async fn connect(url: &String, server: UnboundedSender<Message>) {
     };
     println!("WebSocket handshake has been successfully completed");
     server
-        .unbounded_send(json!({"event": "rl:connected"}).to_string().into())
+        .unbounded_send(
+            json!({"event": "rl:connected", "data": ""})
+                .to_string()
+                .into(),
+        )
         .unwrap();
 
     let (_, read) = ws_stream.split();
@@ -38,19 +55,41 @@ async fn connect(url: &String, server: UnboundedSender<Message>) {
 }
 
 #[tauri::command]
-pub async fn connect_to_rl<R: Runtime>(app: tauri::AppHandle<R>, url: &str) -> Result<(), String> {
-    let url_owned = url.to_owned();
+pub async fn connect_to_rl<R: Runtime>(
+    app: tauri::AppHandle<R>,
+    url: String,
+) -> Result<(), String> {
+    if let Some(handle) = app.state::<RL>().lock().await.handle.take() {
+        handle.abort();
+    }
+
+    let url_clone = url.clone();
+    match app.store("store.json") {
+        Ok(store) => {
+            let _ = store.set("rl_url", url_clone);
+        }
+        Err(e) => {
+            println!("Failed to save RL URL: {}", e);
+        }
+    };
 
     let server = app.state::<Relay>().inner().clone();
 
-    tauri::async_runtime::spawn(async move {
+    let handle = tauri::async_runtime::spawn(async move {
         loop {
-            connect(&url_owned, server.clone()).await;
+            connect(&url, server.clone()).await;
             server
-                .unbounded_send(json!({"event": "rl:disconnected"}).to_string().into())
+                .unbounded_send(
+                    json!({"event": "rl:disconnected", "data": ""})
+                        .to_string()
+                        .into(),
+                )
                 .unwrap();
+            tokio::time::sleep(Duration::from_secs(5)).await;
         }
     });
+
+    app.state::<RL>().lock().await.handle = Some(handle);
 
     Ok(())
 }

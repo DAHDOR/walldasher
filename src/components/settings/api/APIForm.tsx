@@ -63,17 +63,29 @@ const APIForm: Component<APIFormProps> = ({ label, placeholder, info }) => {
   const onValidate = () => {
     setState(VALIDATING)
     setErrors([])
-    invoke('set_start_key', { key: value() })
-      .then(res => (res ? setState(VALID) : setState(INVALID)))
-      .catch((error: ErrorKind) => {
-        if (error.kind === 'invalidKey') {
-          setErrors(['Llave inválida'])
-        } else {
-          console.error(error)
-          setErrors(['Error desconocido'])
-        }
-        setState(INVALID)
-      })
+    switch (label) {
+      case 'Start.gg':
+        invoke('set_start_key', { key: value() })
+          .then(res => (res ? setState(VALID) : setState(INVALID)))
+          .catch((error: ErrorKind) => {
+            if (error.kind === 'invalidKey') {
+              setErrors(['Llave inválida'])
+            } else {
+              console.error(error)
+              setErrors(['Error desconocido'])
+            }
+            setState(INVALID)
+          })
+        break
+      case 'Rocket League':
+        invoke('connect_to_rl', { url: value() })
+          .then(() => setState(VALID))
+          .catch(error => {
+            console.error(error)
+            setErrors(['Error desconocido'])
+            setState(INVALID)
+          })
+    }
   }
 
   return (

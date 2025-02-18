@@ -10,9 +10,9 @@ const Layout: Component<ParentProps> = props => {
   return (
     <div class="flex h-screen flex-col">
       <Topbar />
-      <div class="flex grow flex-row">
+      <div class="flex grow flex-row max-h-[calc(100vh-40px)]">
         <Explorer />
-        <div class="flex h-full grow flex-col rounded-tl-md bg-zinc-900">
+        <div class="flex h-full grow flex-col rounded-tl-md bg-zinc-900 overflow-y-scroll">
           {props.children}
         </div>
       </div>

@@ -71,16 +71,18 @@ async fn handle_connection(connections: ConnectionMap, raw_stream: TcpStream, ad
 
     // Immediately send an initial JSON message to the client.
     let init_msg = serde_json::json!({
-        "event": "wsRelay:info",
+        "event": "relay:info",
         "data": "Connected!"
     })
     .to_string();
     let _ = write.send(Message::Text(init_msg.into())).await;
 
     // Spawn a task that forwards messages from our rx channel to the websocket write sink.
+    let id_clone = id.clone();
     let write_task = tauri::async_runtime::spawn(async move {
         while let Some(msg) = rx.next().await {
             if write.send(msg).await.is_err() {
+                println!("Error sending message to {}", &id_clone);
                 break;
             }
         }
@@ -154,9 +156,9 @@ async fn handle_connection(connections: ConnectionMap, raw_stream: TcpStream, ad
 /// ```
 ///
 /// This example registers the sender connection to receive messages for the "some_function" event.
-async fn send_relay_message(sender_id: &str, message: &str, conns: &ConnectionMap) {
+async fn send_relay_message(sender_id: &str, msg: &str, conns: &ConnectionMap) {
     // Parse the JSON message.
-    let json: Value = match serde_json::from_str(message) {
+    let json: Value = match serde_json::from_str(msg) {
         Ok(v) => v,
         Err(e) => {
             println!("Failed to parse JSON: {}", e);
@@ -188,7 +190,7 @@ async fn send_relay_message(sender_id: &str, message: &str, conns: &ConnectionMa
         Some(d) => d,
         None => {
             println!("No data provided in message");
-            return;
+            ""
         }
     };
 
@@ -236,7 +238,7 @@ async fn send_relay_message(sender_id: &str, message: &str, conns: &ConnectionMa
             .registered_functions
             .contains(&event_command.to_string())
         {
-            let msg = Message::Text(message.into());
+            let msg = Message::Text(msg.into());
             let _ = conn.tx.unbounded_send(msg);
         }
     }
