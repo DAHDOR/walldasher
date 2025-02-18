@@ -9,6 +9,7 @@
     "allow-tournament",
     "allow-bracket-matches",
     "allow-event-players",
+    "allow-connect-to-rl",
     "core:path:default",
     "core:event:default",
     "core:window:default",

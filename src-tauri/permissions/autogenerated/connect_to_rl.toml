@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-connect-to-rl"
+description = "Enables the connect_to_rl command without any pre-configured scope."
+commands.allow = ["connect_to_rl"]
+
+[[permission]]
+identifier = "deny-connect-to-rl"
+description = "Denies the connect_to_rl command without any pre-configured scope."
+commands.deny = ["connect_to_rl"]

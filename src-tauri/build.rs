@@ -15,6 +15,7 @@ fn main() {
                 "tournament",
                 "bracket_matches",
                 "event_players",
+                "connect_to_rl",
             ])),
     )
     .expect("failed to run tauri-build");

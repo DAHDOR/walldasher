@@ -381,6 +381,11 @@
           "const": "allow-bracket-matches"
         },
         {
+          "description": "Enables the connect_to_rl command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-connect-to-rl"
+        },
+        {
           "description": "Enables the event_players command without any pre-configured scope.",
           "type": "string",
           "const": "allow-event-players"
@@ -404,6 +409,11 @@
           "description": "Denies the bracket_matches command without any pre-configured scope.",
           "type": "string",
           "const": "deny-bracket-matches"
+        },
+        {
+          "description": "Denies the connect_to_rl command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-connect-to-rl"
         },
         {
           "description": "Denies the event_players command without any pre-configured scope.",

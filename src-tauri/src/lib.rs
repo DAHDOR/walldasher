@@ -1,8 +1,9 @@
 mod db;
+mod relay;
 mod rl;
-mod router;
 mod start;
 use reqwest::Client;
+use rl::client::connect_to_rl;
 use start::{
     client::{build, Start, StartInner},
     query::{bracket_matches, event_players, set_start_key, tournament, tournaments},
@@ -34,8 +35,8 @@ pub fn run() {
             app.manage(Start::new(StartInner { client }));
 
             // TODO: el cliente panickea si falla la conexión. implementar reconexión
-            tauri::async_runtime::spawn(rl::client::init());
-            tauri::async_runtime::spawn(router::server::init());
+            let app_handle = app.handle().clone();
+            tauri::async_runtime::spawn(relay::server::init(app_handle));
 
             Ok(())
         })
@@ -44,7 +45,8 @@ pub fn run() {
             tournaments,
             tournament,
             bracket_matches,
-            event_players
+            event_players,
+            connect_to_rl
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
