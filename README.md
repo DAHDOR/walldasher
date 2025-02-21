@@ -7,11 +7,9 @@ Walldasher es una aplicación para manejar overlays de transmisiones en vivo de 
 ## 🎓 Documentación universitaria
 
 ### 🏢 Diagrama ER
-
-![Diagrama ER](https://github.com/user-attachments/assets/a87108f2-8d67-4e8b-9e4b-8982e74a26c9)
+![Diagrama ER](https://github.com/user-attachments/assets/77a6087f-3c95-4c27-9577-8503da140e6a)
 
 ### 🗺️ Arquitectura de Software
-
 ![Arquitectura de Software](https://github.com/user-attachments/assets/9e808fc7-7f58-473d-abbf-70a8e8133f29)
 
 ### 📉 Burndown Chart
@@ -22,7 +20,6 @@ Walldasher es una aplicación para manejar overlays de transmisiones en vivo de 
 #### Sprint 1
 ![Burndown Chart - Sprint 1](https://github.com/user-attachments/assets/a39286a5-5d31-47b2-bfab-e9b15c2d2810)
 Durante este sprint, se completaron tareas adicionales debido a la carga de trabajo ajenas al proyecto de algunos miembros del equipo.
-
 
 #### Sprint 2
 Por planificar...
