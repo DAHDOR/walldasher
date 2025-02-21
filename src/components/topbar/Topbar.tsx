@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useRL } from '@/contexts/rl'
+import { useRLStatus } from '@/contexts/rlStatus'
 import { Button } from '@components/ui/button'
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import { Icon } from 'solid-heroicons'
@@ -26,7 +26,7 @@ const Topbar: Component = () => {
     await appWindow.close()
   }
 
-  const rl = useRL()
+  const rl = useRLStatus()
 
   return (
     <div data-tauri-drag-region class="flex h-10 flex-row">

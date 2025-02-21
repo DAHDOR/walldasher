@@ -6,7 +6,7 @@ import { createContext, useContext } from 'solid-js'
 const WSContext = createContext(ws)
 
 const WSProvider = ({ children }) => {
-  ws.init(49322, true, undefined)
+  ws.init(49322, false, undefined)
 
   const connect = async () => {
     const store = await load('store.json')

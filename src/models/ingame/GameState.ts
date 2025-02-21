@@ -1,4 +1,4 @@
-import { isUSPlayer, USPlayer } from './game/UpdateState/USPlayer'
+import { isUSPlayer, USPlayer } from './events/UpdateState/USPlayer'
 
 interface Score {
   blue: number
@@ -10,7 +10,7 @@ function isScore(obj: unknown): obj is Score {
   return record && typeof record.blue === 'number' && typeof record.orange === 'number'
 }
 
-interface Game {
+interface GameState {
   arena: string
   isOT: boolean
   isReplay: boolean
@@ -24,9 +24,9 @@ interface Game {
   }
 }
 
-export default Game
+export default GameState
 
-export function isGame(obj: unknown): obj is Game {
+export function isGameState(obj: unknown): obj is GameState {
   const record = obj as Record<string, unknown>
   return (
     record &&
@@ -37,7 +37,21 @@ export function isGame(obj: unknown): obj is Game {
     typeof record.timeRemaining === 'number' &&
     typeof record.winner === 'string' &&
     Array.isArray(record.players) &&
-    record.players.every((value) => isUSPlayer(value)) &&
+    record.players.every(value => isUSPlayer(value)) &&
     isScore(record.score)
   )
+}
+
+export const DEFAULT_GAME_STATE: GameState = {
+  arena: '',
+  isOT: false,
+  isReplay: false,
+  target: '',
+  timeRemaining: 300,
+  winner: '',
+  players: [],
+  score: {
+    blue: 0,
+    orange: 0
+  }
 }

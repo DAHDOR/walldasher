@@ -12,46 +12,83 @@ use tokio::net::TcpListener;
 use tokio::sync::Mutex;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
 
-pub type RL = Mutex<RLInner>;
+pub type RLClient = Mutex<RLInner>;
 
 pub struct RLInner {
     pub handle: Option<JoinHandle<()>>,
 }
 
-async fn connect(url: &String, server: UnboundedSender<Message>) {
-    server
-        .unbounded_send(
-            json!({"event": "rl:connecting", "data": ""})
-                .to_string()
-                .into(),
-        )
+fn event_to_relay(relay: &UnboundedSender<Message>, event: &str, data: Value) {
+    relay
+        .unbounded_send(json!({"event": event, "data": data}).to_string().into())
         .unwrap();
+}
+
+fn msg_to_relay(relay: &UnboundedSender<Message>, msg: &Message) {
+    relay.unbounded_send(msg.clone()).unwrap();
+}
+
+fn send_connecting(relay: &UnboundedSender<Message>) {
+    event_to_relay(relay, "rl:connecting", json!(""));
+}
+
+fn send_connected(relay: &UnboundedSender<Message>) {
+    event_to_relay(relay, "rl:connected", json!(""));
+}
+
+fn send_disconnected(relay: &UnboundedSender<Message>) {
+    event_to_relay(relay, "rl:disconnected", json!(""));
+}
+
+async fn connect(url: &String, relay: &UnboundedSender<Message>) {
+    send_connecting(relay);
+
     let ws_stream = match connect_async(format!("ws://{}", url)).await {
         Ok((ws_stream, _)) => ws_stream,
         Err(e) => {
-            println!("Failed to connect to WebSocket: {}", e);
+            println!("Failed to connect to Rocket League: {}", e);
             return;
         }
     };
-    println!("WebSocket handshake has been successfully completed");
-    server
-        .unbounded_send(
-            json!({"event": "rl:connected", "data": ""})
-                .to_string()
-                .into(),
-        )
-        .unwrap();
+    send_connected(relay);
 
     let (_, read) = ws_stream.split();
 
-    let ws_to_stdout = {
+    let ws_to_relay = {
         read.for_each(|message| async {
-            let data = message.unwrap().into_data();
-            tokio::io::stdout().write_all(&data).await.unwrap();
+            let msg = match message {
+                Ok(msg) => msg,
+                Err(e) => {
+                    println!("Error receiving a message: {}", e);
+                    return;
+                }
+            };
+
+            msg_to_relay(&relay, &msg);
+
+            let text = match msg.into_text() {
+                Ok(text) => text,
+                Err(e) => {
+                    println!("Error converting message to text: {}", e);
+                    return;
+                }
+            };
+
+            println!("Received a RL message: {}", text);
         })
     };
 
-    ws_to_stdout.await;
+    ws_to_relay.await;
+}
+
+async fn abort<R: Runtime>(app: &tauri::AppHandle<R>) {
+    if let Some(handle) = app.state::<RLClient>().lock().await.handle.take() {
+        handle.abort();
+    }
+}
+
+fn set_url<R: Runtime>(app: &tauri::AppHandle<R>, url: &String) {
+    app.store("store.json").unwrap().set("rl_url", url.clone());
 }
 
 #[tauri::command]
@@ -59,37 +96,21 @@ pub async fn connect_to_rl<R: Runtime>(
     app: tauri::AppHandle<R>,
     url: String,
 ) -> Result<(), String> {
-    if let Some(handle) = app.state::<RL>().lock().await.handle.take() {
-        handle.abort();
-    }
+    abort(&app).await;
 
-    let url_clone = url.clone();
-    match app.store("store.json") {
-        Ok(store) => {
-            let _ = store.set("rl_url", url_clone);
-        }
-        Err(e) => {
-            println!("Failed to save RL URL: {}", e);
-        }
-    };
+    set_url(&app, &url);
 
-    let server = app.state::<Relay>().inner().clone();
+    let relay = app.state::<Relay>().inner().clone();
 
     let handle = tauri::async_runtime::spawn(async move {
         loop {
-            connect(&url, server.clone()).await;
-            server
-                .unbounded_send(
-                    json!({"event": "rl:disconnected", "data": ""})
-                        .to_string()
-                        .into(),
-                )
-                .unwrap();
+            connect(&url, &relay).await;
+            send_disconnected(&relay);
             tokio::time::sleep(Duration::from_secs(5)).await;
         }
     });
 
-    app.state::<RL>().lock().await.handle = Some(handle);
+    app.state::<RLClient>().lock().await.handle = Some(handle);
 
     Ok(())
 }
@@ -115,7 +136,7 @@ mod tests {
         // Use an address that is unlikely to be open.
         let invalid_url = "ws://127.0.0.1:59999".to_owned();
         // Call connect; it should send an "rl:connecting" event, then fail to connect.
-        connect(&invalid_url, tx.clone()).await;
+        connect(&invalid_url, &tx).await;
 
         // Check that we got a "rl:connecting" event.
         let msg = try_recv(&mut rx).await.expect("Expected a message");
@@ -153,7 +174,7 @@ mod tests {
 
         let (tx, mut rx) = unbounded();
         let url = format!("ws://{}", addr);
-        connect(&url, tx.clone()).await;
+        connect(&url, &tx).await;
 
         // Verify that we first got a "rl:connecting" event.
         let msg1 = try_recv(&mut rx)

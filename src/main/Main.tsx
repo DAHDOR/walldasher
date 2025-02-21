@@ -1,6 +1,7 @@
 import type { Component } from 'solid-js'
 import './index.css'
-import RLProvider from '@/contexts/rl'
+import GameStateProvider from '@/contexts/gameState'
+import RlStatusProvider from '@/contexts/rlStatus'
 import WSProvider from '@/contexts/ws'
 import {
   ColorModeProvider,
@@ -13,14 +14,16 @@ const Main: Component = () => {
   const storageManager = createLocalStorageManager('vite-ui-theme')
   return (
     <WSProvider>
-      <RLProvider>
-        <ColorModeScript storageType={storageManager.type} />
-        <ColorModeProvider storageManager={storageManager}>
-          <div class="overflow-hidden">
-            <Pages />
-          </div>
-        </ColorModeProvider>
-      </RLProvider>
+      <RlStatusProvider>
+        <GameStateProvider>
+          <ColorModeScript storageType={storageManager.type} />
+          <ColorModeProvider storageManager={storageManager}>
+            <div class="overflow-hidden">
+              <Pages />
+            </div>
+          </ColorModeProvider>
+        </GameStateProvider>
+      </RlStatusProvider>
     </WSProvider>
   )
 }

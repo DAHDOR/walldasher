@@ -81,6 +81,7 @@ async fn handle_connection(connections: ConnectionMap, raw_stream: TcpStream, ad
     let id_clone = id.clone();
     let write_task = tauri::async_runtime::spawn(async move {
         while let Some(msg) = rx.next().await {
+            println!("Sending message to {}: {}", &id_clone, msg.to_string());
             if write.send(msg).await.is_err() {
                 println!("Error sending message to {}", &id_clone);
                 break;
@@ -186,22 +187,21 @@ async fn send_relay_message(sender_id: &str, msg: &str, conns: &ConnectionMap) {
         }
     };
 
-    let data = match json.get("data").and_then(|v| v.as_str()) {
-        Some(d) => d,
-        None => {
-            println!("No data provided in message");
-            ""
-        }
-    };
-
     // If it's a relay command, handle registration/unregistration.
     if event == "relay" {
+        let data = match json.get("data").and_then(|v| v.as_str()) {
+            Some(d) => d.to_string(),
+            None => {
+                println!("Data is not a string");
+                return;
+            }
+        };
         match cmd {
             "register" => {
                 let mut map = conns.lock().await;
                 if let Some(conn) = map.get_mut(sender_id) {
-                    if !conn.registered_functions.contains(&data.to_string()) {
-                        conn.registered_functions.push(data.to_string());
+                    if !conn.registered_functions.contains(&data) {
+                        conn.registered_functions.push(data.clone());
                         println!("{}> Registered to receive: {}", sender_id, data);
                     } else {
                         println!("{}> Already registered: {}", sender_id, data);
@@ -211,7 +211,11 @@ async fn send_relay_message(sender_id: &str, msg: &str, conns: &ConnectionMap) {
             "unregister" => {
                 let mut map = conns.lock().await;
                 if let Some(conn) = map.get_mut(sender_id) {
-                    if let Some(pos) = conn.registered_functions.iter().position(|f| f == data) {
+                    if let Some(pos) = conn
+                        .registered_functions
+                        .iter()
+                        .position(|f| f == data.as_str())
+                    {
                         conn.registered_functions.remove(pos);
                         println!("{}> Unregistered: {}", sender_id, data);
                     } else {
@@ -228,6 +232,14 @@ async fn send_relay_message(sender_id: &str, msg: &str, conns: &ConnectionMap) {
         return;
     }
 
+    let data = match json.get("data") {
+        Some(d) => d.to_string(),
+        None => {
+            println!("No data provided in message");
+            return;
+        }
+    };
+
     // Relay message to other connections that are registered for this event.
     let map = conns.lock().await;
     for (id, conn) in map.iter() {
@@ -240,6 +252,7 @@ async fn send_relay_message(sender_id: &str, msg: &str, conns: &ConnectionMap) {
         {
             let msg = Message::Text(msg.into());
             let _ = conn.tx.unbounded_send(msg);
+            println!("{}> Relayed to {}: {}", sender_id, id, event_command);
         }
     }
 }
@@ -268,32 +281,34 @@ async fn send_relay_message(sender_id: &str, msg: &str, conns: &ConnectionMap) {
 /// the underlying Tokio runtime or if the `handle_connection` function panics.
 pub async fn init<R: Runtime>(app: tauri::AppHandle<R>) -> Result<(), IoError> {
     let addr = "localhost:49322".to_string();
+
     let listener = TcpListener::bind(&addr).await?;
+
     println!("Opened WebSocket server on port {}", addr);
 
     let connections: ConnectionMap = Arc::new(Mutex::new(HashMap::new()));
 
     // Create a channel for the server itself.
-    let (tx, mut rx) = unbounded::<Message>();
+    let (sender, mut receiver) = unbounded::<Message>();
 
     // Store the connections map in the app state.
-    app.manage::<Relay>(tx.clone());
+    app.manage::<Relay>(sender.clone());
 
     // Spawn a task to handle messages sent to the server.
-    let conns_clone = connections.clone();
+    let conns = connections.clone();
     tauri::async_runtime::spawn(async move {
-        while let Some(msg) = rx.next().await {
+        while let Some(msg) = receiver.next().await {
             if let Message::Text(text) = msg {
-                send_relay_message("server", &text, &conns_clone).await;
+                send_relay_message("server", &text, &conns).await;
             }
         }
     });
 
     // Spawn a task for each incoming connection.
-    while let Ok((stream, addr)) = listener.accept().await {
+    while let Ok((raw_stream, addr)) = listener.accept().await {
         let connections = connections.clone();
         tauri::async_runtime::spawn(async move {
-            handle_connection(connections, stream, addr).await;
+            handle_connection(connections, raw_stream, addr).await;
         });
     }
 

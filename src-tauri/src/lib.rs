@@ -3,7 +3,7 @@ mod relay;
 mod rl;
 mod start;
 use reqwest::Client;
-use rl::client::{connect_to_rl, RLInner, RL};
+use rl::client::{connect_to_rl, RLClient, RLInner};
 use serde_json::from_value;
 use start::{
     client::{build, Start, StartInner},
@@ -43,7 +43,7 @@ pub fn run() {
 
             store.set("rl_url", url);
 
-            app.manage(RL::new(RLInner { handle: None }));
+            app.manage(RLClient::new(RLInner { handle: None }));
 
             let app_handle = app.handle().clone();
             tauri::async_runtime::spawn(relay::server::init(app_handle));

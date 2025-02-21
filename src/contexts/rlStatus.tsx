@@ -5,23 +5,23 @@ import { useWS } from './ws'
 
 type RLStatus = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED'
 
-const [rl, setRL] = createSignal<RLStatus>('DISCONNECTED')
+const [rlStatus, setRlStatus] = createSignal<RLStatus>('DISCONNECTED')
 
-const RLContext = createContext<Accessor<RLStatus>>(rl)
+const rlStatusContext = createContext<Accessor<RLStatus>>(rlStatus)
 
-const RLProvider = ({ children }) => {
+const RlStatusProvider = ({ children }) => {
   const ws = useWS()
 
   ws.subscribe('rl', 'disconnected', () => {
-    setRL('DISCONNECTED')
+    setRlStatus('DISCONNECTED')
   })
 
   ws.subscribe('rl', 'connecting', () => {
-    setRL('CONNECTING')
+    setRlStatus('CONNECTING')
   })
 
   ws.subscribe('rl', 'connected', () => {
-    setRL('CONNECTED')
+    setRlStatus('CONNECTED')
   })
 
   const connect = async () => {
@@ -31,11 +31,11 @@ const RLProvider = ({ children }) => {
   }
   void connect()
 
-  return <RLContext.Provider value={rl}>{children}</RLContext.Provider>
+  return <rlStatusContext.Provider value={rlStatus}>{children}</rlStatusContext.Provider>
 }
 
-export default RLProvider
+export default RlStatusProvider
 
-export const useRL = () => {
-  return useContext(RLContext)
+export const useRLStatus = () => {
+  return useContext(rlStatusContext)
 }

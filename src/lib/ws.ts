@@ -42,15 +42,15 @@ export const ws = {
       }
       const eventSplit = json.event.split(':')
       const channel = eventSplit[0]
-      const event_event = eventSplit[1]
+      const ev = eventSplit[1]
       if (debug) {
         if (!debugFilters) {
-          console.log(channel, event_event, json)
+          console.log(channel, ev, json)
         } else if (debugFilters && debugFilters.indexOf(json.event) < 0) {
-          console.log(channel, event_event, json)
+          console.log(channel, ev, json)
         }
       }
-      ws.triggerSubscribers(channel, event_event, json.data)
+      ws.triggerSubscribers(channel, ev, json.data)
     }
 
     ws.socket.onopen = function (): void {
