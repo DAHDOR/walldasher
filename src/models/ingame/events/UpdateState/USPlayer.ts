@@ -68,7 +68,6 @@ export function isUSPlayer(obj: unknown): obj is USPlayer {
     typeof record.isDead === 'boolean' &&
     typeof record.isPowersliding === 'boolean' &&
     typeof record.isSonic === 'boolean' &&
-    typeof record.location === 'object' &&
     isLocation(record.location) &&
     typeof record.name === 'string' &&
     typeof record.onGround === 'boolean' &&

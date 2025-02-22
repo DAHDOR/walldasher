@@ -18,8 +18,8 @@ const WSProvider = ({ children }) => {
   return <WSContext.Provider value={ws}>{children}</WSContext.Provider>
 }
 
-export default WSProvider
-
-export const useWS = () => {
+const useWS = () => {
   return useContext(WSContext)
 }
+
+export { WSProvider, useWS }

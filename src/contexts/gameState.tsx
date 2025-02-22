@@ -8,7 +8,7 @@ import { useWS } from './ws'
 
 const [state, setState] = createSignal<GameState>(DEFAULT_GAME_STATE)
 
-const RLContext = createContext<Accessor<GameState>>(state)
+const GameStateContext = createContext<Accessor<GameState>>(state)
 
 const GameStateProvider = ({ children }) => {
   const ws = useWS()
@@ -41,11 +41,11 @@ const GameStateProvider = ({ children }) => {
   }
   void connect()
 
-  return <RLContext.Provider value={state}>{children}</RLContext.Provider>
+  return <GameStateContext.Provider value={state}>{children}</GameStateContext.Provider>
 }
 
-export default GameStateProvider
-
-export const useRL = () => {
-  return useContext(RLContext)
+const useGameState = () => {
+  return useContext(GameStateContext)
 }
+
+export { GameStateProvider, useGameState }

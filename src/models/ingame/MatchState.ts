@@ -1,14 +1,17 @@
-interface Match {
+import { Game } from '@models/db'
+
+interface MatchState {
   bo: number
   isRunning: boolean
   game: number
   blueWins: number
   orangeWins: number
+  games: Game[]
 }
 
-export default Match
+export default MatchState
 
-export function isMatch(obj: unknown): obj is Match {
+export function isMatchState(obj: unknown): obj is MatchState {
   const record = obj as Record<string, unknown>
   return (
     record &&

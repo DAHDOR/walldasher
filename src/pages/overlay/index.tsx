@@ -8,14 +8,6 @@ import PostGame from './postgame'
 import RoundRobin from './roundrobin'
 
 const Layout: Component<ParentProps> = props => {
-  return (
-    <div class="fixed top-0 left-0 w-[1920px] h-[1080px] bg-transparent">
-      {props.children}
-    </div>
-  )
-}
-
-const OverlayPages = () => {
   const ws = useWS()
 
   const navigate = useNavigate()
@@ -30,6 +22,14 @@ const OverlayPages = () => {
     navigate('/overlay/winner') // TODO: winner page, it has to navigate to postgame after finishing
   })
 
+  return (
+    <div class="fixed top-0 left-0 w-[1920px] h-[1080px] bg-transparent">
+      {props.children}
+    </div>
+  )
+}
+
+const OverlayPages = () => {
   return (
     <Route path="/overlay" component={Layout}>
       <Route path="/phase" component={Phase} />
