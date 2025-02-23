@@ -6,6 +6,7 @@ import NextUp from './nextup'
 import Phase from './phase'
 import PostGame from './postgame'
 import RoundRobin from './roundrobin'
+import Winner from './winner'
 
 const Layout: Component<ParentProps> = props => {
   const ws = useWS()
@@ -37,6 +38,7 @@ const OverlayPages = () => {
       <Route path="/ingame" component={InGame} />
       <Route path="/postgame" component={PostGame} />
       <Route path="/roundrobin" component={RoundRobin} />
+      <Route path="/winner" component={Winner} />
     </Route>
   )
 }

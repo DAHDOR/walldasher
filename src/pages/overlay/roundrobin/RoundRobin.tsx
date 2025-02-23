@@ -82,28 +82,29 @@ const PostGame: Component = () => {
   ]
 
   return (
-    <div class="w-screen h-screen" style={{ background: `url(${bg})` , "background-size": 'cover', "background-position": 'center' }}>
-      <div class="w-[90vw] text-center z-10 mx-auto">
+    // <div class="w-screen h-screen" style={{ background: `url(${bg})` , "background-size": 'cover', "background-position": 'center' }}>
+    <div class="w-screen h-screen">
+      <div class="w-[75vw] text-center z-10 mx-auto pt-[5vw]">
         <Col class="relative">
-          <img src={tableBG} class="w-[80vw] h-auto object-cover absolute inset-0 z-0 mx-auto pt-[2.5vw]"/>
+          <img src={tableBG} class="w-[60vw] h-auto object-cover absolute inset-0 z-0 mx-auto pt-[5vw]"/>
           <div class="absolute inset-0 z-10">
             <div class="text-white text-center text-[2.5vw] text-nowrap px-[10vw] mx-auto leading-none" style={{ top: '50%', left: '50%', transform: 'translate(0%,-5%)'}}>
-              <div class='pt-[8vw] text-[4vw] font-semibold text-left text-[color:#22b0ff]'>
+              <div class='pt-[8vw] text-[3vw] font-semibold text-left text-[color:#22b0ff]'>
                 {"LIGA BLA BLA BLA"}
               </div>
               <Grid cols={2}>
                 <Col span={1}>
-                  <div class='pt-[0vw] text-[3vw] text-left text-[color:#22b0ff]'>
+                  <div class='pt-[0vw] text-[2.5vw] text-left text-[color:#22b0ff]'>
                     {"WEEK 8"}
                   </div>
                 </Col>
                 <Col span={1}>
-                  <div class='pt-[1vw] pr-[8vw] text-[2vw] font-semibold text-right text-[color:#22b0ff]'>
+                  <div class='pt-[1vw] pr-[6.5vw] text-[1.5vw] font-semibold text-right text-[color:#22b0ff]'>
                     {"POINTS"}
                   </div>
                 </Col>
               </Grid>
-              <Grid cols={3} class="pb-[1vw] pt-[1vw] text-[2vw] font-semibold leading-[2.5vw]">
+              <Grid cols={3} class="pb-[1vw] pt-[1vw] text-[1.5vw] font-semibold leading-[2vw]">
                 {teams.map((team, index) => {
                   if (index > 0 && index < 10) {
                     return (

@@ -149,7 +149,7 @@ const PostGame: Component = () => {
                 <Col class="relative">
                   <img src={orangeNameBlock} class="w-auto h-auto object-cover absolute inset-0 z-0" alt={team.name} />
                   <div class="absolute inset-0 z-10">
-                    <div class="text-white text-center text-[2.5vw] text-nowrap" style={{ top: '50%', left: '50%', transform: 'translate(-70%, 15%)'}}>
+                    <div class="text-white text-[2.5vw] text-nowrap text-center" style={{ top: '50%', left: '50%', transform: 'translate(-70%, 15%)'}}>
                       {team.name}
                     </div>
                   </div>
@@ -176,7 +176,7 @@ const PostGame: Component = () => {
                 <Col class="relative">
                   <img src={blueNameBlock} class="w-auto h-auto object-cover absolute inset-0 z-0" alt={team.name} />
                   <div class="absolute inset-0 z-10">
-                    <div class="text-white text-center text-[2.5vw] text-nowrap" style={{ top: '50%', left: '50%', transform: 'translate(0%, 15%)'}}>
+                    <div class="text-white text-[2.5vw] text-nowrap text-center" style={{ top: '50%', left: '50%', transform: 'translate(0%, 15%)'}}>
                       {team.name}
                     </div>
                   </div>
@@ -196,15 +196,15 @@ const PostGame: Component = () => {
         </Grid>
         <Grid cols={3} class='pb-[0vw] pt-[5vw]'>
           <Col class="inset-0 z-10 relative flex items-center justify-center" style={{ top: '0%', left: '0%', transform: 'translate(55.4%, 10%)'}}>
-            <img src={blueMatchWonBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(60%, 0%)'}}/>
-            <img src={blueMatchWonBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(40%, 0%)'}}/>
+            <img src={blueMatchLostBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(60%, 0%)'}}/>
+            <img src={blueMatchLostBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(40%, 0%)'}}/>
             <img src={blueMatchWonBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(20%, 0%)'}}/>
             <img src={blueMatchWonBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(0%, 0%)'}}/>
           </Col>
           <Col class="relative">
             <div class="absolute inset-0 z-10">
               <div class="text-white text-center text-[1.5vw] text-nowrap" style={{ top: '50%', left: '50%', transform: 'translate(0%, -10%)'}}>
-                {'JUEGO 2'}
+                {'JUEGO 5'}
               </div>
             </div>
           </Col>
@@ -212,7 +212,7 @@ const PostGame: Component = () => {
             <img src={orangeMatchWonBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(60%, 0%)'}}/>
             <img src={orangeMatchWonBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(40%, 0%)'}}/>
             <img src={orangeMatchWonBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(20%, 0%)'}}/>
-            <img src={orangeMatchWonBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(0%, 0%)'}}/>
+            <img src={orangeMatchLostBlock} class="max-w-[5vw] max-h-[1.5vw] object-contain" style={{ top: '50%', left: '50%', transform: 'translate(0%, 0%)'}}/>
           </Col>
         </Grid>
         <Grid cols={7} class="pb-[1vw] pt-[1vw] text-[2vw] font-semibold text-">
@@ -252,7 +252,7 @@ const PostGame: Component = () => {
             } else {
               return (
                 <Col span={1} class='pb-[1vw] pt-[1vw]'>
-                  <div class='pb-[1vw] pt-[1vw] bg-gradient-to-b from-transparent from-0% via-transparent via-90% to-orange-500 to-90%'>{player.name}</div>
+                  <div class='pb-[1vw] pt-[1vw] bg-gradient-to-b from-transparent from-0% via-transparent via-90% to-[color:#ff8a15] to-90%'>{player.name}</div>
                   <div class='pb-[1vw] pt-[1vw] '>{player.score}</div>
                   <div class='pb-[1vw] pt-[1vw]'>{player.goals}</div>
                   <div class='pb-[1vw] pt-[1vw]'>{player.assists}</div>
