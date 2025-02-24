@@ -1,5 +1,6 @@
 import { Component } from 'solid-js';
 import { Col, Grid } from "@components/ui/grid";
+
 import wallpaperImage from './assets/Wallpaper.jpg';
 import bg from './assets/PostGameBG.png';
 import blueNameBlock from './assets/blueNameBlock.svg';
@@ -12,17 +13,28 @@ import orangeMatchWonBlock from './assets/orangeMatchWonBlock.svg';
 import blueMatchWonBlock from './assets/blueMatchWonBlock.svg';
 import orangeMatchLostBlock from './assets/orangeMatchLostBlock.svg';
 import blueMatchLostBlock from './assets/blueMatchLostBlock.svg';
+import { readSignal } from 'solid-js/types/reactive/signal';
+
+import { useStats } from '@/contexts/stats';
+import { USPlayer } from '@models/ingame/events/UpdateState/USPlayer';
+import { createContext, createSignal, useContext, Accessor } from 'solid-js'
+import { useGameState } from 'src/contexts/gameState';
+import { createEffect } from 'solid-js';
 
 const PostGame: Component = () => {
-  interface PlayerData {
-    id: number;
-    name: string;
-    score: number;
-    goals: number;
-    assists: number;
-    saves: number;
-    shots: number;
-  }
+
+  const gameState = useGameState();
+  const players = () => gameState();
+  createEffect(() => {
+    console.log(players());
+  });
+
+  const stats = useStats();
+  const statsPlayer = () => stats();
+  createEffect(() => {
+    console.log("ABAJO");
+    console.log(statsPlayer()[0].team);
+  })
 
   interface TeamData {
     id: number;
@@ -30,22 +42,6 @@ const PostGame: Component = () => {
     pfp: string;
     players: number;
   }
-
-  interface GameData {
-    id: number;
-    score1: number;
-    score2: number;
-    stats: number;
-  }
-
-  const game: GameData[] = [
-    {
-      id: 2,
-      score1: 3,
-      score2: 7,
-      stats: 0
-    }
-  ]
 
   const teams: TeamData[] = [
     {
@@ -61,63 +57,6 @@ const PostGame: Component = () => {
       players: 3
     }
   ]
-
-  const players: PlayerData[] = [
-    {
-      id: 0,
-      name: "Jugador A",
-      score: 120,
-      goals: 2,
-      assists: 1,
-      saves: 0,
-      shots: 5,
-    },
-    {
-      id: 1,
-      name: "Jugador B",
-      score: 120,
-      goals: 2,
-      assists: 1,
-      saves: 0,
-      shots: 5,
-    },
-    {
-      id: 2,
-      name: "Jugador C",
-      score: 120,
-      goals: 2,
-      assists: 1,
-      saves: 0,
-      shots: 5,
-    },
-    {
-      id: 3,
-      name: "Jugador D",
-      score: 120,
-      goals: 2,
-      assists: 1,
-      saves: 0,
-      shots: 5,
-    },
-    {
-      id: 4,
-      name: "Jugador E",
-      score: 120,
-      goals: 2,
-      assists: 1,
-      saves: 0,
-      shots: 5,
-    },
-    {
-      id: 5,
-      name: "Jugador F",
-      score: 120,
-      goals: 2,
-      assists: 1,
-      saves: 0,
-      shots: 5,
-    }
-  ];
 
   return (
     <div class="w-screen h-screen" style={{ background: `url(${bg})` , "background-size": 'cover', "background-position": 'center' }}>
@@ -142,7 +81,7 @@ const PostGame: Component = () => {
                   <img src={orangeScoreBlock} class="w-auto h-auto object-cover absolute inset-0 z-0" alt={team.name} />
                   <div class="absolute inset-0 z-10">
                     <div class="text-[color:#ff8a15] text-center text-[4vw] font-bold" style={{ top: '50%', left: '50%', transform: 'translate(-75%, -10%)'}}>
-                      {game[0].score2}
+                      {players().score.orange}
                     </div>
                   </div>
                 </Col>
@@ -150,7 +89,7 @@ const PostGame: Component = () => {
                   <img src={orangeNameBlock} class="w-auto h-auto object-cover absolute inset-0 z-0" alt={team.name} />
                   <div class="absolute inset-0 z-10">
                     <div class="text-white text-[2.5vw] text-nowrap text-center" style={{ top: '50%', left: '50%', transform: 'translate(-70%, 15%)'}}>
-                      {team.name}
+                      {players().winner}
                     </div>
                   </div>
                 </Col>
@@ -177,7 +116,7 @@ const PostGame: Component = () => {
                   <img src={blueNameBlock} class="w-auto h-auto object-cover absolute inset-0 z-0" alt={team.name} />
                   <div class="absolute inset-0 z-10">
                     <div class="text-white text-[2.5vw] text-nowrap text-center" style={{ top: '50%', left: '50%', transform: 'translate(0%, 15%)'}}>
-                      {team.name}
+                      {players().winner}
                     </div>
                   </div>
                 </Col>
@@ -185,7 +124,7 @@ const PostGame: Component = () => {
                   <img src={blueScoreBlock} class="w-auto h-auto object-cover absolute inset-0 z-0" alt={team.name} />
                   <div class="absolute inset-0 z-10">
                     <div class="text-[color:#22b0ff] text-center text-[4vw] font-bold" style={{ top: '50%', left: '50%', transform: 'translate(75%, -10%)'}}>
-                      {game[0].score1}
+                      {players().score.blue}
                     </div>
                   </div>
                 </Col>
@@ -216,7 +155,7 @@ const PostGame: Component = () => {
           </Col>
         </Grid>
         <Grid cols={7} class="pb-[1vw] pt-[1vw] text-[2vw] font-semibold text-">
-          {players.map((player, index) => {
+          {players().players.map((player, index) => {
             if (index < 3) {
               return (
                 <Col span={1} class='pb-[1vw] pt-[1vw]'>
