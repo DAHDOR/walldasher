@@ -1,8 +1,6 @@
 import { UpdateState } from '@models/ingame/events/UpdateState/UpdateState'
 import { USPlayer } from '@models/ingame/events/UpdateState/USPlayer'
 import GameState, { DEFAULT_GAME_STATE } from '@models/ingame/GameState'
-import { invoke } from '@tauri-apps/api/core'
-import { load } from '@tauri-apps/plugin-store'
 import { Accessor, createContext, createSignal, useContext } from 'solid-js'
 import { useWS } from './ws'
 
@@ -33,13 +31,6 @@ const GameStateProvider = ({ children }) => {
       }
     })
   })
-
-  const connect = async () => {
-    const store = await load('store.json')
-    const url = await store.get<string>('rl_url')
-    await invoke('connect_to_rl', { url })
-  }
-  void connect()
 
   return <GameStateContext.Provider value={state}>{children}</GameStateContext.Provider>
 }

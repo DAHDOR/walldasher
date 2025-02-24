@@ -9,9 +9,9 @@ const Pages: Component = () => {
   return (
     <Router>
       <Route path="/" component={() => <Navigate href="/app" />} />
+      <Route path="*" component={() => <Navigate href="/app" />} />
       <AppPages />
       <OverlayPages />
-      <Route path="*" component={() => <Navigate href="/app" />} />
     </Router>
   )
 }
