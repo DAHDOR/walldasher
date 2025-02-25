@@ -1,11 +1,14 @@
 --
--- File generated with SQLiteStudio v3.4.15 on Thu Feb 6 20:53:18 2025
+-- File generated with SQLiteStudio v3.4.13 on Tue Feb 25 17:11:51 2025
 --
--- Text encoding used: System (UTF-8)
+-- Text encoding used: UTF-8
 --
 PRAGMA foreign_keys = off;
+BEGIN TRANSACTION;
 
 -- Table: bracket
+DROP TABLE IF EXISTS bracket;
+
 CREATE TABLE IF NOT EXISTS bracket (
     id         INTEGER PRIMARY KEY,
     phase      INTEGER,
@@ -23,6 +26,8 @@ CREATE TABLE IF NOT EXISTS bracket (
 
 
 -- Table: event
+DROP TABLE IF EXISTS event;
+
 CREATE TABLE IF NOT EXISTS event (
     id         INTEGER PRIMARY KEY,
     tournament INTEGER,
@@ -35,6 +40,8 @@ CREATE TABLE IF NOT EXISTS event (
 
 
 -- Table: game
+DROP TABLE IF EXISTS game;
+
 CREATE TABLE IF NOT EXISTS game (
     id     INTEGER PRIMARY KEY,
     match  INTEGER,
@@ -54,12 +61,14 @@ CREATE TABLE IF NOT EXISTS game (
 
 
 -- Table: match
+DROP TABLE IF EXISTS match;
+
 CREATE TABLE IF NOT EXISTS match (
     id         INTEGER PRIMARY KEY,
     round      INTEGER,
     identifier TEXT,
     number     INTEGER,
-    bo         INTEGER CHECK (bo IN (1, 3, 5, 7, 9) ),
+    best_of    INTEGER CHECK (best_of IN (1, 3, 5, 7, 9) ),
     team1      INTEGER,
     team2      INTEGER,
     winner     INTEGER,
@@ -92,6 +101,8 @@ CREATE TABLE IF NOT EXISTS match (
 
 
 -- Table: phase
+DROP TABLE IF EXISTS phase;
+
 CREATE TABLE IF NOT EXISTS phase (
     id     INTEGER PRIMARY KEY,
     event  INTEGER,
@@ -109,6 +120,8 @@ CREATE TABLE IF NOT EXISTS phase (
 
 
 -- Table: player
+DROP TABLE IF EXISTS player;
+
 CREATE TABLE IF NOT EXISTS player (
     id   INTEGER PRIMARY KEY,
     team INTEGER,
@@ -121,16 +134,18 @@ CREATE TABLE IF NOT EXISTS player (
 
 
 -- Table: round
+DROP TABLE IF EXISTS round;
+
 CREATE TABLE IF NOT EXISTS round (
-    id      INTEGER PRIMARY KEY,
-    bracket INTEGER,
-    number  INTEGER,
-    bo      INTEGER CHECK (bo = 1 OR
-                           bo = 3 OR
-                           bo = 5 OR
-                           bo = 7 OR
-                           bo = 9),
-    startAt INTEGER,
+    id       INTEGER PRIMARY KEY,
+    bracket  INTEGER,
+    number   INTEGER,
+    best_of  INTEGER CHECK (best_of = 1 OR 
+                            best_of = 3 OR 
+                            best_of = 5 OR 
+                            best_of = 7 OR 
+                            best_of = 9),
+    start_at INTEGER,
     FOREIGN KEY (
         bracket
     )
@@ -143,6 +158,8 @@ CREATE TABLE IF NOT EXISTS round (
 
 
 -- Table: standing
+DROP TABLE IF EXISTS standing;
+
 CREATE TABLE IF NOT EXISTS standing (
     id        INTEGER PRIMARY KEY,
     bracket   INTEGER,
@@ -164,6 +181,8 @@ CREATE TABLE IF NOT EXISTS standing (
 
 
 -- Table: stat
+DROP TABLE IF EXISTS stat;
+
 CREATE TABLE IF NOT EXISTS stat (
     id      INTEGER PRIMARY KEY,
     game    INTEGER,
@@ -189,11 +208,13 @@ CREATE TABLE IF NOT EXISTS stat (
 
 
 -- Table: team
+DROP TABLE IF EXISTS team;
+
 CREATE TABLE IF NOT EXISTS team (
     id         INTEGER PRIMARY KEY,
     tournament INTEGER,
     name       TEXT,
-    pfp        TEXT,
+    logo_url   TEXT,
     FOREIGN KEY (
         tournament
     )
@@ -202,10 +223,14 @@ CREATE TABLE IF NOT EXISTS team (
 
 
 -- Table: tournament
+DROP TABLE IF EXISTS tournament;
+
 CREATE TABLE IF NOT EXISTS tournament (
-    id   INTEGER PRIMARY KEY,
-    name TEXT,
-    pfp  TEXT
+    id       INTEGER PRIMARY KEY,
+    name     TEXT,
+    logo_url TEXT
 );
 
+
+COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;
