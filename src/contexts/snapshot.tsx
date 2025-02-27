@@ -23,4 +23,4 @@ const useSnapshot = () => {
   return useContext(SnapshotContext)
 }
 
-export { Snapshot, useSnapshot as useStats }
+export { Snapshot, useSnapshot }
