@@ -1,4 +1,5 @@
 import { isUSPlayer, USPlayer } from './events/UpdateState/USPlayer'
+import { USTeam } from './events/UpdateState/USTeam'
 
 interface Score {
   blue: number
@@ -18,6 +19,7 @@ interface GameState {
   timeRemaining: number
   winner: string
   players: USPlayer[]
+  teams: USTeam[]
   score: {
     blue: number
     orange: number
@@ -50,6 +52,7 @@ export const DEFAULT_GAME_STATE: GameState = {
   timeRemaining: 300,
   winner: '',
   players: [],
+  teams: [],
   score: {
     blue: 0,
     orange: 0

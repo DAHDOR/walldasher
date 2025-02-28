@@ -25,6 +25,7 @@ const GameStateProvider = ({ children }) => {
       timeRemaining: data.game.time_seconds,
       winner: data.game.winner,
       players: updatedPlayers,
+      teams: data.game.teams,
       score: {
         blue: data.game.teams[0].score,
         orange: data.game.teams[1].score
