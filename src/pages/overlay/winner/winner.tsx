@@ -12,7 +12,7 @@ const PostGame: Component = () => {
   const stats = useSnapshot()
   const snapState = () => stats()
   createEffect(() => {
-    console.log(snapState().winner)
+    console.log(snapState())
   })
   return (
     <div class="w-screen h-screen" style={{ background: `url(${orangeWinning})` , "background-size": 'cover', "background-position": 'center' }}>
@@ -20,7 +20,7 @@ const PostGame: Component = () => {
         <div class="relative">
           {/* <img src={winningImage} class="w-[34vw] h-[31vw] object-cover absolute inset-0 z-0 mx-auto pt-[3vw]"/> */}
           <div class="w-[34vw] h-[31vw] text-[7vw] object-cover absolute inset-0 z-0 mx-auto pt-[3vw]">
-            {snapState().winner}
+            {stats().winner}
           </div>
         </div>
       </div>
