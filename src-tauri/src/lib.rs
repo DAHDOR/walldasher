@@ -9,7 +9,7 @@ use start::{
     client::{build, Start, StartInner},
     query::{bracket_matches, event_players, set_start_key, tournament, tournaments},
 };
-use tauri::Manager;
+use tauri::{Manager, WebviewUrl, WebviewWindowBuilder};
 use tauri_plugin_store::StoreExt;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -27,6 +27,11 @@ pub fn run() {
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_localhost::Builder::new(port).build())
         .setup(move |app| {
+            let url = format!("http://localhost:{}", port).parse().unwrap();
+            WebviewWindowBuilder::new(app, "overlay".to_string(), WebviewUrl::External(url))
+                .title("Localhost Example")
+                .build()?;
+
             let store = app.store("store.json").unwrap();
 
             let client = match store.get("key") {

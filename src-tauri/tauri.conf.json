@@ -20,13 +20,7 @@
       }
     ],
     "security": {
-      "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'; connect-src ipc: http://ipc.localhost http://localhost",
-      "assetProtocol": {
-        "enable": true,
-        "scope": {
-          "allow": ["$APPDATA/**"]
-        }
-      }
+      "csp": null
     }
   },
   "bundle": {
@@ -42,7 +36,7 @@
   },
   "plugins": {
     "sql": {
-      "preload": ["sqlite:test1.db"]
+      "preload": ["sqlite:test2.db"]
     }
   }
 }
