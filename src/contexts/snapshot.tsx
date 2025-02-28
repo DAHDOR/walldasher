@@ -1,3 +1,4 @@
+import { MatchEnded } from '@models/ingame/events/MatchEnded'
 import GameState, { DEFAULT_GAME_STATE } from '@models/ingame/GameState'
 import { createContext, createSignal, useContext } from 'solid-js'
 import { useGameState } from './gameState'
@@ -10,10 +11,12 @@ const SnapshotContext = createContext(snapshot)
 const Snapshot = ({ children }) => {
   const ws = useWS()
 
-  const state = useGameState()
+  const gameState = useGameState()
 
-  ws.subscribe('game', 'match_ended', () => {
-    setSnapshot(state())
+  ws.subscribe('game', 'match_ended', data => {
+    const matchEnded = data as MatchEnded
+    const n = matchEnded.winner_team_num
+    setSnapshot({ ...gameState(), winner: gameState().teams[n].name })
   })
 
   return <SnapshotContext.Provider value={snapshot}>{children}</SnapshotContext.Provider>

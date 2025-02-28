@@ -3,13 +3,13 @@ import { load } from '@tauri-apps/plugin-store'
 import { Accessor, createContext, createSignal, useContext } from 'solid-js'
 import { useWS } from './ws'
 
-type RLStatus = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED'
+type RLWSStatus = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED'
 
-const [rlStatus, setRlStatus] = createSignal<RLStatus>('DISCONNECTED')
+const [rlWsStatus, setRlStatus] = createSignal<RLWSStatus>('DISCONNECTED')
 
-const rlStatusContext = createContext<Accessor<RLStatus>>(rlStatus)
+const rlWsStatusContext = createContext<Accessor<RLWSStatus>>(rlWsStatus)
 
-const RlStatusProvider = ({ children }) => {
+const RlWsStatusProvider = ({ children }) => {
   const ws = useWS()
 
   ws.subscribe('rl', 'disconnected', () => {
@@ -31,11 +31,13 @@ const RlStatusProvider = ({ children }) => {
   }
   void connect()
 
-  return <rlStatusContext.Provider value={rlStatus}>{children}</rlStatusContext.Provider>
+  return (
+    <rlWsStatusContext.Provider value={rlWsStatus}>{children}</rlWsStatusContext.Provider>
+  )
 }
 
-export default RlStatusProvider
+export default RlWsStatusProvider
 
-export const useRLStatus = () => {
-  return useContext(rlStatusContext)
+export const useRlWsStatus = () => {
+  return useContext(rlWsStatusContext)
 }

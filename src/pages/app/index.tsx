@@ -1,8 +1,9 @@
-import RlStatusProvider from '@/contexts/rlStatus'
+import RlWsStatusProvider from '@/contexts/rlWsStatus'
 import Explorer from '@components/explorer'
 import Topbar from '@components/topbar'
 import { Route } from '@solidjs/router'
 import { Component, ParentProps } from 'solid-js'
+import Dev from './dev'
 import Home from './home'
 import Match from './match'
 import Tournament from './tournament'
@@ -10,7 +11,7 @@ import Tournament from './tournament'
 const Layout: Component<ParentProps> = props => {
   return (
     <div class="flex h-screen flex-col">
-      <RlStatusProvider>
+      <RlWsStatusProvider>
         <Topbar />
         <div class="flex grow flex-row max-h-[calc(100vh-40px)]">
           <Explorer />
@@ -18,7 +19,7 @@ const Layout: Component<ParentProps> = props => {
             {props.children}
           </div>
         </div>
-      </RlStatusProvider>
+      </RlWsStatusProvider>
     </div>
   )
 }
@@ -29,6 +30,7 @@ const AppPages = () => {
       <Route path="/" component={Home} />
       <Route path="/tournament" component={Tournament} />
       <Route path="/match" component={Match} />
+      <Route path="/dev" component={Dev} />
     </Route>
   )
 }

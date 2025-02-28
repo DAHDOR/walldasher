@@ -3,7 +3,7 @@ import { Button } from '@components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { useNavigate } from '@solidjs/router'
 import { Icon } from 'solid-heroicons'
-import { home, lifebuoy, presentationChartBar } from 'solid-heroicons/solid'
+import { beaker, home, lifebuoy, presentationChartBar } from 'solid-heroicons/solid'
 import { Component, JSX } from 'solid-js'
 
 interface IconPath {
@@ -40,6 +40,7 @@ const Explorer: Component = () => {
         <NavButton icon={home} label="Dashboard" path="/app" />
         <NavButton icon={presentationChartBar} label="Torneo" path="/app/tournament" />
         <NavButton icon={lifebuoy} label="Partido" path="/app/match" />
+        <NavButton icon={beaker} label="Desarrollo" path="/app/dev" />
       </div>
       <div class="flex flex-col items-center justify-center py-2">
         <Settings />

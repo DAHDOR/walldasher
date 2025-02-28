@@ -52,7 +52,20 @@ export const DEFAULT_GAME_STATE: GameState = {
   timeRemaining: 300,
   winner: '',
   players: [],
-  teams: [],
+  teams: [
+    {
+      name: 'BLUE',
+      score: 0,
+      color_primary: '',
+      color_secondary: ''
+    },
+    {
+      name: 'ORANGE',
+      score: 0,
+      color_primary: '',
+      color_secondary: ''
+    }
+  ],
   score: {
     blue: 0,
     orange: 0

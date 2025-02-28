@@ -240,9 +240,6 @@ async fn send_relay_message(sender_id: &str, msg: &str, conns: &ConnectionMap) {
     // Relay message to other connections that are registered for this event.
     let map = conns.lock().await;
     for (id, conn) in map.iter() {
-        if id == sender_id {
-            continue;
-        }
         if conn
             .registered_functions
             .contains(&event_command.to_string())
