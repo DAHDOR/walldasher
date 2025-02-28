@@ -12,8 +12,11 @@ const PostGame: Component = () => {
   const stats = useSnapshot()
   const snapState = () => stats()
   createEffect(() => {
+    console.log("winner abajo")
     console.log(snapState())
   })
+  {console.log("winner abajo")}
+  {console.log(snapState())}
   return (
     <div class="w-screen h-screen" style={{ background: `url(${orangeWinning})` , "background-size": 'cover', "background-position": 'center' }}>
       <div class="w-[90vw] text-center z-10 mx-auto">
