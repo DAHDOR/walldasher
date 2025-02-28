@@ -1,14 +1,12 @@
 use crate::relay::server::Relay;
-use futures::channel::mpsc::{unbounded, UnboundedReceiver, UnboundedSender};
-use futures_util::{future::FutureExt, SinkExt, StreamExt};
+use futures::channel::mpsc::UnboundedSender;
+use futures_util::StreamExt;
 use serde_json::json;
 use serde_json::Value;
 use std::time::Duration;
 use tauri::async_runtime::JoinHandle;
 use tauri::{Manager, Runtime};
 use tauri_plugin_store::StoreExt;
-use tokio::io::AsyncWriteExt;
-use tokio::net::TcpListener;
 use tokio::sync::Mutex;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
 
@@ -117,6 +115,9 @@ pub async fn connect_to_rl<R: Runtime>(
 
 #[cfg(test)]
 mod tests {
+    use futures::channel::mpsc::{unbounded, UnboundedReceiver};
+    use futures_util::{SinkExt, StreamExt};
+    use tokio::net::TcpListener;
     use tokio_tungstenite::accept_async;
 
     use super::*;

@@ -20,7 +20,20 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": null,
+      "headers": {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Expose-Headers": "*",
+        "Access-Control-Max-Age": "86400",
+        "Cross-Origin-Embedder-Policy": "unsafe-none",
+        "Cross-Origin-Opener-Policy": "unsafe-none",
+        "Cross-Origin-Resource-Policy": "cross-origin",
+        "Permissions-Policy": "*",
+        "Timing-Allow-Origin": "*",
+        "X-Content-Type-Options": "nosniff"
+      }
     }
   },
   "bundle": {

@@ -4,7 +4,6 @@
 -- Text encoding used: UTF-8
 --
 PRAGMA foreign_keys = off;
-BEGIN TRANSACTION;
 
 -- Table: bracket
 DROP TABLE IF EXISTS bracket;
@@ -231,6 +230,4 @@ CREATE TABLE IF NOT EXISTS tournament (
     logo_url TEXT
 );
 
-
-COMMIT TRANSACTION;
 PRAGMA foreign_keys = on;

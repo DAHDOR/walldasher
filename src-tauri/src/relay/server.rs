@@ -6,7 +6,7 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-use futures::channel::mpsc::{unbounded, UnboundedReceiver, UnboundedSender};
+use futures::channel::mpsc::{unbounded, UnboundedSender};
 use futures_util::{stream::TryStreamExt, SinkExt, StreamExt};
 use serde_json::Value;
 use tauri::{Manager, Runtime};
@@ -232,13 +232,10 @@ async fn send_relay_message(sender_id: &str, msg: &str, conns: &ConnectionMap) {
         return;
     }
 
-    let data = match json.get("data") {
-        Some(d) => d.to_string(),
-        None => {
-            println!("No data provided in message");
-            return;
-        }
-    };
+    if json.get("data").is_none() {
+        println!("No data provided in message");
+        return;
+    }
 
     // Relay message to other connections that are registered for this event.
     let map = conns.lock().await;
@@ -317,9 +314,9 @@ pub async fn init<R: Runtime>(app: tauri::AppHandle<R>) -> Result<(), IoError> {
 
 #[cfg(test)]
 mod tests {
-    use serde_json::json;
-
     use super::*;
+    use futures::channel::mpsc::UnboundedReceiver;
+    use serde_json::json;
 
     // Helper function to create a connection with a channel that collects sent messages.
     fn create_test_connection() -> (Connection, UnboundedReceiver<Message>) {
