@@ -1,109 +1,49 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import { useStateContext, useWsContext } from '../../../../contexts';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
+import { useWS } from '@/contexts/ws'
+import { DEFAULT_GOAL, GoalScored } from '@models/ingame/events/GoalScored'
+import gsap from 'gsap'
+import { createSignal, onMount } from 'solid-js'
 
-interface Goal {
-  ball_last_touch: {
-    player: string;
-    speed: number;
-  };
-  goal_speed: number;
-  impact_location: {
-    x: number;
-    y: number;
-  };
-  scorer: {
-    id: string;
-    name: string;
-    teamnum: number;
-  };
-}
+const Replay = () => {
+  const [goal, setGoal] = createSignal<GoalScored>(DEFAULT_GOAL)
 
-const DEFAULT_GOAL: Goal = {
-  ball_last_touch: {
-    player: '',
-    speed: 0,
-  },
-  goal_speed: 0,
-  impact_location: {
-    x: 0,
-    y: 0,
-  },
-  scorer: {
-    id: '',
-    name: '',
-    teamnum: 0,
-  },
-};
+  const repetitionX = 95
+  const repetitionY = 90
 
-const Replay: FC = () => {
-  const ws = useWsContext();
-  const { state } = useStateContext();
+  const scorerX = 680
+  const scorerY = 146
 
-  const [goal, setGoal] = useState<Goal>(DEFAULT_GOAL);
+  const speedX = 1100
+  const speedY = 146
 
-  const repetitionX = 95;
-  const repetitionY = 90;
+  let replayRef: SVGSVGElement | null
+  const setReplayRef = (el: SVGSVGElement) => {
+    replayRef = el
+  }
 
-  const scorerX = 680;
-  const scorerY = 146;
+  const enter = () => gsap.to(replayRef, { y: 0, ease: 'power2.out', duration: 1 })
+  const exit = () => gsap.to(replayRef, { y: 190, ease: 'power2.out', duration: 1 })
+  const initial = () => gsap.set(replayRef, { y: 190 })
 
-  const speedX = 1100;
-  const speedY = 146;
+  const ws = useWS()
+  ws.subscribe('game', 'goal_scored', (data: unknown) => {
+    const goalData = data as GoalScored
+    setGoal(goalData)
+  })
+  ws.subscribe('game', 'replay_start', () => {
+    enter()
+  })
+  ws.subscribe('game', 'replay_end', () => {
+    exit()
+  })
 
-  const replayRef = useRef<SVGSVGElement>(null);
-
-  useGSAP(() => {
-    if (state.game.isReplay) {
-      gsap.to(replayRef.current, {
-        y: 0,
-        ease: 'power2.out',
-      });
-    } else {
-      gsap.to(replayRef.current, {
-        y: 190,
-        ease: 'power2.in',
-      });
-    }
-  }, [state.game.isReplay]);
-
-  useEffect(() => {
-    ws.subscribe('game', 'goal_scored', (data: unknown) => {
-      const goalData = data as Goal;
-      setGoal({
-        ball_last_touch: {
-          player: goalData.ball_last_touch.player,
-          speed: goalData.ball_last_touch.speed,
-        },
-        goal_speed: goalData.goal_speed,
-        impact_location: {
-          x: goalData.impact_location.x,
-          y: goalData.impact_location.y,
-        },
-        scorer: {
-          id: goalData.scorer.id,
-          name: goalData.scorer.name,
-          teamnum: goalData.scorer.teamnum,
-        },
-      });
-    });
-
-    return () => {
-      ws.clearEventCallbacks('game', 'goal_scored');
-    };
-  }, [ws]);
+  onMount(() => {
+    initial()
+  })
 
   return (
     <svg
-      ref={replayRef}
-      style={{
-        position: 'absolute',
-        width: '1920px',
-        height: '190px',
-        bottom: '0px',
-        left: '0px',
-      }}
+      ref={setReplayRef}
+      class="absolute bottom-0 left-0 w-[1920px] h-[190px]"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1920 190"
     >
@@ -117,26 +57,10 @@ const Replay: FC = () => {
           height="200%"
         >
           <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur5" />
-          <feGaussianBlur
-            in="SourceGraphic"
-            stdDeviation="10"
-            result="blur10"
-          />
-          <feGaussianBlur
-            in="SourceGraphic"
-            stdDeviation="20"
-            result="blur20"
-          />
-          <feGaussianBlur
-            in="SourceGraphic"
-            stdDeviation="30"
-            result="blur30"
-          />
-          <feGaussianBlur
-            in="SourceGraphic"
-            stdDeviation="50"
-            result="blur50"
-          />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur10" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur20" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="blur30" />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="50" result="blur50" />
           <feMerge result="blur-merged">
             <feMergeNode in="blur10" />
             <feMergeNode in="blur20" />
@@ -173,14 +97,14 @@ const Replay: FC = () => {
           filter='url("#red-glow")'
         />
         <text
-          fontFamily="NK57 Monospace NO"
-          fontWeight={300}
+          font-family="NK57 Monospace NO"
+          font-weight={300}
           x={repetitionX}
           y={repetitionY}
-          fontSize={30}
+          font-size="30"
           fill="#ff6f6f"
           filter='url("#red-glow")'
-          dominantBaseline="middle"
+          dominant-baseline="middle"
         >
           REPETICIÓN
         </text>
@@ -194,15 +118,15 @@ const Replay: FC = () => {
         />
       </g>
       <text
-        fontFamily="Chivo"
-        fontStyle="italic"
+        font-family="Chivo"
+        font-style="italic"
         x={scorerX}
         y={scorerY}
-        fontSize={24}
+        font-size="24"
         fill="#eeeeee"
-        dominantBaseline="middle"
+        dominant-baseline="middle"
       >
-        {goal.scorer.name}
+        {goal().scorer.name}
       </text>
       <g transform={`translate(${speedX - 56} ${speedY - 25})`}>
         <path
@@ -213,18 +137,18 @@ const Replay: FC = () => {
         />
       </g>
       <text
-        fontFamily="Chivo"
-        fontStyle="italic"
+        font-family="Chivo"
+        font-style="italic"
         x={speedX}
         y={speedY}
-        fontSize={24}
+        font-size="24"
         fill="#eeeeee"
-        dominantBaseline="middle"
+        dominant-baseline="middle"
       >
-        {goal.goal_speed} km/h
+        {Math.round(goal().goalspeed)} km/h
       </text>
     </svg>
-  );
-};
+  )
+}
 
-export default Replay;
+export default Replay

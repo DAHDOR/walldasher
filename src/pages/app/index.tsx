@@ -1,7 +1,8 @@
 import RlWsStatusProvider from '@/contexts/rlWsStatus'
 import Explorer from '@components/explorer'
 import Topbar from '@components/topbar'
-import { Route } from '@solidjs/router'
+import { Route, useNavigate } from '@solidjs/router'
+import { isTauri } from '@tauri-apps/api/core'
 import { Component, ParentProps } from 'solid-js'
 import Dev from './dev'
 import Home from './home'
@@ -9,6 +10,10 @@ import Match from './match'
 import Tournament from './tournament'
 
 const Layout: Component<ParentProps> = props => {
+  const navigate = useNavigate()
+
+  if (!isTauri()) navigate('/overlay/ingame')
+
   return (
     <div class="flex h-screen flex-col">
       <RlWsStatusProvider>

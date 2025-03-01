@@ -15,3 +15,21 @@ export interface GoalScored {
     teamnum: number
   }
 }
+
+export const DEFAULT_GOAL: GoalScored = {
+  ball_last_touch: {
+    player: '',
+    speed: 0
+  },
+  goalspeed: 0,
+  impact_location: {
+    X: 0,
+    Y: 0,
+    Z: 0
+  },
+  scorer: {
+    id: '',
+    name: '',
+    teamnum: 0
+  }
+}

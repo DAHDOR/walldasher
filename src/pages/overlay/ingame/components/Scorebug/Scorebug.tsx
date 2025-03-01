@@ -65,28 +65,18 @@ const Scorebug = () => {
   }
 
   onMount(() => {
-    if (matchState().isGameInProgress) {
-      enter()
-    } else {
-      initial()
-    }
+    initial()
     setInTl()
     setOutTl()
+    createEffect(() => (matchState().isGameInProgress ? enter() : exit()))
   })
-
-  createEffect(() => (matchState().isGameInProgress ? enter() : exit()))
 
   return (
     <div class="flex justify-center items-center absolute w-full h-[144px]">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1216 144"
-        style={{
-          position: 'absolute',
-          width: '1216px',
-          height: '136px',
-          top: '0'
-        }}
+        class="absolute w-[1216px] h-[136px] top-0"
         fill="#ffffff"
       >
         {/* MASKS */}

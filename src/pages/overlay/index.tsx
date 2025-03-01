@@ -1,4 +1,5 @@
 import { useWS } from '@/contexts/ws'
+import Guard from '@pages/Guard'
 import { Route, useNavigate } from '@solidjs/router'
 import { Component, ParentProps } from 'solid-js'
 import InGame from './ingame'
@@ -13,15 +14,11 @@ const Layout: Component<ParentProps> = props => {
 
   const navigate = useNavigate()
 
-  ws.subscribe('game', 'initialized', data => {
-    console.log('game:initialized', data)
-    navigate('/overlay/ingame')
-  })
+  ws.subscribe('game', 'initialized', () => navigate('/overlay/ingame'))
 
-  ws.subscribe('game', 'match_ended', data => {
-    console.log('game:match_ended', data)
+  ws.subscribe('game', 'match_ended', () => {
     navigate('/overlay/winner')
-    setTimeout(() => navigate('/overlay/postgame'), 10000)
+    setTimeout(() => navigate('/overlay/postgame'), 5000)
   })
 
   return (
@@ -34,6 +31,7 @@ const Layout: Component<ParentProps> = props => {
 const OverlayPages = () => {
   return (
     <Route path="/overlay" component={Layout}>
+      <Route path="/" component={Guard} />
       <Route path="/phase" component={Phase} />
       <Route path="/nextup" component={NextUp} />
       <Route path="/ingame" component={InGame} />

@@ -8,7 +8,7 @@ const [snapshot, setSnapshot] = createSignal<GameState>(DEFAULT_GAME_STATE)
 
 const SnapshotContext = createContext(snapshot)
 
-const Snapshot = ({ children }) => {
+const SnapshotProvider = ({ children }) => {
   const ws = useWS()
 
   const gameState = useGameState()
@@ -26,4 +26,4 @@ const useSnapshot = () => {
   return useContext(SnapshotContext)
 }
 
-export { Snapshot, useSnapshot }
+export { SnapshotProvider, useSnapshot }

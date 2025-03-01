@@ -2,7 +2,7 @@ import type { Component } from 'solid-js'
 import './index.css'
 import { GameStateProvider } from '@/contexts/gameState'
 import { MatchStateProvider } from '@/contexts/matchState'
-import { Snapshot } from '@/contexts/snapshot'
+import { SnapshotProvider } from '@/contexts/snapshot'
 import { WSProvider } from '@/contexts/ws'
 import {
   ColorModeProvider,
@@ -17,14 +17,14 @@ const Main: Component = () => {
     <WSProvider>
       <MatchStateProvider>
         <GameStateProvider>
-          <Snapshot>
+          <SnapshotProvider>
             <ColorModeScript storageType={storageManager.type} />
             <ColorModeProvider storageManager={storageManager}>
               <div class="overflow-hidden">
                 <Pages />
               </div>
             </ColorModeProvider>
-          </Snapshot>
+          </SnapshotProvider>
         </GameStateProvider>
       </MatchStateProvider>
     </WSProvider>

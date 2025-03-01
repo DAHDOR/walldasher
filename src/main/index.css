@@ -151,3 +151,574 @@ input:focus {
   @apply border-2;
   transition: border-color 0.05s ease-in-out;
 }
+
+@font-face {
+  font-family: 'Azeret Mono';
+  src:
+    local('AzeretMono'),
+    url('/src/assets/fonts/AzeretMono.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Chivo';
+  src:
+    local('Chivo'),
+    url('/src/assets/fonts/Chivo.ttf') format('TrueType');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Chivo';
+  src:
+    local('Chivo-Italic'),
+    url('/src/assets/fonts/Chivo-Italic.ttf') format('TrueType');
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Chivo Mono';
+  src:
+    local('ChivoMono'),
+    url('/src/assets/fonts/ChivoMono.ttf') format('TrueType');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Chivo Mono';
+  src:
+    local('ChivoMono-Italic'),
+    url('/src/assets/fonts/ChivoMono-Italic.ttf') format('TrueType');
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-Thin'),
+    url('/src/assets/fonts/Roboto/Roboto-Thin.ttf') format('TrueType');
+  font-style: normal;
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-ThinItalic'),
+    url('/src/assets/fonts/Roboto/Roboto-ThinItalic.ttf') format('TrueType');
+  font-style: italic;
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-Light'),
+    url('/src/assets/fonts/Roboto/Roboto-Light.ttf') format('TrueType');
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-LightItalic'),
+    url('/src/assets/fonts/Roboto/Roboto-LightItalic.ttf') format('TrueType');
+  font-style: italic;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-Regular'),
+    url('/src/assets/fonts/Roboto/Roboto-Regular.ttf') format('TrueType');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-Italic'),
+    url('/src/assets/fonts/Roboto/Roboto-Italic.ttf') format('TrueType');
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-Medium'),
+    url('/src/assets/fonts/Roboto/Roboto-Medium.ttf') format('TrueType');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-MediumItalic'),
+    url('/src/assets/fonts/Roboto/Roboto-MediumItalic.ttf') format('TrueType');
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-Bold'),
+    url('/src/assets/fonts/Roboto/Roboto-Bold.ttf') format('TrueType');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-BoldItalic'),
+    url('/src/assets/fonts/Roboto/Roboto-BoldItalic.ttf') format('TrueType');
+  font-style: italic;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-Black'),
+    url('/src/assets/fonts/Roboto/Roboto-Black.ttf') format('TrueType');
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    local('Roboto-BlackItalic'),
+    url('/src/assets/fonts/Roboto/Roboto-BlackItalic.ttf') format('TrueType');
+  font-style: italic;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'Hero';
+  src: url('/src/assets/fonts/Hero/Regular.ttf'), format('TrueType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 100;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/Thin.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 100;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/Italic/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 300;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/Light.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 300;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/Italic/Light.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 400;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 400;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/Italic/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 600;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/SemiBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 600;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/Italic/SemiBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 700;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/Bold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 700;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/Italic/Bold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 800;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/ExtraBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace CD';
+  font-weight: 800;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Cd/Italic/ExtraBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 100;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/Thin.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 100;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/Italic/Thin.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 300;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/Light.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 300;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/Italic/Light.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 400;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 400;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/Italic/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 600;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/SemiBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 600;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/Italic/SemiBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 700;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/Bold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 700;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/Italic/Bold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 800;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/ExtraBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SC';
+  font-weight: 800;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Sc/Italic/ExtraBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 100;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/No/Thin.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 100;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/No/Italic/Thin.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 300;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/No/Light.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 300;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/No/Italic/Light.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 400;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/No/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 400;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/No/Italic/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 600;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/No/SemiBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 600;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/No/Italic/SemiBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 700;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/No/Bold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 700;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/No/Italic/Bold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 800;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/No/ExtraBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace NO';
+  font-weight: 800;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/No/Italic/ExtraBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 100;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Se/Thin.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 100;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Se/Italic/Thin.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 300;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Se/Light.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 300;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Se/Italic/Light.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 400;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Se/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 400;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Se/Italic/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 600;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Se/SemiBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 600;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Se/Italic/SemiBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 700;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Se/Bold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 700;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Se/Italic/Bold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 800;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Se/ExtraBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace SE';
+  font-weight: 800;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Se/Italic/ExtraBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 100;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/Thin.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 100;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/Italic/Thin.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 300;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/Light.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 300;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/Italic/Light.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 400;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 400;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/Italic/Regular.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 600;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/SemiBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 600;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/Italic/SemiBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 700;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/Bold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 700;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/Italic/Bold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 800;
+  font-style: normal;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/ExtraBold.otf') format('OpenType');
+}
+
+@font-face {
+  font-family: 'NK57 Monospace EX';
+  font-weight: 800;
+  font-style: italic;
+  src: url('/src/assets/fonts/NK57Monospace/Ex/Italic/ExtraBold.otf') format('OpenType');
+}

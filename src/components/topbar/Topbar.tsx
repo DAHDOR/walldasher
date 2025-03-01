@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useRlWsStatus } from '@/contexts/rlWsStatus'
 import { Button } from '@components/ui/button'
 import { getCurrentWindow } from '@tauri-apps/api/window'
@@ -12,21 +11,22 @@ const Topbar: Component = () => {
 
   const [maximized, setMaximized] = createSignal(false)
 
-  const minimize = async () => {
-    await appWindow.minimize()
+  const minimize = () => {
+    appWindow.minimize().catch(console.error)
   }
 
-  const toggleMaximize = async () => {
-    await appWindow.toggleMaximize()
-    const isMaximized = await appWindow.isMaximized()
-    setMaximized(isMaximized)
+  const toggleMaximize = () => {
+    appWindow
+      .toggleMaximize()
+      .then(() => appWindow.isMaximized().then(setMaximized).catch(console.error))
+      .catch(console.error)
   }
 
-  const close = async () => {
-    await appWindow.close()
+  const close = () => {
+    appWindow.close().catch(console.error)
   }
 
-  const rl = useRlWsStatus()
+  const rlWsStatus = useRlWsStatus()
 
   return (
     <div data-tauri-drag-region class="flex h-10 flex-row">
@@ -35,17 +35,17 @@ const Topbar: Component = () => {
         <div
           class={`flex items-center h-6 font-medium text-xs px-2 bg-opacity-20 item rounded-sm
             ${
-              rl() === 'DISCONNECTED'
-                ? 'bg-orange-800 text-orange-800'
-                : rl() === 'CONNECTING'
+              rlWsStatus() === 'DISCONNECTED'
+                ? 'bg-red-800 text-red-800'
+                : rlWsStatus() === 'CONNECTING'
                   ? 'bg-orange-600 text-orange-600'
-                  : 'bg-orange-400 text-orange-400'
+                  : 'bg-green-400 text-green-400'
             }`}
         >
           Rocket League:{' '}
-          {rl() === 'DISCONNECTED'
+          {rlWsStatus() === 'DISCONNECTED'
             ? 'Desconectado'
-            : rl() === 'CONNECTING'
+            : rlWsStatus() === 'CONNECTING'
               ? 'Conectando'
               : 'Conectado'}
         </div>

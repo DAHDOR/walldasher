@@ -1,25 +1,19 @@
-import { useMatchState } from '@/contexts/matchState'
 import { useWS } from '@/contexts/ws'
 import { Button } from '@components/ui/button'
 
 const Dev = () => {
   const ws = useWS()
-  const matchState = useMatchState()
-  const toggleIsGameInProgress = () => {
-    if (matchState().isGameInProgress) {
-      ws.send('game', 'match_ended', { winner_team_num: 0 })
-      console.log('match_ended')
-    } else {
-      ws.send('game', 'initialized', '')
-      console.log('initialized')
-    }
-  }
 
   return (
-    <div class="flex flex-col p-4">
+    <div class="flex flex-col p-4 gap-4">
+      <h1 class="text-xl font-bold">Send event</h1>
       <div class="flex items-center gap-5 font-bold">
-        <Button onclick={toggleIsGameInProgress}>Toggle: isGameInProgress</Button>
-        isGameInProgress: {matchState().isGameInProgress.toString()}
+        <Button onclick={() => ws.send('game', 'initialized', '')}>
+          game:initialized
+        </Button>
+        <Button onclick={() => ws.send('game', 'match_ended', { winner_team_num: 1 })}>
+          game:match_ended
+        </Button>
       </div>
     </div>
   )

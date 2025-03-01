@@ -29,7 +29,8 @@ const RlWsStatusProvider = ({ children }) => {
     const url = await store.get<string>('rl_url')
     await invoke('connect_to_rl', { url })
   }
-  void connect()
+
+  connect().catch(console.error)
 
   return (
     <rlWsStatusContext.Provider value={rlWsStatus}>{children}</rlWsStatusContext.Provider>
