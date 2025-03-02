@@ -2,7 +2,10 @@
 
 import Database from '@tauri-apps/plugin-sql'
 
-// Verificamos que la DB se conecte correctamente
+// Import all the tables from models/db.ts
+import { Bracket, Event, Game, Match, Phase, Player, Round, Standing, Stat, Team, Tournament } from '../models/db';
+
+// Verifies if the database is connected
 export async function initDatabase() {
   try {
     const db = await Database.load('sqlite:test2.db')
@@ -12,102 +15,6 @@ export async function initDatabase() {
     console.error('Error connecting to the database:', error)
     throw error
   }
-}
-
-// Tables
-
-// Table Bracket
-interface Bracket {
-  id?: number;
-  phase: number;
-  identifier: string;
-  type: 'SINGLE_ELIMINATION' | 'DOUBLE_ELIMINATION' | 'ROUND_ROBIN' | 'SWISS' | 'CUSSTOM_SCHEDULE' | 'MATCHMAKING';
-}
-
-// Table Event
-interface Event {
-  id?: number;
-  tournament: number;
-  name: string;
-}
-
-// Table Game
-interface Game {
-  id?: number
-  match: number
-  number: number
-  score1: number
-  score2: number
-}
-
-// Table Match
-interface Match {
-  id?: number;
-  round: number;
-  identifier: string;
-  number: number;
-  best_of: 1 | 3 | 5 | 7 | 9;
-  team1?: number;
-  team2?: number;
-  winner?: number;
-}
-
-// Table phase
-interface Phase {
-  id?: number;
-  event: number;
-  number: number;
-  name: string;
-}
-
-// Table Player
-interface Player {
-  id?: number;
-  team?: number;
-  name: string;
-}
-
-// Table Round
-interface Round {
-  id?: number;
-  bracket: number;
-  number: number;
-  best_of: 1 | 3 | 5 | 7 | 9;
-  start_at: number;
-}
-
-// Table standing
-interface Standing {
-  id?: number;
-  bracket: number;
-  placement: number;
-  team: number;
-}
-
-// Table Stat
-interface Stat {
-  id: number
-  score: number
-  game: number
-  goals: number
-  assists: number
-  saves: number
-  shots: number
-  player: number
-}
-
-// Table Team
-interface Team {
-  id?: number;
-  name: string;
-  logo_url?: string;
-}
-
-// Table Tournament
-interface Tournament{
-    id?: number;
-    name: string;
-    logo_url?: string;
 }
 
 // INSERTS

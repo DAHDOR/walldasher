@@ -1,7 +1,7 @@
 export interface Tournament {
   id: number
   name: string
-  pfp: string
+  logo_url: string
 }
 
 export interface Event {
@@ -27,14 +27,14 @@ export interface Bracket {
 export interface Round {
   id: number
   number: number
-  bo: number
-  startAt: number
+  best_of: number
+  start_at: number
   bracket: number
 }
 
 export interface Match {
   id: number
-  bo: number
+  best_of: number
   identifier: string
   number: number
   team1: number
@@ -74,7 +74,7 @@ export interface Standing {
 export interface Team {
   id: number
   name: string
-  pfp: string
+  logo_url: string
   tournament: number
 }
 
