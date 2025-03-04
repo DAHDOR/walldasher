@@ -42,7 +42,7 @@ const PostGame: Component = () => {
     players0 = snapState().players.filter(player => player.team === 0)
     players1 = snapState().players.filter(player => player.team === 1)
     players0.sort((a: USPlayer, b: USPlayer) => a.score - b.score);
-    players0.sort((a: USPlayer, b: USPlayer) => b.score - a.score);
+    players1.sort((a: USPlayer, b: USPlayer) => b.score - a.score);
 
     players0.map((player) => {
       scoreTotal0 = scoreTotal0 + player.score
@@ -59,7 +59,6 @@ const PostGame: Component = () => {
       shotsTotal1 = shotsTotal1 + player.shots
       savesTotal1 = savesTotal1 + player.saves
     })
-
     gameWins0 = 14
     gameWins1 = 13
     firstTo = 15
@@ -70,9 +69,9 @@ const PostGame: Component = () => {
         class="w-[1920px] h-[1080px] bg-[image:var(--bg)] bg-cotain bg-center"
         style={{ '--bg': `url(${bg})` }}
       >
-        <div class="w-[1728px] text-center z-10 mx-auto">
-          <div class="text-gray-300 text-[25px] pt-[30px] font-bold opacity-50">
-            {'CAMPEONATO HELLO WORLD | CARACAS OPEN #1 | LATAM | PLAYOFFS | WEEK 8'}
+        <div class="w-[1728px] text-center z-10 mx-auto font-[chivo]">
+          <div class="text-gray-300 text-[25px] pt-[30px] font-bold opacity-50"
+            textContent={'CAMPEONATO HELLO WORLD | CARACAS OPEN #1 | LATAM | PLAYOFFS | WEEK 8'}>
           </div>
           <Grid cols={7} class="pt-[50px]">
             {snapState().teams.map((team, index) => (
@@ -137,7 +136,7 @@ const PostGame: Component = () => {
                         class="w-[1000px] h-[100px] object-cover absolute inset-0 z-0"
                       />
                       <div class="absolute inset-0 z-10">
-                        <div class="text-white text-[50px] whitespace-nowrap text-center translate-x-[100px] translate-y-[10px]">
+                        <div class="text-white text-[50px] flex flex-row-reverse whitespace-nowrap text-right translate-x-[200px] translate-y-[10px]">
                           {snapState().teams[0].name}
                         </div>
                       </div>
@@ -209,89 +208,152 @@ const PostGame: Component = () => {
               })}
             </Col>
           </Grid>
-          <Grid cols={7} class="pt-[50px] text-[35px] font-semibold">
+          <Grid cols={7} class="pt-[30px]">
+            {Array.from({ length: 3 }, (_, index) => {
+              if (index === 0) {
+                if (snapState().winner === snapState().teams[0].name) {
+                  return players0.map((player, playerIndex) => {
+                    if (playerIndex === players0.length - 1) {
+                      return (
+                        <Col class="flex justify-center items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" stroke-Width="1.5" stroke="#36d0ff" viewBox="0 0 24 24" fill="#22b0ff" class="size-[50px]">
+                            <path stroke-Linecap="miter" stroke-Linejoin="miter" fill-Rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-Rule="evenodd"/>
+                          </svg>
+                        </Col>
+                      );
+                    } else {
+                      return (
+                        <Col class="flex justify-center items-center">
+                          <div class="text-transparent size-[50px]"></div>
+                        </Col>
+                      );
+                    }
+                  });
+                } else {
+                  return players0.map((player, playerIndex) => (
+                    <Col class="flex justify-center items-center">
+                      <div class="text-transparent size-[50px]"></div>
+                    </Col>
+                  ));
+                }
+              } else if (index === 2) {
+                if (snapState().winner === snapState().teams[1].name) {
+                  return players1.map((player, playerIndex) => {
+                    if (playerIndex === 0) {
+                      return (
+                        <Col class="flex justify-center items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" stroke-Width="1.5" stroke="#ffbc00" viewBox="0 0 24 24" fill="#ff8a15" class="size-[50px]">
+                            <path stroke-Linecap="miter" stroke-Linejoin="miter" fill-Rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-Rule="evenodd"/>
+                          </svg>
+                        </Col>
+                      );
+                    } else {
+                      return (
+                        <Col class="flex justify-center items-center">
+                          <div class="text-transparent size-[50px]"></div>
+                        </Col>
+                      );
+                    }
+                  });
+                } else {
+                  return players1.map((player, playerIndex) => (
+                    <Col class="flex justify-center items-center">
+                      <div class="text-transparent size-[50px]"></div>
+                    </Col>
+                  ));
+                }
+              } else if (index === 1) {
+                return (
+                  <Col class="flex justify-center items-center">
+                    <div class="text-transparent size-[50px]"></div>
+                  </Col>
+                );
+              }
+            })}
+          </Grid>
+          <Grid cols={7} class="pt-[0px] text-[35px] font-semibold">
             {Array.from({ length: 3 }, (_, index) => {
               if (index === 0) {
                 if (players0?.length > 0) {
                   return players0.map(player => (
-                    <Col span={1} class="pb-[25px] pt-[25px]">
-                      <div class="pb-[25px] pt-[25px] bg-gradient-to-b from-transparent from-0% via-transparent via-90% to-[#22b0ff] to-90%">
+                    <Col span={1} class="pt-[10px]">
+                      <div class="pt-[25px] pb-[25px] bg-gradient-to-b from-transparent from-0% via-transparent via-90% to-[#22b0ff] to-90%">
                         {player.name}
                       </div>
-                      <div class="pb-[25px] pt-[25px]">{player.score}</div>
-                      <div class="pb-[25px] pt-[25px]">{player.goals}</div>
-                      <div class="pb-[25px] pt-[25px]">{player.assists}</div>
-                      <div class="pb-[25px] pt-[25px]">{player.shots}</div>
-                      <div class="pb-[25px] pt-[25px]">{player.saves}</div>
+                      <div class="pt-[11px]">{player.score}</div>
+                      <div class="pt-[59px]">{player.goals}</div>
+                      <div class="pt-[60px]">{player.assists}</div>
+                      <div class="pt-[59px]">{player.shots}</div>
+                      <div class="pt-[60px]">{player.saves}</div>
                     </Col>
                   ))
                 } else {
                   return Array.from({ length: 3 }, (_, i) => (
-                    <Col span={1} class="pb-[25px] pt-[25px]">
-                      <div class="pb-[25px] pt-[25px] bg-gradient-to-b from-transparent from-0% via-transparent via-90% to-[#22b0ff] to-90%">
+                    <Col span={1} class="pt-[10px]">
+                      <div class="pt-[25px] pb-[25px] bg-gradient-to-b from-transparent from-0% via-transparent via-90% to-[#22b0ff] to-90%">
                         {'Player B ' + i}
                       </div>
-                      <div class="pb-[25px] pt-[25px]">0</div>
-                      <div class="pb-[25px] pt-[25px]">0</div>
-                      <div class="pb-[25px] pt-[25px]">0</div>
-                      <div class="pb-[25px] pt-[25px]">0</div>
-                      <div class="pb-[25px] pt-[25px]">0</div>
+                      <div class="pt-[11px]">0</div>
+                      <div class="pt-[59px]">0</div>
+                      <div class="pt-[60px]">0</div>
+                      <div class="pt-[59px]">0</div>
+                      <div class="pt-[60px]">0</div>
                     </Col>
                   ))
                 }
               } else if (index === 1) {
                 return (
-                  <Col span={1} class="pb-[25px] pt-[25px]">
-                    <div class="pb-[20px] pt-[20px] text-transparent">
+                  <Col span={1} class="pt-[10px]">
+                    <div class="pt-[25px] text-transparent">
                       Jugadores
                     </div>
-                    <div class="pb-[20px] pt-[20px]">
+                    <div class="pt-[25px] leading-[75px]">
                       Puntos
-                      <DeltaBar value={(((scoreTotal1/(scoreTotal0+scoreTotal1))*100)-50)*2} isIncreasePositive={true} />
+                      <DeltaBar class="h-3" value={(((scoreTotal1/(scoreTotal0+scoreTotal1))*100)-50)*2} isIncreasePositive={true} />
                     </div>
-                    <div class="pb-[20px] pt-[20px]">
+                    <div class="pt-[25px] leading-[75px]">
                       Goles
-                      <DeltaBar value={(((goalsTotal1/(goalsTotal0+goalsTotal1))*100)-50)*2} isIncreasePositive={true} />
+                      <DeltaBar class="h-3" value={(((goalsTotal1/(goalsTotal0+goalsTotal1))*100)-50)*2} isIncreasePositive={true} />
                     </div>
-                    <div class="pb-[20px] pt-[20px]">
+                    <div class="pt-[25px] leading-[75px]">
                       Asistencias
-                      <DeltaBar value={(((assistsTotal1/(assistsTotal0+assistsTotal1))*100)-50)*2} isIncreasePositive={true} />
+                      <DeltaBar class="h-3" value={(((assistsTotal1/(assistsTotal0+assistsTotal1))*100)-50)*2} isIncreasePositive={true} />
                     </div>
-                    <div class="pb-[20px] pt-[20px]">
+                    <div class="pt-[25px] leading-[75px]">
                       Tiros
-                      <DeltaBar value={(((shotsTotal1/(shotsTotal0+shotsTotal1))*100)-50)*2} isIncreasePositive={true} />
+                      <DeltaBar class="h-3" value={(((shotsTotal1/(shotsTotal0+shotsTotal1))*100)-50)*2} isIncreasePositive={true} />
                     </div>
-                    <div class="pb-[20px] pt-[20px]">
+                    <div class="pt-[25px] leading-[75px]">
                       Salvadas
-                      <DeltaBar value={(((savesTotal1/(savesTotal0+savesTotal1))*100)-50)*2} isIncreasePositive={true} />
+                      <DeltaBar class="h-3" value={(((savesTotal1/(savesTotal0+savesTotal1))*100)-50)*2} isIncreasePositive={true} />
                     </div>
                   </Col>
                 )
               } else {
                 if (players1?.length > 0) {
                   return players1.map(player => (
-                    <Col span={1} class="pb-[25px] pt-[25px]">
-                      <div class="pb-[25px] pt-[25px] bg-gradient-to-b from-transparent from-0% via-transparent via-90% to-[#ff8a15] to-90%">
+                    <Col span={1} class="pt-[10px]">
+                      <div class="pt-[25px] pb-[25px] bg-gradient-to-b from-transparent from-0% via-transparent via-90% to-[#ff8a15] to-90%">
                         {player.name}
                       </div>
-                      <div class="pb-[25px] pt-[25px]">{player.score}</div>
-                      <div class="pb-[25px] pt-[25px]">{player.goals}</div>
-                      <div class="pb-[25px] pt-[25px]">{player.assists}</div>
-                      <div class="pb-[25px] pt-[25px]">{player.shots}</div>
-                      <div class="pb-[25px] pt-[25px]">{player.saves}</div>
+                      <div class="pt-[11px]">{player.score}</div>
+                      <div class="pt-[59px]">{player.goals}</div>
+                      <div class="pt-[60px]">{player.assists}</div>
+                      <div class="pt-[59px]">{player.shots}</div>
+                      <div class="pt-[60px]">{player.saves}</div>
                     </Col>
                   ))
                 } else {
                   return Array.from({ length: 3 }, (_, i) => (
-                    <Col span={1} class="pb-[25px] pt-[25px]">
-                      <div class="pb-[25px] pt-[25px] bg-gradient-to-b from-transparent from-0% via-transparent via-90% to-[#ff8a15] to-90%">
+                    <Col span={1} class="pt-[10px]">
+                      <div class="pt-[25px] pb-[25px] bg-gradient-to-b from-transparent from-0% via-transparent via-90% to-[#ff8a15] to-90%">
                         {'Player O ' + i}
                       </div>
-                      <div class="pb-[25px] pt-[25px]">0</div>
-                      <div class="pb-[25px] pt-[25px]">0</div>
-                      <div class="pb-[25px] pt-[25px]">0</div>
-                      <div class="pb-[25px] pt-[25px]">0</div>
-                      <div class="pb-[25px] pt-[25px]">0</div>
+                      <div class="pt-[11px]">0</div>
+                      <div class="pt-[59px]">0</div>
+                      <div class="pt-[60px]">0</div>
+                      <div class="pt-[59px]">0</div>
+                      <div class="pt-[60px]">0</div>
                     </Col>
                   ))
                 }
