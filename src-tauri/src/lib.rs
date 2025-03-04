@@ -16,12 +16,12 @@ use tauri_plugin_store::StoreExt;
 pub fn run() {
     let port: u16 = 9527;
     tauri::Builder::default()
-        .plugin(tauri_plugin_websocket::init())
+        .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_sql::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
         .plugin(
             tauri_plugin_sql::Builder::default()
-                .add_migrations("sqlite:test2.db", db::migrations::get_migrations())
+                .add_migrations("sqlite:test3.db", db::migrations::get_migrations())
                 .build(),
         )
         .plugin(tauri_plugin_store::Builder::new().build())

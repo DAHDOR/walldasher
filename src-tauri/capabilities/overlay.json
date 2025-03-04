@@ -2,13 +2,9 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "overlay",
   "description": "Capability for the overlay window",
-  "windows": [
-    "overlay"
-  ],
+  "windows": ["overlay"],
   "remote": {
-    "urls": [
-      "http://localhost:9527"
-    ]
+    "urls": ["http://localhost:9527"]
   },
   "permissions": [
     "allow-tournaments",
@@ -28,7 +24,6 @@
     "sql:allow-execute",
     "sql:allow-select",
     "sql:allow-close",
-    "websocket:default",
-    "sql:default"
+    "fs:default"
   ]
 }

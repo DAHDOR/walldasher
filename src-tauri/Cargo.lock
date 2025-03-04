@@ -14,11 +14,11 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
+ "tauri-plugin-fs",
  "tauri-plugin-localhost",
  "tauri-plugin-shell",
  "tauri-plugin-sql",
  "tauri-plugin-store",
- "tauri-plugin-websocket",
  "thiserror 2.0.11",
  "tokio",
  "tokio-tungstenite",
@@ -4423,6 +4423,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "tauri-plugin-fs"
+version = "2.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a1a1edf18000f02903a7c2e5997fb89aca455ecbc0acc15c6535afbb883be223"
+dependencies = [
+ "anyhow",
+ "dunce",
+ "glob",
+ "percent-encoding",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_repr",
+ "tauri",
+ "tauri-plugin",
+ "tauri-utils",
+ "thiserror 2.0.11",
+ "toml 0.8.20",
+ "url",
+ "uuid",
+]
+
+[[package]]
 name = "tauri-plugin-localhost"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4491,25 +4514,6 @@ dependencies = [
  "thiserror 2.0.11",
  "tokio",
  "tracing",
-]
-
-[[package]]
-name = "tauri-plugin-websocket"
-version = "2.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af3ac71aec5fb0ae5441e830cd075b1cbed49ac3d39cb975a4894ea8fa2e62b9"
-dependencies = [
- "futures-util",
- "http",
- "log",
- "rand 0.8.5",
- "serde",
- "serde_json",
- "tauri",
- "tauri-plugin",
- "thiserror 2.0.11",
- "tokio",
- "tokio-tungstenite",
 ]
 
 [[package]]
@@ -4811,12 +4815,8 @@ checksum = "be4bf6fecd69fcdede0ec680aaf474cdab988f9de6bc73d3758f0160e3b7025a"
 dependencies = [
  "futures-util",
  "log",
- "rustls",
- "rustls-pki-types",
  "tokio",
- "tokio-rustls",
  "tungstenite",
- "webpki-roots",
 ]
 
 [[package]]
@@ -5001,8 +5001,6 @@ dependencies = [
  "httparse",
  "log",
  "rand 0.8.5",
- "rustls",
- "rustls-pki-types",
  "sha1",
  "thiserror 2.0.11",
  "utf-8",

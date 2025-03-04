@@ -37,7 +37,7 @@
   },
   "plugins": {
     "sql": {
-      "preload": ["sqlite:test2.db"]
+      "preload": ["sqlite:test4.db"]
     }
   }
 }
