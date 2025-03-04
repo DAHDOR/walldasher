@@ -39,7 +39,7 @@
     "vitest": "^3.0.5"
   },
   "dependencies": {
-    "@kobalte/core": "^0.13.7",
+    "@kobalte/core": "^0.13.9",
     "@solidjs/router": "^0.15.3",
     "@tauri-apps/api": "2.2.0",
     "@tauri-apps/cli": "2.2.7",
