@@ -2,6 +2,7 @@ import { useSnapshot } from '@/contexts/snapshot'
 import { Col, Grid } from '@components/ui/grid'
 import { USPlayer } from '@models/ingame/events/UpdateState/USPlayer'
 import { Component, createEffect } from 'solid-js'
+import { DeltaBar } from "@components/ui/delta-bar"
 import blueLogoBlock from './assets/blueLogoBlock.svg'
 import blueMatchLostBlock from './assets/blueMatchLostBlock.svg'
 import blueMatchWonBlock from './assets/blueMatchWonBlock.svg'
@@ -18,6 +19,16 @@ import wallpaperImage from './assets/Wallpaper.jpg'
 const PostGame: Component = () => {
   let players0: USPlayer[]
   let players1: USPlayer[]
+  let scoreTotal0: number = 0
+  let scoreTotal1: number = 0
+  let goalsTotal0: number = 0
+  let goalsTotal1: number = 0
+  let assistsTotal0: number = 0
+  let assistsTotal1: number = 0
+  let shotsTotal0: number = 0
+  let shotsTotal1: number = 0
+  let savesTotal0: number = 0
+  let savesTotal1: number = 0
   let gameWins0: number
   let gameWins1: number
   let firstTo: number
@@ -29,17 +40,28 @@ const PostGame: Component = () => {
   })
   {
     players0 = snapState().players.filter(player => player.team === 0)
-  }
-  {
     players1 = snapState().players.filter(player => player.team === 1)
-  }
-  {
+    players0.sort((a: USPlayer, b: USPlayer) => a.score - b.score);
+    players0.sort((a: USPlayer, b: USPlayer) => b.score - a.score);
+
+    players0.map((player) => {
+      scoreTotal0 = scoreTotal0 + player.score
+      goalsTotal0 = goalsTotal0 + player.goals
+      assistsTotal0 = assistsTotal0 + player.assists
+      shotsTotal0 = shotsTotal0 + player.shots
+      savesTotal0 = savesTotal0 + player.saves
+    })
+
+    players1.map((player) => {
+      scoreTotal1 = scoreTotal1 + player.score
+      goalsTotal1 = goalsTotal1 + player.goals
+      assistsTotal1 = assistsTotal1 + player.assists
+      shotsTotal1 = shotsTotal1 + player.shots
+      savesTotal1 = savesTotal1 + player.saves
+    })
+
     gameWins0 = 14
-  }
-  {
     gameWins1 = 13
-  }
-  {
     firstTo = 15
   }
   return (
@@ -220,12 +242,29 @@ const PostGame: Component = () => {
               } else if (index === 1) {
                 return (
                   <Col span={1} class="pb-[25px] pt-[25px]">
-                    <div class="pb-[25px] pt-[25px]">Jugadores</div>
-                    <div class="pb-[25px] pt-[25px]">Puntos</div>
-                    <div class="pb-[25px] pt-[25px]">Goles</div>
-                    <div class="pb-[25px] pt-[25px]">Asistencias</div>
-                    <div class="pb-[25px] pt-[25px]">Tiros</div>
-                    <div class="pb-[25px] pt-[25px]">Salvadas</div>
+                    <div class="pb-[20px] pt-[20px] text-transparent">
+                      Jugadores
+                    </div>
+                    <div class="pb-[20px] pt-[20px]">
+                      Puntos
+                      <DeltaBar value={(((scoreTotal1/(scoreTotal0+scoreTotal1))*100)-50)*2} isIncreasePositive={true} />
+                    </div>
+                    <div class="pb-[20px] pt-[20px]">
+                      Goles
+                      <DeltaBar value={(((goalsTotal1/(goalsTotal0+goalsTotal1))*100)-50)*2} isIncreasePositive={true} />
+                    </div>
+                    <div class="pb-[20px] pt-[20px]">
+                      Asistencias
+                      <DeltaBar value={(((assistsTotal1/(assistsTotal0+assistsTotal1))*100)-50)*2} isIncreasePositive={true} />
+                    </div>
+                    <div class="pb-[20px] pt-[20px]">
+                      Tiros
+                      <DeltaBar value={(((shotsTotal1/(shotsTotal0+shotsTotal1))*100)-50)*2} isIncreasePositive={true} />
+                    </div>
+                    <div class="pb-[20px] pt-[20px]">
+                      Salvadas
+                      <DeltaBar value={(((savesTotal1/(savesTotal0+savesTotal1))*100)-50)*2} isIncreasePositive={true} />
+                    </div>
                   </Col>
                 )
               } else {
