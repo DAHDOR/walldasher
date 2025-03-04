@@ -178,7 +178,7 @@ export async function insertTeam(team: Team) {
     }
   }
 
-// INSERT a Table Tournament
+// INSERT into Table Tournament
 export async function insertTournament(tournament: Tournament) {
   try{
       const db = await Database.load('sqlite:test2.db');
@@ -194,7 +194,7 @@ export async function insertTournament(tournament: Tournament) {
     }
   }
 
-// CONSULTAS 
+// CONSULTAS
 // CONSULTA PARA OBTENER TODOS LOS TORNEOS
 export async function getTournaments() {
   try {
@@ -259,3 +259,103 @@ export async function getBracketsByPhase(phaseId: number) {
       throw error;
       }
     }
+
+// CONSULTA PARA OBTENER ROUND POR PHASE
+export async function getRoundByPhase(phaseId: number) {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    const rounds = await db.select<Round[]>(`SELECT 
+    r.id, r.number, r.bo, r.startAt, r.bracket
+    FROM round r 
+    JOIN bracket b ON r.bracket = b.id 
+    WHERE b.phase = $1`, [phaseId]);
+    console.log('Rounds: ', rounds);
+    return rounds;
+    } catch (error) {
+      console.error('Error getting rounds:', error);
+      throw error;
+    }
+  }
+  
+// CONSULTA PARA MODIFICAR match.number
+export async function updateMatchNumber(matchId: number, newNumber: number) {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    const result = await db.execute('UPDATE match SET number = $1 WHERE id = $2', [newNumber, matchId]);
+    console.log('Match updated successfully!', result);
+    return result;
+    } catch (error) {
+      console.error('Error updating match:', error);
+      throw error;
+    }
+  }
+
+// CONSULTA PARA OBTENER STANDINGS+TEAMS POR BRACKET
+export async function getStandingsByBracket(bracketId: number) {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    const standings = await db.select<Standing[]>(`SELECT
+    s.id, s.placement, s.team, t.name, t.logo_url
+    FROM standing s
+    JOIN team t ON s.team = t.id
+    WHERE s.bracket = $1
+    ORDER BY s.placement`, [bracketId]);
+    console.log('Standings:', standings);
+    return standings;
+    } catch (error) {
+      console.error('Error getting standings:', error);
+      throw error;
+    }
+  }
+
+// CONSULTA PARA MODIFICAR team.name
+export async function updateTeamName(teamId: number, newName: string) {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    const result = await db.execute('UPDATE team SET name = $1 WHERE id = $2', [newName, teamId]);
+    console.log('Team updated successfully!', result);
+    return result;
+    } catch (error) {
+      console.error('Error updating team:', error);
+      throw error;
+    }
+  }
+
+// CONSULTA PARA MODIFICAR team.logo_url
+export async function updateTeamLogo(teamId: number, newLogo: string) {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    const result = await db.execute('UPDATE team SET logo_url = $1 WHERE id = $2', [newLogo, teamId]);
+    console.log('Team updated successfully!', result);
+    return result;
+    } catch (error) {
+      console.error('Error updating team:', error);
+      throw error;
+    }
+  }
+
+// CONSULTA PARA CAMBIAR player.name
+export async function updatePlayerName(playerId: number, newName: string) {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    const result = await db.execute('UPDATE player SET name = $1 WHERE id = $2', [newName, playerId]);
+    console.log('Player updated successfully!', result);
+    return result;
+    } catch (error) {
+      console.error('Error updating player:', error);
+      throw error;
+    }
+  }
+
+// CONSULTA PARA MODIFICAR match.winner
+export async function updateMatchWinner(matchId: number, newWinnerId: string) {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    const result = await db.execute('UPDATE match SET winner = $1 WHERE id = $2', [newWinnerId, matchId]);
+    console.log('Match updated successfully!', result);
+    return result;
+    } catch (error) {
+      console.error('Error updating match:', error);
+      throw error;
+    }
+  }
