@@ -1,4 +1,5 @@
 import { useWS } from '@/contexts/ws'
+import ChangeLogo from '@components/changeLogo'
 import { Button } from '@components/ui/button'
 
 const Dev = () => {
@@ -14,6 +15,10 @@ const Dev = () => {
         <Button onclick={() => ws.send('game', 'match_ended', { winner_team_num: 1 })}>
           game:match_ended
         </Button>
+      </div>
+      <h1 class="text-xl font-bold">Test functions</h1>
+      <div class="flex items-center gap-5 font-bold">
+        <ChangeLogo />
       </div>
     </div>
   )
