@@ -39,7 +39,7 @@ export async function insertEvent(event: Event) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO stats (id, tournament, name) VALUES ($1, $2, $3)',
+        'INSERT INTO event (id, tournament, name) VALUES ($1, $2, $3)',
         [event.id, event.tournament, event.name]
       );
       console.log('Event inserted successfully!', result);
@@ -55,7 +55,7 @@ export async function insertGame(game: Game) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO stats (id, match, number, score1, score2) VALUES ($1, $2, $3, $4, $5)',
+        'INSERT INTO game (id, match, number, score1, score2) VALUES ($1, $2, $3, $4, $5)',
         [game.id, game.match, game.number, game.score1, game.score2]
       );
       console.log('Game inserted successfully!', result);
@@ -71,7 +71,7 @@ export async function insertMatch(match: Match) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO stats (id, round, identifier, number, best_of, team1, team2, winner) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+        'INSERT INTO match (id, round, identifier, number, best_of, team1, team2, winner) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
         [match.id, match.round, match.identifier, match.number, match.best_of, match.team1, match.team2, match.winner]
       );
       console.log('Match inserted successfully!', result);
@@ -87,10 +87,10 @@ export async function insertPhase(phase: Phase) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO stats (id, event, number, name) VALUES ($1, $2, $3, $4)',
+        'INSERT INTO phase (id, event, number, name) VALUES ($1, $2, $3, $4)',
         [phase.id, phase.event, phase.number, phase.name]
       );
-      console.log('Event inserted successfully!', result);
+      console.log('Phase inserted successfully!', result);
       return result;
     } catch (error) {
       console.error('Error inserting event:', error);
@@ -103,7 +103,7 @@ export async function insertPlayer(player: Player) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO stats (id, team, name) VALUES ($1, $2, $3)',
+        'INSERT INTO player (id, team, name) VALUES ($1, $2, $3)',
         [player.id, player.team, player.name]
       );
       console.log('Player inserted successfully!', result);
@@ -119,7 +119,7 @@ export async function insertRound(round: Round) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO stats (id, bracket, number, best_of, start_at) VALUES ($1, $2, $3, $4, $5)',
+        'INSERT INTO round (id, bracket, number, best_of, start_at) VALUES ($1, $2, $3, $4, $5)',
         [round.id, round.bracket, round.number, round.best_of, round.start_at]
       );
       console.log('Round inserted successfully!', result);
@@ -135,7 +135,7 @@ export async function insertStanding(standing: Standing) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO stats (id, bracket, number, team) VALUES ($1, $2, $3, $4)',
+        'INSERT INTO standing (id, bracket, number, team) VALUES ($1, $2, $3, $4)',
         [standing.id, standing.bracket, standing.placement, standing.team]
       );
       console.log('Standing inserted successfully!', result);
@@ -151,7 +151,7 @@ export async function insertStat(stat: Stat) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO stats (id, score, game, goals, assists, saves, shots, player) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+        'INSERT INTO stat (id, score, game, goals, assists, saves, shots, player) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
         [stat.id, stat.score, stat.game, stat.goals, stat.assists, stat.saves, stat.shots, stat.player]
       );
       console.log('Stat inserted successfully!', result);
@@ -167,7 +167,7 @@ export async function insertTeam(team: Team) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO stats (id, team, logo_url) VALUES ($1, $2, $3)',
+        'INSERT INTO team (id, team, logo_url) VALUES ($1, $2, $3)',
         [team.id, team.name, team.logo_url]
       );
       console.log('Team inserted successfully!', result);
@@ -183,7 +183,7 @@ export async function insertTournament(tournament: Tournament) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO stats (id, name, logo_url) VALUES ($1, $2, $3)',
+        'INSERT INTO tournament (id, name, logo_url) VALUES ($1, $2, $3)',
         [tournament.id, tournament.name, tournament.logo_url]
       );
       console.log('Tournament inserted successfully!', result);
