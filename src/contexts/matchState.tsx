@@ -22,6 +22,8 @@ const MatchStateProvider = ({ children }) => {
     setState(state => ({ ...state, isGameInProgress: false }))
   })
 
+  ws.send('match', 'update_state', MatchStateContext)
+
   return <MatchStateContext.Provider value={state}>{children}</MatchStateContext.Provider>
 }
 
