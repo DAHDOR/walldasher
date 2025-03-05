@@ -1,4 +1,5 @@
 import { useSnapshot } from '@/contexts/snapshot'
+import { useMatchState } from '@/contexts/matchState'
 import { Col, Grid } from '@components/ui/grid'
 import { USPlayer } from '@models/ingame/events/UpdateState/USPlayer'
 import { Component, createEffect } from 'solid-js'
@@ -14,7 +15,7 @@ import orangeMatchWonBlock from './assets/orangeMatchWonBlock.svg'
 import orangeNameBlock from './assets/orangeNameBlock.svg'
 import orangeScoreBlock from './assets/orangeScoreBlock.svg'
 import bg from './assets/PostGameBG.png'
-import wallpaperImage from './assets/Wallpaper.jpg'
+import {getBracketsByPhase, getEventsByTournament, getPhasesByEvent, getRoundByPhase, getStandingsByBracket, getTournamentById, getTournaments} from '@lib/start' 
 
 const PostGame: Component = () => {
   let players0: USPlayer[]
@@ -32,6 +33,11 @@ const PostGame: Component = () => {
   let gameWins0: number
   let gameWins1: number
   let firstTo: number
+
+  const matchState = useMatchState()
+  const blueLogoUrl = matchState().blue.logo_url.substring(5)
+  const orangeLogoUrl = matchState().orange.logo_url.substring(5)
+
   const stats = useSnapshot()
   const snapState = () => stats()
   createEffect(() => {
@@ -107,8 +113,8 @@ const PostGame: Component = () => {
                         class="w-[1000px] h-[100px] object-cover absolute inset-0 z-0"
                       />
                       <div class="absolute inset-0 z-10">
-                        <div class="top-[50%] left-[50%] translate-x-[0%] translate-y-[-15%]">
-                          <img src={wallpaperImage} class="w-fit h-fit scale-50" />
+                        <div class="w-[100px] h-[100px] translate-x-[90px]">
+                          <img src={orangeLogoUrl} class="w-fit h-fit" />
                         </div>
                       </div>
                     </Col>
@@ -121,12 +127,8 @@ const PostGame: Component = () => {
                         class="w-[1000px] h-[100px] object-cover absolute inset-0 z-0"
                       />
                       <div class="absolute inset-0 z-10">
-                        <div class="top-[50%] left-[50%] translate-x-[0%] translate-y-[-15%]">
-                          <img
-                            src={wallpaperImage}
-                            class="w-fit h-fit scale-50 bg-[image:var(--wallpaperImage)] bg-cotain bg-center"
-                            style={{ '--bg': `url(${wallpaperImage})` }}
-                          />
+                        <div class="w-[100px] h-[100px] translate-x-[50px]">
+                          <img src={blueLogoUrl} class="w-fit h-fit" />
                         </div>
                       </div>
                     </Col>
