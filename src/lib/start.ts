@@ -71,8 +71,8 @@ export async function insertMatch(match: Match) {
   try{
       const db = await Database.load('sqlite:test2.db');
       const result = await db.execute(
-        'INSERT INTO match (id, round, identifier, number, best_of, team1, team2, winner) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-        [match.id, match.round, match.identifier, match.number, match.best_of, match.team1, match.team2, match.winner]
+        'INSERT INTO match (id, title, round, identifier, number, best_of, team1, team2, winner) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+        [match.id, match.title, match.round, match.identifier, match.number, match.best_of, match.team1, match.team2, match.winner]
       );
       console.log('Match inserted successfully!', result);
       return result;
@@ -359,3 +359,150 @@ export async function updateMatchWinner(matchId: number, newWinnerId: string) {
       throw error;
     }
   }
+
+// GET PARA TODAS LAS TABLAS CON PAGINACIÓN Y TIPADO FUERTE **************************************
+
+// BRACKET
+export async function getBrackets(page?: number, limit?: number): Promise<Bracket[]> {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    let query = 'SELECT * FROM bracket';
+    const params: any[] = [];
+    
+    if (page && limit) {
+      query += ' LIMIT $1 OFFSET $2';
+      const offset = (page - 1) * limit;
+      params.push(limit, offset);
+    }
+    
+    return db.select<Bracket[]>(query, params);
+  } catch (error) {
+    console.error('Error getting brackets:', error);
+    throw error;
+  }
+}
+
+export async function getBracketById(id: number): Promise<Bracket> {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    const result = await db.select<Bracket[]>('SELECT * FROM bracket WHERE id = $1', [id]);
+    return result[0];
+  } catch (error) {
+    console.error('Error getting bracket:', error);
+    throw error;
+  }
+}
+
+// EVENT
+export async function getEvents(page?: number, limit?: number): Promise<Event[]> {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    let query = 'SELECT * FROM event';
+    const params: any[] = [];
+    
+    if (page && limit) {
+      query += ' LIMIT $1 OFFSET $2';
+      const offset = (page - 1) * limit;
+      params.push(limit, offset);
+    }
+    
+    return db.select<Event[]>(query, params);
+  } catch (error) {
+    console.error('Error getting events:', error);
+    throw error;
+  }
+}
+
+export async function getEventById(id: number): Promise<Event> {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    const result = await db.select<Event[]>('SELECT * FROM event WHERE id = $1', [id]);
+    return result[0];
+  } catch (error) {
+    console.error('Error getting event:', error);
+    throw error;
+  }
+}
+
+// GAME (Ejemplo con paginación avanzada y conteo total)
+export async function getGamesPaginated(
+  page: number = 1,
+  limit: number = 10
+): Promise<{ data: Game[]; total: number }> {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    const offset = (page - 1) * limit;
+    
+    const data = await db.select<Game[]>(
+      'SELECT * FROM game LIMIT $1 OFFSET $2',
+      [limit, offset]
+    );
+    
+    const totalResult = await db.select<{ count: number }[]>(
+      'SELECT COUNT(*) as count FROM game'
+    );
+    
+    return {
+      data,
+      total: totalResult[0].count
+    };
+  } catch (error) {
+    console.error('Error getting games:', error);
+    throw error;
+  }
+}
+
+// MATCH (Ejemplo con filtro adicional)
+export async function getMatchesByStatus(
+  status: string,
+  page?: number,
+  limit?: number
+): Promise<Match[]> {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    let query = 'SELECT * FROM match WHERE status = $1';
+    const params: any[] = [status];
+    
+    if (page && limit) {
+      query += ' LIMIT $2 OFFSET $3';
+      const offset = (page - 1) * limit;
+      params.push(limit, offset);
+    }
+    
+    return db.select<Match[]>(query, params);
+  } catch (error) {
+    console.error('Error getting matches:', error);
+    throw error;
+  }
+}
+
+// PHASE (Versión completa con validación)
+export async function getPhases(
+  page?: number,
+  limit?: number
+): Promise<Phase[]> {
+  try {
+    const db = await Database.load('sqlite:test2.db');
+    
+    // Validación de parámetros
+    if (page && limit) {
+      if (page < 1 || limit < 1) {
+        throw new Error('Los parámetros de paginación deben ser números positivos');
+      }
+    }
+    
+    let query = 'SELECT * FROM phase';
+    const params: any[] = [];
+    
+    if (page && limit) {
+      query += ' LIMIT $1 OFFSET $2';
+      const offset = (page - 1) * limit;
+      params.push(limit, offset);
+    }
+    
+    return db.select<Phase[]>(query, params);
+  } catch (error) {
+    console.error('Error getting phases:', error);
+    throw error;
+  }
+}

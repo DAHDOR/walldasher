@@ -34,6 +34,7 @@ export interface Round {
 
 export interface Match {
   id: number
+  title: string
   best_of: number
   identifier: string
   number: number
