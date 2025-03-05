@@ -148,7 +148,7 @@ button {
 
 input:focus {
   @apply border-zinc-400;
-  @apply border-2;
+  @apply border-[1px];
   transition: border-color 0.05s ease-in-out;
 }
 
