@@ -37,6 +37,7 @@ futures = "0.3.31"
 futures-util = "0.3.31"
 tauri-plugin-localhost = "2"
 tauri-plugin-fs = "2"
+tauri-plugin-persisted-scope = "2"
 
 [features]
 default = [ "custom-protocol" ]

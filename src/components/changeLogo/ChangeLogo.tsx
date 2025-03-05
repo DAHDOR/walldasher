@@ -14,9 +14,6 @@ import { Component, createSignal } from 'solid-js'
 
 const ChangeLogo: Component = () => {
   const [url, setUrl] = createSignal('')
-  const handleLoad = () => {
-    console.log('uploading file...')
-  }
   return (
     <Dialog>
       <Tooltip>

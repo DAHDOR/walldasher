@@ -1,16 +1,12 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "overlay",
-  "description": "Capability for the overlay window",
-  "windows": ["overlay"],
+  "description": "Capabilities for the overlay windows",
+  "windows": ["*"],
   "remote": {
     "urls": ["http://localhost:9527"]
   },
   "permissions": [
-    "allow-tournaments",
-    "allow-tournament",
-    "allow-bracket-matches",
-    "allow-event-players",
     "core:path:default",
     "core:event:default",
     "core:window:default",

@@ -3,21 +3,21 @@ import { Team } from '@models/db'
 
 const DEFAULT_BLUE_TEAM: Team = {
   id: 0,
-  name: 'Equipo Azul',
+  name: 'Azul',
   logo_url: 'base/' + unknown,
   tournament: 0
 }
 
 const DEFAULT_ORANGE_TEAM: Team = {
   id: 0,
-  name: 'Equipo Naranja',
+  name: 'Naranja',
   logo_url: 'base/' + unknown,
   tournament: 0
 }
 
 export const DEFAULT_MATCH_STATE: MatchState = {
   id: 0,
-  title: 'TÍTULO EXAGERADAMENTE GRANDE LOL',
+  title: 'Título del Partido',
   bestOf: 7,
   isGameInProgress: false,
   gameNumber: 1,
