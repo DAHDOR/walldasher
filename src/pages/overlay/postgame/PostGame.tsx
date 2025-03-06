@@ -1,10 +1,9 @@
-import { useSnapshot } from '@/contexts/snapshot'
 import { useMatchState } from '@/contexts/matchState'
-import { useGameState } from '@/contexts/gameState'
+import { useSnapshot } from '@/contexts/snapshot'
+import { DeltaBar } from '@components/ui/delta-bar'
 import { Col, Grid } from '@components/ui/grid'
 import { USPlayer } from '@models/ingame/events/UpdateState/USPlayer'
 import { Component, createEffect } from 'solid-js'
-import { DeltaBar } from "@components/ui/delta-bar"
 import blueLogoBlock from './assets/blueLogoBlock.svg'
 import blueMatchLostBlock from './assets/blueMatchLostBlock.svg'
 import blueMatchWonBlock from './assets/blueMatchWonBlock.svg'
@@ -35,8 +34,6 @@ const PostGame: Component = () => {
   let firstTo: number
 
   const matchState = useMatchState()
-  const blueLogoUrl = matchState().blue.logo_url.substring(5)
-  const orangeLogoUrl = matchState().orange.logo_url.substring(5)
 
   const stats = useSnapshot()
   const snapState = () => stats()
@@ -47,10 +44,10 @@ const PostGame: Component = () => {
   {
     players0 = snapState().players.filter(player => player.team === 0)
     players1 = snapState().players.filter(player => player.team === 1)
-    players0.sort((a: USPlayer, b: USPlayer) => a.score - b.score);
-    players1.sort((a: USPlayer, b: USPlayer) => b.score - a.score);
+    players0.sort((a: USPlayer, b: USPlayer) => a.score - b.score)
+    players1.sort((a: USPlayer, b: USPlayer) => b.score - a.score)
 
-    players0.map((player) => {
+    players0.map(player => {
       scoreTotal0 = scoreTotal0 + player.score
       goalsTotal0 = goalsTotal0 + player.goals
       assistsTotal0 = assistsTotal0 + player.assists
@@ -58,7 +55,7 @@ const PostGame: Component = () => {
       savesTotal0 = savesTotal0 + player.saves
     })
 
-    players1.map((player) => {
+    players1.map(player => {
       scoreTotal1 = scoreTotal1 + player.score
       goalsTotal1 = goalsTotal1 + player.goals
       assistsTotal1 = assistsTotal1 + player.assists
@@ -67,7 +64,7 @@ const PostGame: Component = () => {
     })
     gameWins0 = matchState().blueWins
     gameWins1 = matchState().orangeWins
-    firstTo = (matchState().bestOf + 1)/2
+    firstTo = (matchState().bestOf + 1) / 2
   }
   return (
     <>
@@ -114,7 +111,7 @@ const PostGame: Component = () => {
                       />
                       <div class="absolute inset-0 z-10">
                         <div class="w-[100px] h-[100px] translate-x-[90px]">
-                          <img src={orangeLogoUrl} class="w-fit h-fit" />
+                          <img src={matchState().orange.logo_url} class="w-fit h-fit" />
                         </div>
                       </div>
                     </Col>
@@ -128,7 +125,7 @@ const PostGame: Component = () => {
                       />
                       <div class="absolute inset-0 z-10">
                         <div class="w-[100px] h-[100px] translate-x-[50px]">
-                          <img src={blueLogoUrl} class="w-fit h-fit" />
+                          <img src={matchState().blue.logo_url} class="w-fit h-fit" />
                         </div>
                       </div>
                     </Col>
@@ -184,7 +181,8 @@ const PostGame: Component = () => {
             <Col class="relative">
               <div class="absolute inset-0 z-10">
                 <div class="text-white text-center text-[30px] text-nowrap translate-y-[5px]">
-                  {'JUEGO '}{matchState().gameNumber}
+                  {'JUEGO '}
+                  {matchState().gameNumber}
                 </div>
               </div>
             </Col>
@@ -218,25 +216,38 @@ const PostGame: Component = () => {
                     if (playerIndex === players0.length - 1) {
                       return (
                         <Col class="flex justify-center items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" stroke-Width="1.5" stroke="#36d0ff" viewBox="0 0 24 24" fill="#22b0ff" class="size-[50px]">
-                            <path stroke-Linecap="miter" stroke-Linejoin="miter" fill-Rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-Rule="evenodd"/>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            stroke-Width="1.5"
+                            stroke="#36d0ff"
+                            viewBox="0 0 24 24"
+                            fill="#22b0ff"
+                            class="size-[50px]"
+                          >
+                            <path
+                              stroke-Linecap="miter"
+                              stroke-Linejoin="miter"
+                              fill-Rule="evenodd"
+                              d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                              clip-Rule="evenodd"
+                            />
                           </svg>
                         </Col>
-                      );
+                      )
                     } else {
                       return (
                         <Col class="flex justify-center items-center">
                           <div class="text-transparent size-[50px]"></div>
                         </Col>
-                      );
+                      )
                     }
-                  });
+                  })
                 } else {
                   return players0.map((player, playerIndex) => (
                     <Col class="flex justify-center items-center">
                       <div class="text-transparent size-[50px]"></div>
                     </Col>
-                  ));
+                  ))
                 }
               } else if (index === 2) {
                 if (snapState().winner === snapState().teams[1].name) {
@@ -244,32 +255,45 @@ const PostGame: Component = () => {
                     if (playerIndex === 0) {
                       return (
                         <Col class="flex justify-center items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" stroke-Width="1.5" stroke="#ffbc00" viewBox="0 0 24 24" fill="#ff8a15" class="size-[50px]">
-                            <path stroke-Linecap="miter" stroke-Linejoin="miter" fill-Rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-Rule="evenodd"/>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            stroke-Width="1.5"
+                            stroke="#ffbc00"
+                            viewBox="0 0 24 24"
+                            fill="#ff8a15"
+                            class="size-[50px]"
+                          >
+                            <path
+                              stroke-Linecap="miter"
+                              stroke-Linejoin="miter"
+                              fill-Rule="evenodd"
+                              d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                              clip-Rule="evenodd"
+                            />
                           </svg>
                         </Col>
-                      );
+                      )
                     } else {
                       return (
                         <Col class="flex justify-center items-center">
                           <div class="text-transparent size-[50px]"></div>
                         </Col>
-                      );
+                      )
                     }
-                  });
+                  })
                 } else {
                   return players1.map((player, playerIndex) => (
                     <Col class="flex justify-center items-center">
                       <div class="text-transparent size-[50px]"></div>
                     </Col>
-                  ));
+                  ))
                 }
               } else if (index === 1) {
                 return (
                   <Col class="flex justify-center items-center">
                     <div class="text-transparent size-[50px]"></div>
                   </Col>
-                );
+                )
               }
             })}
           </Grid>
@@ -306,28 +330,57 @@ const PostGame: Component = () => {
               } else if (index === 1) {
                 return (
                   <Col span={1} class="pt-[10px]">
-                    <div class="pt-[25px] text-transparent">
-                      Jugadores
-                    </div>
+                    <div class="pt-[25px] text-transparent">Jugadores</div>
                     <div class="pt-[25px] leading-[75px]">
                       Puntos
-                      <DeltaBar class="h-3" value={(((scoreTotal1/(scoreTotal0+scoreTotal1))*100)-50)*2} isIncreasePositive={true} />
+                      <DeltaBar
+                        class="h-3"
+                        value={
+                          ((scoreTotal1 / (scoreTotal0 + scoreTotal1)) * 100 - 50) * 2
+                        }
+                        isIncreasePositive={true}
+                      />
                     </div>
                     <div class="pt-[25px] leading-[75px]">
                       Goles
-                      <DeltaBar class="h-3" value={(((goalsTotal1/(goalsTotal0+goalsTotal1))*100)-50)*2} isIncreasePositive={true} />
+                      <DeltaBar
+                        class="h-3"
+                        value={
+                          ((goalsTotal1 / (goalsTotal0 + goalsTotal1)) * 100 - 50) * 2
+                        }
+                        isIncreasePositive={true}
+                      />
                     </div>
                     <div class="pt-[25px] leading-[75px]">
                       Asistencias
-                      <DeltaBar class="h-3" value={(((assistsTotal1/(assistsTotal0+assistsTotal1))*100)-50)*2} isIncreasePositive={true} />
+                      <DeltaBar
+                        class="h-3"
+                        value={
+                          ((assistsTotal1 / (assistsTotal0 + assistsTotal1)) * 100 - 50) *
+                          2
+                        }
+                        isIncreasePositive={true}
+                      />
                     </div>
                     <div class="pt-[25px] leading-[75px]">
                       Tiros
-                      <DeltaBar class="h-3" value={(((shotsTotal1/(shotsTotal0+shotsTotal1))*100)-50)*2} isIncreasePositive={true} />
+                      <DeltaBar
+                        class="h-3"
+                        value={
+                          ((shotsTotal1 / (shotsTotal0 + shotsTotal1)) * 100 - 50) * 2
+                        }
+                        isIncreasePositive={true}
+                      />
                     </div>
                     <div class="pt-[25px] leading-[75px]">
                       Salvadas
-                      <DeltaBar class="h-3" value={(((savesTotal1/(savesTotal0+savesTotal1))*100)-50)*2} isIncreasePositive={true} />
+                      <DeltaBar
+                        class="h-3"
+                        value={
+                          ((savesTotal1 / (savesTotal0 + savesTotal1)) * 100 - 50) * 2
+                        }
+                        isIncreasePositive={true}
+                      />
                     </div>
                   </Col>
                 )
