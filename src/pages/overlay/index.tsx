@@ -18,7 +18,7 @@ const Layout: Component<ParentProps> = props => {
 
   ws.subscribe('game', 'match_ended', () => {
     navigate('/overlay/winner')
-    setTimeout(() => navigate('/overlay/postgame'), 5000)
+    setTimeout(() => navigate('/overlay/postgame'), 3000)
   })
 
   return (

@@ -6,32 +6,28 @@ const PostGame: Component = () => {
   const stats = useSnapshot();
   const snapState = () => stats();
   const [videoLoaded, setVideoLoaded] = createSignal(false);
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const fadeDiv1 = document.getElementById('fadeDiv1');
-    setTimeout(function() {
-      fadeDiv1.classList.add('opacity-100');
-    }, 1000);
-    const fadeDiv2 = document.getElementById('fadeDiv2');
-    setTimeout(function() {
-      fadeDiv2.classList.add('opacity-100');
-    }, 1000);
-  });
-
   createEffect(() => {
-    console.log('winner abajo');
-    console.log(snapState());
   });
-  {
-    console.log('winner abajo');
-  }
-  {
-    console.log(snapState());
-  }
 
   const handleVideoLoaded = () => {
     setVideoLoaded(true);
   };
+
+  console.log("Hi1")
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("Hi2");
+    const fadeDiv1 = document.getElementById('fadeDiv1');
+    const fadeDiv2 = document.getElementById('fadeDiv2');
+    if (fadeDiv1 && fadeDiv2) {
+      setTimeout(function() {
+        fadeDiv1.classList.add('opacity-100');
+        fadeDiv2.classList.add('opacity-100');
+        console.log("Hi3");
+      }, 1000);
+    } else {
+      console.error("fadeDiv1 or fadeDiv2 not found!");
+    }
+  });
 
   return (
     <>
@@ -47,12 +43,12 @@ const PostGame: Component = () => {
         </video>
       </div>
       <div class='absolute w-[1920px] text-center pt-[380px] text-[100px] z-10'>
-        <div id="fadeDiv1" class="opacity-0 transition-opacity delay-1000 duration-250 ease-in-out text-black font-[chivo] uppercase font-bold">
+        <div id="fadeDiv1" class="opacity-0 transition-opacity delay-1000 duration-500 ease-in-out text-black font-[chivo] uppercase font-bold">
           Winner
         </div>
-        <div id="fadeDiv2" class="opacity-0 transition-opacity delay-1000 duration-250 ease-in-out text-black font-[chivo] uppercase">
-          hello world
-          {/* {stats().winner} */}
+        <div id="fadeDiv2" class="opacity-0 transition-opacity delay-1000 duration-500 ease-in-out text-black font-[chivo] uppercase">
+          {/* hello world */}
+          {stats().winner}
         </div>
       </div>
     </>

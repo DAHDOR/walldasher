@@ -1,5 +1,6 @@
 import { useSnapshot } from '@/contexts/snapshot'
 import { useMatchState } from '@/contexts/matchState'
+import { useGameState } from '@/contexts/gameState'
 import { Col, Grid } from '@components/ui/grid'
 import { USPlayer } from '@models/ingame/events/UpdateState/USPlayer'
 import { Component, createEffect } from 'solid-js'
@@ -15,7 +16,6 @@ import orangeMatchWonBlock from './assets/orangeMatchWonBlock.svg'
 import orangeNameBlock from './assets/orangeNameBlock.svg'
 import orangeScoreBlock from './assets/orangeScoreBlock.svg'
 import bg from './assets/PostGameBG.png'
-import {getBracketsByPhase, getEventsByTournament, getPhasesByEvent, getRoundByPhase, getStandingsByBracket, getTournamentById, getTournaments} from '@lib/start' 
 
 const PostGame: Component = () => {
   let players0: USPlayer[]
@@ -65,9 +65,9 @@ const PostGame: Component = () => {
       shotsTotal1 = shotsTotal1 + player.shots
       savesTotal1 = savesTotal1 + player.saves
     })
-    gameWins0 = 14
-    gameWins1 = 13
-    firstTo = 15
+    gameWins0 = matchState().blueWins
+    gameWins1 = matchState().orangeWins
+    firstTo = (matchState().bestOf + 1)/2
   }
   return (
     <>
@@ -76,8 +76,8 @@ const PostGame: Component = () => {
         style={{ '--bg': `url(${bg})` }}
       >
         <div class="w-[1728px] text-center z-10 mx-auto font-[chivo]">
-          <div class="text-gray-300 text-[25px] pt-[30px] font-bold opacity-50"
-            textContent={'CAMPEONATO HELLO WORLD | CARACAS OPEN #1 | LATAM | PLAYOFFS | WEEK 8'}>
+          <div class="text-gray-300 text-[25px] pt-[30px] font-bold opacity-50">
+            {matchState().title}
           </div>
           <Grid cols={7} class="pt-[50px]">
             {snapState().teams.map((team, index) => (
@@ -184,7 +184,7 @@ const PostGame: Component = () => {
             <Col class="relative">
               <div class="absolute inset-0 z-10">
                 <div class="text-white text-center text-[30px] text-nowrap translate-y-[5px]">
-                  {'JUEGO 5'}
+                  {'JUEGO '}{matchState().gameNumber}
                 </div>
               </div>
             </Col>
