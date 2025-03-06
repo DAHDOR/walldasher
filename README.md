@@ -22,7 +22,8 @@ Walldasher es una aplicación para manejar overlays de transmisiones en vivo de 
 Durante este sprint, se completaron tareas adicionales debido a la carga de trabajo ajenas al proyecto de algunos miembros del equipo.
 
 #### Sprint 2
-Por planificar...
+![Burndown Chart - Sprint 2](https://github.com/user-attachments/assets/63a6a2ef-60a4-44d4-ae64-b5b2dbe0aae9)
+Durante este sprint, se agregaron algunas Historias de Desarrollador, pues se descubrieron algunas funciones que debían desarrollarse.
 
 #### Sprint 3
 Por planificar...
