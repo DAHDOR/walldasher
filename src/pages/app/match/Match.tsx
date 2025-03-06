@@ -1,70 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { useMatchState } from '@/contexts/matchState'
 import { useWS } from '@/contexts/ws'
+import TeamForm from '@components/TeamForm'
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card'
-import {
-  NumberField,
-  NumberFieldDecrementTrigger,
-  NumberFieldGroup,
-  NumberFieldIncrementTrigger,
-  NumberFieldInput,
-  NumberFieldLabel
-} from '@components/ui/number-field'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@components/ui/select'
-import { TextField, TextFieldInput, TextFieldLabel } from '@components/ui/text-field'
-import { showToast, Toaster } from '@components/ui/toast'
+import { Toaster } from '@components/ui/toast'
 import { createEffect, createSignal } from 'solid-js'
-
-const MatchTitle = () => {
-  const ws = useWS()
-  const matchState = useMatchState()
-
-  const [title, setTitle] = createSignal(matchState().title)
-
-  const onTitleInput = (e: InputEvent) => setTitle((e.target as HTMLInputElement).value)
-
-  createEffect(() => {
-    ws.send('match', 'update_title', title())
-    if (title().length == 32)
-      showToast({
-        title: 'Aviso',
-        description: 'La longitud máxima del título es de 32 caracteres',
-        variant: 'warning',
-        duration: 5000
-      })
-  })
-
-  return (
-    <TextField class="gap-0">
-      <TextFieldLabel class="flex grow items-center">Título</TextFieldLabel>
-      <TextFieldInput
-        placeholder={'El título está vacío'}
-        value={title()}
-        onInput={onTitleInput}
-        maxLength={32}
-      />
-    </TextField>
-  )
-}
+import MatchBestOf from './MatchBestOf'
+import MatchGameNumber from './MatchGameNumber'
+import MatchTitle from './MatchTitle'
 
 const Match = () => {
   const ws = useWS()
   const matchState = useMatchState()
 
+  const [title, setTitle] = createSignal(matchState().title)
   const [bestOf, setBestOf] = createSignal(matchState().bestOf)
   const [gameNumber, setGameNumber] = createSignal(matchState().gameNumber)
   const [blueWins, setBlueWins] = createSignal(matchState().blueWins)
+  const [blueTeam, setBlueTeam] = createSignal(matchState().blue)
   const [orangeWins, setOrangeWins] = createSignal(matchState().orangeWins)
+  const [orangeTeam, setOrangeTeam] = createSignal(matchState().orange)
 
   createEffect(() => {
     ws.send('match', 'update_best_of', bestOf())
@@ -82,6 +36,14 @@ const Match = () => {
   })
 
   createEffect(() => {
+    ws.send('match', 'update_blue_team', blueTeam())
+  })
+
+  createEffect(() => {
+    ws.send('match', 'update_orange_team', orangeTeam())
+  })
+
+  createEffect(() => {
     ws.send('match', 'update_orange_wins', orangeWins())
   })
 
@@ -92,33 +54,9 @@ const Match = () => {
           <CardTitle>Partido</CardTitle>
         </CardHeader>
         <CardContent class="flex row flex-wrap gap-4">
-          <MatchTitle />
-          <Select
-            value={bestOf()}
-            onChange={(bo: number) => setBestOf(bo || bestOf())}
-            options={[1, 3, 5, 7]}
-            itemComponent={props => (
-              <SelectItem item={props.item}>{props.item.rawValue.toString()}</SelectItem>
-            )}
-          >
-            <SelectLabel>Mejor de</SelectLabel>
-            <SelectTrigger aria-label="Mejor de">
-              <SelectValue<number>>{state => state.selectedOption()}</SelectValue>
-            </SelectTrigger>
-            <SelectContent />
-          </Select>
-          <NumberField
-            class="flex w-16 flex-col gap-0"
-            rawValue={gameNumber()}
-            onRawValueChange={setGameNumber}
-          >
-            <NumberFieldLabel class="flex grow items-center">Juego</NumberFieldLabel>
-            <NumberFieldGroup>
-              <NumberFieldInput class="!opacity-100 !cursor-default" disabled />
-              <NumberFieldIncrementTrigger disabled={gameNumber() >= bestOf()} />
-              <NumberFieldDecrementTrigger disabled={gameNumber() <= 1} />
-            </NumberFieldGroup>
-          </NumberField>
+          <MatchTitle titleSignal={[title, setTitle]} />
+          <MatchBestOf bestOf={[bestOf, setBestOf]} />
+          <MatchGameNumber gameNumber={[gameNumber, setGameNumber]} bestOf={bestOf} />
         </CardContent>
       </Card>
       <Card>
@@ -128,46 +66,18 @@ const Match = () => {
         <CardContent>
           <div class="flex row gap-6 flex-wrap">
             <Card class="border-blue-500 flex-grow">
-              <CardHeader>
-                <CardTitle>{matchState().blue.name}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <NumberField
-                  class="flex w-16 flex-col gap-2"
-                  rawValue={blueWins()}
-                  onRawValueChange={setBlueWins}
-                >
-                  <NumberFieldLabel>Victorias</NumberFieldLabel>
-                  <NumberFieldGroup>
-                    <NumberFieldInput class="!opacity-100 !cursor-default" disabled />
-                    <NumberFieldIncrementTrigger
-                      disabled={blueWins() >= Math.ceil(bestOf() / 2)}
-                    />
-                    <NumberFieldDecrementTrigger disabled={blueWins() <= 0} />
-                  </NumberFieldGroup>
-                </NumberField>
-              </CardContent>
+              <TeamForm
+                bestOf={bestOf}
+                wins={[blueWins, setBlueWins]}
+                team={[blueTeam, setBlueTeam]}
+              />
             </Card>
             <Card class="border-orange-500 flex-grow">
-              <CardHeader>
-                <CardTitle>{matchState().orange.name}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <NumberField
-                  class="flex w-16 flex-col gap-2"
-                  rawValue={orangeWins()}
-                  onRawValueChange={setOrangeWins}
-                >
-                  <NumberFieldLabel>Victorias</NumberFieldLabel>
-                  <NumberFieldGroup>
-                    <NumberFieldInput class="!opacity-100 !cursor-default" disabled />
-                    <NumberFieldIncrementTrigger
-                      disabled={orangeWins() >= Math.ceil(bestOf() / 2)}
-                    />
-                    <NumberFieldDecrementTrigger disabled={orangeWins() <= 0} />
-                  </NumberFieldGroup>
-                </NumberField>
-              </CardContent>
+              <TeamForm
+                bestOf={bestOf}
+                wins={[orangeWins, setOrangeWins]}
+                team={[orangeTeam, setOrangeTeam]}
+              />
             </Card>
           </div>
         </CardContent>

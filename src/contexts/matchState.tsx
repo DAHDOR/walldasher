@@ -25,6 +25,11 @@ const MatchStateProvider = ({ children }) => {
     setState(state => ({ ...state, bestOf }))
   })
 
+  ws.subscribe('match', 'update_game_number', data => {
+    const gameNumber = data as number
+    setState(state => ({ ...state, gameNumber }))
+  })
+
   ws.subscribe('match', 'update_blue_wins', data => {
     const blueWins = data as number
     setState(state => ({ ...state, blueWins }))

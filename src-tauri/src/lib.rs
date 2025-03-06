@@ -15,7 +15,9 @@ use tauri_plugin_store::StoreExt;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let port: u16 = 9527;
-    let mut builder = tauri::Builder::default();
+    let mut builder = tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_opener::init());
 
     #[cfg(desktop)]
     {

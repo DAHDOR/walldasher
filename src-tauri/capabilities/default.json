@@ -28,6 +28,12 @@
     "sql:allow-execute",
     "sql:allow-select",
     "sql:allow-close",
-    "fs:default"
+    "fs:default",
+    "fs:allow-appdata-read",
+    "fs:read-all",
+    "fs:allow-appdata-write",
+    "fs:write-all",
+    "opener:default",
+    "dialog:default"
   ]
 }

@@ -1,5 +1,4 @@
 import { useWS } from '@/contexts/ws'
-import ChangeLogo from '@components/changeLogo'
 import { Button } from '@components/ui/button'
 
 const Dev = () => {
@@ -17,9 +16,7 @@ const Dev = () => {
         </Button>
       </div>
       <h1 class="text-xl font-bold">Test functions</h1>
-      <div class="flex items-center gap-5 font-bold">
-        <ChangeLogo />
-      </div>
+      <div class="flex items-center gap-5 font-bold"></div>
     </div>
   )
 }

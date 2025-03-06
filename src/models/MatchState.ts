@@ -4,14 +4,14 @@ import { Team } from '@models/db'
 const DEFAULT_BLUE_TEAM: Team = {
   id: 0,
   name: 'Azul',
-  logo_url: 'base/' + unknown,
+  logo_url: unknown,
   tournament: 0
 }
 
 const DEFAULT_ORANGE_TEAM: Team = {
   id: 0,
   name: 'Naranja',
-  logo_url: 'base/' + unknown,
+  logo_url: unknown,
   tournament: 0
 }
 
