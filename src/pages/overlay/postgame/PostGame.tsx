@@ -15,6 +15,7 @@ import orangeMatchWonBlock from './assets/orangeMatchWonBlock.svg'
 import orangeNameBlock from './assets/orangeNameBlock.svg'
 import orangeScoreBlock from './assets/orangeScoreBlock.svg'
 import bg from './assets/PostGameBG.png'
+import MatchBestOf from '@pages/app/match/MatchBestOf'
 
 const PostGame: Component = () => {
   let players0: USPlayer[]
@@ -156,58 +157,39 @@ const PostGame: Component = () => {
               </>
             ))}
           </Grid>
-          <Grid cols={3} class="pt-[82px]">
-            <Col class="inset-0 z-10 relative flex flex-row-reverse translate-y-[5px]">
-              {Array.from({ length: firstTo }, (_, index) => {
-                if (index < gameWins0) {
-                  return (
-                    <img
-                      src={blueMatchWonBlock}
-                      class="w-[60px] h-[50px] object-contain translate-x-[calc((175px)_+_15px_*_var(--index))]"
-                      style={{ '--index': index }}
-                    />
-                  )
-                } else {
-                  return (
-                    <img
-                      src={blueMatchLostBlock}
-                      class="w-[60px] h-[50px] object-contain translate-x-[calc((175px)_+_15px_*_var(--index))]"
-                      style={{ '--index': index }}
-                    />
-                  )
-                }
-              })}
-            </Col>
-            <Col class="relative">
-              <div class="absolute inset-0 z-10">
-                <div class="text-white text-center text-[30px] text-nowrap translate-y-[5px]">
-                  {'JUEGO '}
-                  {matchState().gameNumber}
+          <div class='relative pt-[80px] mx-auto'>
+            <div class="text-white text-center text-[30px] text-nowrap translate-y-[-125px]">
+              {'JUEGO '}
+              {matchState().gameNumber}
+            </div>
+            {gameWins0 < firstTo && gameWins1 < firstTo ? (
+              gameWins0 > gameWins1 ? (
+                <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
+                  {snapState().teams[0].name + ' lidera (' + gameWins0 + '-' + gameWins1 + ')'}
                 </div>
-              </div>
-            </Col>
-            <Col class="inset-0 z-10 relative flex flex-row translate-x-[0px] translate-y-[5px]">
-              {Array.from({ length: firstTo }, (_, index) => {
-                if (index < gameWins1) {
-                  return (
-                    <img
-                      src={orangeMatchWonBlock}
-                      class="w-[60px] h-[50px] object-contain translate-x-[calc((-175px)_-_15px_*_var(--index))] translate-y-[0%]"
-                      style={{ '--index': index }}
-                    />
-                  )
-                } else {
-                  return (
-                    <img
-                      src={orangeMatchLostBlock}
-                      class="w-[60px] h-[50px] object-contain translate-x-[calc((-175px)_-_15px_*_var(--index))] translate-y-[0%]"
-                      style={{ '--index': index }}
-                    />
-                  )
-                }
-              })}
-            </Col>
-          </Grid>
+              ) : (
+                gameWins0 === gameWins1 ? (
+                  <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
+                    {'Empatados (' + gameWins0 + '-' + gameWins1 + ')'}
+                  </div>
+                ) : (
+                  <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
+                    {snapState().teams[1].name + ' lidera (' + gameWins0 + '-' + gameWins1 + ')'}
+                  </div>
+                )
+              )
+            ) : (
+              gameWins0 > gameWins1 ? (
+                <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
+                  {snapState().teams[0].name + ' gana (' + gameWins0 + '-' + gameWins1 + ')'}
+                </div>
+              ) : (
+                <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
+                  {snapState().teams[1].name + ' gana (' + gameWins0 + '-' + gameWins1 + ')'}
+                </div>
+              )
+            )}
+          </div>
           <Grid cols={7} class="pt-[30px]">
             {Array.from({ length: 3 }, (_, index) => {
               if (index === 0) {
