@@ -25,8 +25,8 @@ const LineAtoRight: Component<AnimatedSVGProps> = ({ setRef }) => {
         />
       </g>
     </svg>
-  );
-};
+  )
+}
 
 const LineBtoRight: Component<AnimatedSVGProps> = ({ setRef }) => {
   return (
@@ -37,10 +37,10 @@ const LineBtoRight: Component<AnimatedSVGProps> = ({ setRef }) => {
           d="M 0,0 150,540 0,1080 H 150 L 300,540 150,0 Z"
           id="path1"
         />
-      </g>\
+      </g>
     </svg>
-  );
-};
+  )
+}
 
 const LineAtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
   return (
@@ -53,12 +53,12 @@ const LineAtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
             />
         </g>
     </svg>
-  );
-};
+  )
+}
 
 const LineBtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
   return (
-    <svg ref={setRef} width={300} height="1080" style="position: absolute;">
+    <svg ref={setRef} width="300" height="1080" style="position: absolute;">
         <g transform="scale(-1 1) translate(-300 0)">
             <path
                 style={`fill:#${ColorB};stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1`}
@@ -67,78 +67,98 @@ const LineBtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
             />
         </g>
     </svg>
-  );
-};
+  )
+}
 
 const PostGame: Component = () => {
-  const stats = useSnapshot();
-  const [svgElementAtoRight, setSvgElementAtoRight] = createSignal<SVGSVGElement | undefined>();
-  const [svgElementBtoRight, setSvgElementBtoRight] = createSignal<SVGSVGElement | undefined>();
-  const [svgElementAtoLeft, setSvgElementAtoLeft] = createSignal<SVGSVGElement | undefined>();
-  const [svgElementBtoLeft, setSvgElementBtoLeft] = createSignal<SVGSVGElement | undefined>();
+  const stats = useSnapshot()
+  const length = 20
+  const durationSecs = 5
+  const extraSpaceMultiplier = 300 * 5
+  const [svgElementsAtoRight, setSvgElementsAtoRight] = createSignal<(SVGSVGElement | undefined)[]>([])
+  const [svgElementsBtoRight, setSvgElementsBtoRight] = createSignal<(SVGSVGElement | undefined)[]>([])
+  const [svgElementsAtoLeft, setSvgElementsAtoLeft] = createSignal<(SVGSVGElement | undefined)[]>([])
+  const [svgElementsBtoLeft, setSvgElementsBtoLeft] = createSignal<(SVGSVGElement | undefined)[]>([])
+  const [showText, setShowText] = createSignal(false)
 
   onMount(() => {
-    enter();
-  });
+    setTimeout(() => {
+      setShowText(true)
+      setTimeout(() => {
+        setShowText(false);
+      }, 3000);
+    }, 2000)
+    enter()
+  })
 
-  const start = gsap.timeline({ paused: true , repeat: -1});
+  const start = gsap.timeline({paused: true, repeat: 0})
 
   const setStart = () => {
-    gsap.set(svgElementAtoRight(),{ x: -300})
-    gsap.set(svgElementBtoRight(),{ x: -450})
-    gsap.set(svgElementAtoLeft(),{ x: 0})
-    gsap.set(svgElementBtoLeft(),{ x: 150})
-    start.to(svgElementAtoRight(), { x: 960, duration: 5, ease: 'linear' }, 0);
-    start.to(svgElementBtoRight(), { x: 810, duration: 5, ease: 'linear' }, 0);
-    start.to(svgElementAtoLeft(), { x: -1260, duration: 5, ease: 'linear' }, 0);
-    start.to(svgElementBtoLeft(), { x: -1110, duration: 5, ease: 'linear' }, 0);
+    svgElementsAtoRight().forEach((el, i) => {
+      gsap.set(el, { x: -300 - 300 * i })
+      start.to(el, { x: 960 + extraSpaceMultiplier - 300 * i, duration: durationSecs, ease: 'linear' }, 0)
+    })
+
+    svgElementsBtoRight().forEach((el, i) => {
+      gsap.set(el, { x: -450 - 300 * i });
+      start.to(el, { x: 810 + extraSpaceMultiplier- 300 * i, duration: durationSecs, ease: 'linear' }, 0)
+    })
+
+    svgElementsAtoLeft().forEach((el, i) => {
+      gsap.set(el, { x: 300 + 300 * i });
+      start.to(el, { x: -960 - extraSpaceMultiplier + 300 * i, duration: durationSecs, ease: 'linear' }, 0)
+    })
+
+    svgElementsBtoLeft().forEach((el, i) => {
+      gsap.set(el, { x: 450 + 300 * i });
+      start.to(el, { x: -810 - extraSpaceMultiplier + 300 * i, duration: durationSecs, ease: 'linear' }, 0)
+    })
+
     start.play();
-  };
+  }
 
   const enter = () => {
-    setStart();
-  };
+    setStart()
+  }
+
+  {if (stats().winner === stats().teams[0].name){
+    ColorA = Blue
+    ColorB = LightBlue
+  } else {
+    ColorA = Orange
+    ColorB = LightOrange
+  }}
 
   return (
     <>
       <div class="absolute w-[1920px] h-[1080px]">
-        <div class='overflow-hidden flex flex-row absolute w-[960px] h-[1080px] bg-red-800'>
-          {Array.from({ length: 2 }, (_, index) => {
-            if (index % 2 === 0){
-              return(
-                <div>
-                  <LineAtoRight setRef={setSvgElementAtoRight}/>
-                </div>
-              )
+        <div class="overflow-hidden flex flex-row absolute w-[960px] h-[1080px]">
+          {Array.from({ length }, (_, index) => {
+            if (index % 2 === 0) {
+              return <LineAtoRight setRef={(el) => setSvgElementsAtoRight((prev) => [...prev, el])} />
             } else {
-              return(
-                <div>
-                  <LineBtoRight setRef={setSvgElementBtoRight}/>
-                </div>
-              )
+              return <LineBtoRight setRef={(el) => setSvgElementsBtoRight((prev) => [...prev, el])} />
             }
           })}
         </div>
-        <div class='overflow-hidden flex flex-row-reverse absolute w-[960px] h-[1080px] translate-x-[960px] bg-green-400'>
-          {Array.from({ length: 2 }, (_, index) => {
-            if (index % 2 === 0){
-              return(
-                <div>
-                  <LineAtoLeft setRef={setSvgElementAtoLeft}/>
-                </div>
-              )
+        <div class="overflow-hidden flex flex-row-reverse absolute w-[960px] h-[1080px] translate-x-[960px]">
+          {Array.from({ length }, (_, index) => {
+            if (index % 2 === 0) {
+              return <LineAtoLeft setRef={(el) => setSvgElementsAtoLeft((prev) => [...prev, el])} />
             } else {
-              return(
-                <div>
-                  <LineBtoLeft setRef={setSvgElementBtoLeft}/>
-                </div>
-              )
+              return <LineBtoLeft setRef={(el) => setSvgElementsBtoLeft((prev) => [...prev, el])} />
             }
           })}
+        </div>
+        <div class="absolute w-[1920px] h-[1080px] flex items-center justify-center text-[100px] font-[chivo] text-center">
+          <div class={`text-black transition-opacity duration-1000 ${showText() ? "opacity-100" : "opacity-0"}`}>
+            <div class="font-bold uppercase">Ganador</div>
+            <div>{stats().winner}</div>
+          </div>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
 export default PostGame;
