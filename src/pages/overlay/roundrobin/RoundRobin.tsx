@@ -83,7 +83,7 @@ const PostGame: Component = () => {
 
   return (
     // <div class="w-screen h-screen" style={{ background: `url(${bg})` , "background-size": 'cover', "background-position": 'center' }}>
-    <div class="w-screen h-screen">
+    <div class="w-[1920px] h-[1080px]">
       <div class="w-[75vw] text-center z-10 mx-auto pt-[5vw]">
         <Col class="relative">
           <img src={tableBG} class="w-[60vw] h-auto object-cover absolute inset-0 z-0 mx-auto pt-[5vw]"/>
