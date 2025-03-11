@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.4.17 on mar. mar. 4 18:25:43 2025
+-- File generated with SQLiteStudio v3.4.13 on Tue Mar 11 17:26:10 2025
 --
 -- Text encoding used: UTF-8
 --
@@ -137,15 +137,15 @@ CREATE TABLE IF NOT EXISTS player (
 DROP TABLE IF EXISTS round;
 
 CREATE TABLE IF NOT EXISTS round (
-    id      INTEGER PRIMARY KEY,
-    bracket INTEGER,
-    number  INTEGER,
-    bo      INTEGER CHECK (bo = 1 OR
-                           bo = 3 OR
-                           bo = 5 OR
-                           bo = 7 OR
-                           bo = 9),
-    startAt INTEGER,
+    id       INTEGER PRIMARY KEY,
+    bracket  INTEGER,
+    number   INTEGER,
+    best_of  INTEGER CHECK (best_of = 1 OR 
+                            best_of = 3 OR 
+                            best_of = 5 OR 
+                            best_of = 7 OR 
+                            best_of = 9),
+    start_at INTEGER,
     FOREIGN KEY (
         bracket
     )
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS team (
     id         INTEGER PRIMARY KEY,
     tournament INTEGER,
     name       TEXT,
-    logo_url   TEXT,
+    logo_url   BLOB,
     FOREIGN KEY (
         tournament
     )
@@ -226,9 +226,9 @@ CREATE TABLE IF NOT EXISTS team (
 DROP TABLE IF EXISTS tournament;
 
 CREATE TABLE IF NOT EXISTS tournament (
-    id   INTEGER PRIMARY KEY,
-    name TEXT,
-    pfp  TEXT
+    id       INTEGER PRIMARY KEY,
+    name     TEXT,
+    logo_url BLOB
 );
 
 PRAGMA foreign_keys = on;

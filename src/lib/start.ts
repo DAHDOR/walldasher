@@ -1,15 +1,15 @@
-// TODO: db queries functions
-
 import Database from '@tauri-apps/plugin-sql'
 
 // Import all the tables from models/db.ts
 import { Bracket, Event, Game, Match, Phase, Player, Round, Standing, Stat, Team, Tournament } from '../models/db';
-let migration: string = "sqlite:test4.db"
+
+// Cargar una sola vez la BD y usar la misma instancia en cada query
+const migration = await Database.load('sqlite:test4.db')
 
 // Verifies if the database is connected
-export async function initDatabase() {
+export function initDatabase() {
   try {
-    const db = await Database.load(migration)
+    const db = migration
     console.log('Database connected successfully!')
     return db
   } catch (error) {
@@ -22,7 +22,7 @@ export async function initDatabase() {
 // INSERT into Table Bracket
 export async function insertBracket(bracket: Bracket) {
   try{
-      const db = await Database.load(migration);
+      const db = migration;
       const result = await db.execute(
         'INSERT INTO stats (id, phase, identifier, type) VALUES ($1, $2, $3, $4)',
         [bracket.id, bracket.phase, bracket.identifier, bracket.type]
@@ -38,7 +38,7 @@ export async function insertBracket(bracket: Bracket) {
   // INSERT into Table Event
 export async function insertEvent(event: Event) {
   try{
-      const db = await Database.load(migration)
+      const db = migration
       const result = await db.execute(
         'INSERT INTO event (id, tournament, name) VALUES ($1, $2, $3)',
         [event.id, event.tournament, event.name]
@@ -54,7 +54,7 @@ export async function insertEvent(event: Event) {
 // INSERT into Table Game
 export async function insertGame(game: Game) {
   try{
-      const db = await Database.load(migration);
+      const db = migration;
       const result = await db.execute(
         'INSERT INTO game (id, match, number, score1, score2) VALUES ($1, $2, $3, $4, $5)',
         [game.id, game.match, game.number, game.score1, game.score2]
@@ -70,7 +70,7 @@ export async function insertGame(game: Game) {
 //INSERT a Table Match
 export async function insertMatch(match: Match) {
   try{
-      const db = await Database.load(migration);
+      const db = migration;
       const result = await db.execute(
         'INSERT INTO match (id, title, round, identifier, number, best_of, team1, team2, winner) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
         [match.id, match.title, match.round, match.identifier, match.number, match.best_of, match.team1, match.team2, match.winner]
@@ -86,7 +86,7 @@ export async function insertMatch(match: Match) {
   // INSERT into Table Phase
 export async function insertPhase(phase: Phase) {
   try{
-      const db = await Database.load(migration);
+      const db = migration;
       const result = await db.execute(
         'INSERT INTO phase (id, event, number, name) VALUES ($1, $2, $3, $4)',
         [phase.id, phase.event, phase.number, phase.name]
@@ -102,7 +102,7 @@ export async function insertPhase(phase: Phase) {
 // INSERT a Table Player
 export async function insertPlayer(player: Player) {
   try{
-      const db = await Database.load(migration);
+      const db = migration;
       const result = await db.execute(
         'INSERT INTO player (id, team, name) VALUES ($1, $2, $3)',
         [player.id, player.team, player.name]
@@ -118,7 +118,7 @@ export async function insertPlayer(player: Player) {
   // INSERT into Table Round
 export async function insertRound(round: Round) {
   try{
-      const db = await Database.load(migration);
+      const db = migration;
       const result = await db.execute(
         'INSERT INTO round (id, bracket, number, best_of, start_at) VALUES ($1, $2, $3, $4, $5)',
         [round.id, round.bracket, round.number, round.best_of, round.start_at]
@@ -134,7 +134,7 @@ export async function insertRound(round: Round) {
   // INSERT into Table Standing
 export async function insertStanding(standing: Standing) {
   try{
-      const db = await Database.load(migration);
+      const db = migration;
       const result = await db.execute(
         'INSERT INTO standing (id, bracket, number, team) VALUES ($1, $2, $3, $4)',
         [standing.id, standing.bracket, standing.placement, standing.team]
@@ -150,7 +150,7 @@ export async function insertStanding(standing: Standing) {
 // INSERT into Table Stat
 export async function insertStat(stat: Stat) {
   try{
-      const db = await Database.load(migration);
+      const db = migration;
       const result = await db.execute(
         'INSERT INTO stat (id, score, game, goals, assists, saves, shots, player) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
         [stat.id, stat.score, stat.game, stat.goals, stat.assists, stat.saves, stat.shots, stat.player]
@@ -166,7 +166,7 @@ export async function insertStat(stat: Stat) {
 // INSERT a Table Team
 export async function insertTeam(team: Team) {
   try{
-      const db = await Database.load(migration);
+      const db = migration;
       const result = await db.execute(
         'INSERT INTO team (id, team, logo_url) VALUES ($1, $2, $3)',
         [team.id, team.name, team.logo_url]
@@ -182,7 +182,7 @@ export async function insertTeam(team: Team) {
 // INSERT into Table Tournament
 export async function insertTournament(tournament: Tournament) {
   try{
-      const db = await Database.load(migration);
+      const db = migration;
       const result = await db.execute(
         'INSERT INTO tournament (id, name, logo_url) VALUES ($1, $2, $3)',
         [tournament.id, tournament.name, tournament.logo_url]
@@ -199,7 +199,7 @@ export async function insertTournament(tournament: Tournament) {
 // CONSULTA PARA OBTENER TODOS LOS TORNEOS
 export async function getTournaments() {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const tournaments = await db.select<Tournament[]>('SELECT * FROM tournament');
     console.log('Tournaments:', tournaments);
     return tournaments;
@@ -212,7 +212,7 @@ export async function getTournaments() {
 // CONSULTA PARA OBTENER TORNEOS POR ID
 export async function getTournamentById(id: number) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const tournament = await db.select<Tournament[]>('SELECT * FROM tournament WHERE id = $1', [id]);
     console.log('Tournament:', tournament);
     return tournament;
@@ -225,7 +225,7 @@ export async function getTournamentById(id: number) {
 // CONSULTA PARA OBTENER LOS EVENTOS POR TORNEO
 export async function getEventsByTournament(tournamentId: number) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const events = await db.select<Event[]>('SELECT * FROM event WHERE tournament_id = $1', [tournamentId]);
     console.log('Events:', events);
     return events;
@@ -238,7 +238,7 @@ export async function getEventsByTournament(tournamentId: number) {
 // CONSULTA PARA OBTENER PHASES POR EVENTO
 export async function getPhasesByEvent(eventId: number) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const phases = await db.select<Phase[]>('SELECT * FROM phase WHERE event_id = $1', [eventId]);
     console.log('Phases:', phases);
     return phases;
@@ -251,7 +251,7 @@ export async function getPhasesByEvent(eventId: number) {
 // CONSULTA PARA OBTENER BRACKETS POR PHASE
 export async function getBracketsByPhase(phaseId: number) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const brackets = await db.select<Bracket[]>('SELECT * FROM bracket WHERE phase_id = $1', [phaseId]);
     console.log('Brackets:', brackets);
     return brackets;
@@ -264,7 +264,7 @@ export async function getBracketsByPhase(phaseId: number) {
 // CONSULTA PARA OBTENER ROUND POR PHASE
 export async function getRoundByPhase(phaseId: number) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const rounds = await db.select<Round[]>(`SELECT 
     r.id, r.number, r.bo, r.startAt, r.bracket
     FROM round r 
@@ -281,7 +281,7 @@ export async function getRoundByPhase(phaseId: number) {
 // CONSULTA PARA MODIFICAR match.number
 export async function updateMatchNumber(matchId: number, newNumber: number) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const result = await db.execute('UPDATE match SET number = $1 WHERE id = $2', [newNumber, matchId]);
     console.log('Match updated successfully!', result);
     return result;
@@ -294,7 +294,7 @@ export async function updateMatchNumber(matchId: number, newNumber: number) {
 // CONSULTA PARA OBTENER STANDINGS+TEAMS POR BRACKET
 export async function getStandingsByBracket(bracketId: number) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const standings = await db.select<Standing[]>(`SELECT
     s.id, s.placement, s.team, t.name, t.logo_url
     FROM standing s
@@ -312,7 +312,7 @@ export async function getStandingsByBracket(bracketId: number) {
 // CONSULTA PARA MODIFICAR team.name
 export async function updateTeamName(teamId: number, newName: string) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const result = await db.execute('UPDATE team SET name = $1 WHERE id = $2', [newName, teamId]);
     console.log('Team updated successfully!', result);
     return result;
@@ -325,7 +325,7 @@ export async function updateTeamName(teamId: number, newName: string) {
 // CONSULTA PARA MODIFICAR team.logo_url
 export async function updateTeamLogo(teamId: number, newLogo: string) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const result = await db.execute('UPDATE team SET logo_url = $1 WHERE id = $2', [newLogo, teamId]);
     console.log('Team updated successfully!', result);
     return result;
@@ -338,7 +338,7 @@ export async function updateTeamLogo(teamId: number, newLogo: string) {
 // CONSULTA PARA CAMBIAR player.name
 export async function updatePlayerName(playerId: number, newName: string) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const result = await db.execute('UPDATE player SET name = $1 WHERE id = $2', [newName, playerId]);
     console.log('Player updated successfully!', result);
     return result;
@@ -351,7 +351,7 @@ export async function updatePlayerName(playerId: number, newName: string) {
 // CONSULTA PARA MODIFICAR match.winner
 export async function updateMatchWinner(matchId: number, newWinnerId: string) {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const result = await db.execute('UPDATE match SET winner = $1 WHERE id = $2', [newWinnerId, matchId]);
     console.log('Match updated successfully!', result);
     return result;
@@ -366,7 +366,7 @@ export async function updateMatchWinner(matchId: number, newWinnerId: string) {
 // BRACKET
 export async function getBrackets(page?: number, limit?: number): Promise<Bracket[]> {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     let query = 'SELECT * FROM bracket';
     const params: any[] = [];
     
@@ -385,7 +385,7 @@ export async function getBrackets(page?: number, limit?: number): Promise<Bracke
 
 export async function getBracketById(id: number): Promise<Bracket> {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const result = await db.select<Bracket[]>('SELECT * FROM bracket WHERE id = $1', [id]);
     return result[0];
   } catch (error) {
@@ -397,7 +397,7 @@ export async function getBracketById(id: number): Promise<Bracket> {
 // EVENT
 export async function getEvents(page?: number, limit?: number): Promise<Event[]> {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     let query = 'SELECT * FROM event';
     const params: any[] = [];
     
@@ -416,7 +416,7 @@ export async function getEvents(page?: number, limit?: number): Promise<Event[]>
 
 export async function getEventById(id: number): Promise<Event> {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const result = await db.select<Event[]>('SELECT * FROM event WHERE id = $1', [id]);
     return result[0];
   } catch (error) {
@@ -431,7 +431,7 @@ export async function getGamesPaginated(
   limit: number = 10
 ): Promise<{ data: Game[]; total: number }> {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     const offset = (page - 1) * limit;
     
     const data = await db.select<Game[]>(
@@ -460,7 +460,7 @@ export async function getPhases(
   limit?: number
 ): Promise<Phase[]> {
   try {
-    const db = await Database.load(migration);
+    const db = migration;
     
     // Validación de parámetros
     if (page && limit) {
