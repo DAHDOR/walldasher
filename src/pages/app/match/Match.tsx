@@ -15,9 +15,9 @@ const Match = () => {
   const [title, setTitle] = createSignal(matchState().title)
   const [bestOf, setBestOf] = createSignal(matchState().bestOf)
   const [gameNumber, setGameNumber] = createSignal(matchState().gameNumber)
-  const [blueWins, setBlueWins] = createSignal(matchState().blueWins)
+  const [blueWins, setBlueWins] = createSignal(matchState().blue.wins)
   const [blueTeam, setBlueTeam] = createSignal(matchState().blue)
-  const [orangeWins, setOrangeWins] = createSignal(matchState().orangeWins)
+  const [orangeWins, setOrangeWins] = createSignal(matchState().orange.wins)
   const [orangeTeam, setOrangeTeam] = createSignal(matchState().orange)
 
   createEffect(() => {
@@ -66,18 +66,10 @@ const Match = () => {
         <CardContent>
           <div class="flex row gap-6 flex-wrap">
             <Card class="border-blue-500 flex-grow">
-              <TeamForm
-                bestOf={bestOf}
-                wins={[blueWins, setBlueWins]}
-                team={[blueTeam, setBlueTeam]}
-              />
+              <TeamForm bestOf={bestOf} team={[blueTeam, setBlueTeam]} />
             </Card>
             <Card class="border-orange-500 flex-grow">
-              <TeamForm
-                bestOf={bestOf}
-                wins={[orangeWins, setOrangeWins]}
-                team={[orangeTeam, setOrangeTeam]}
-              />
+              <TeamForm bestOf={bestOf} team={[orangeTeam, setOrangeTeam]} />
             </Card>
           </div>
         </CardContent>

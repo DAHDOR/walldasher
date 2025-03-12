@@ -1,18 +1,27 @@
 import unknown from '@assets/images/unknown.png'
 import { Team } from '@models/db'
 
-const DEFAULT_BLUE_TEAM: Team = {
+export interface MatchTeam extends Team {
+  wins: number
+  logo: string
+}
+
+const DEFAULT_BLUE_TEAM: MatchTeam = {
   id: 0,
   name: 'Azul',
   logo_url: unknown,
-  tournament: 0
+  tournament: 0,
+  wins: 0,
+  logo: ''
 }
 
-const DEFAULT_ORANGE_TEAM: Team = {
+const DEFAULT_ORANGE_TEAM: MatchTeam = {
   id: 0,
   name: 'Naranja',
   logo_url: unknown,
-  tournament: 0
+  tournament: 0,
+  wins: 0,
+  logo: ''
 }
 
 export const DEFAULT_MATCH_STATE: MatchState = {
@@ -21,9 +30,7 @@ export const DEFAULT_MATCH_STATE: MatchState = {
   bestOf: 7,
   isGameInProgress: false,
   gameNumber: 1,
-  blueWins: 0,
   blue: DEFAULT_BLUE_TEAM,
-  orangeWins: 0,
   orange: DEFAULT_ORANGE_TEAM
 }
 
@@ -33,10 +40,8 @@ interface MatchState {
   bestOf: number
   isGameInProgress: boolean
   gameNumber: number
-  blue: Team
-  blueWins: number
-  orange: Team
-  orangeWins: number
+  blue: MatchTeam
+  orange: MatchTeam
 }
 
 export default MatchState

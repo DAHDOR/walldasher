@@ -1,5 +1,4 @@
-import { Team } from '@models/db'
-import MatchState, { DEFAULT_MATCH_STATE } from '@models/MatchState'
+import MatchState, { DEFAULT_MATCH_STATE, MatchTeam } from '@models/MatchState'
 import { Accessor, createContext, createSignal, useContext } from 'solid-js'
 import { useWS } from './ws'
 
@@ -30,23 +29,13 @@ const MatchStateProvider = ({ children }) => {
     setState(state => ({ ...state, gameNumber }))
   })
 
-  ws.subscribe('match', 'update_blue_wins', data => {
-    const blueWins = data as number
-    setState(state => ({ ...state, blueWins }))
-  })
-
-  ws.subscribe('match', 'update_orange_wins', data => {
-    const orangeWins = data as number
-    setState(state => ({ ...state, orangeWins }))
-  })
-
   ws.subscribe('match', 'update_blue_team', data => {
-    const blue = data as Team
+    const blue = data as MatchTeam
     setState(state => ({ ...state, blue }))
   })
 
   ws.subscribe('match', 'update_orange_team', data => {
-    const orange = data as Team
+    const orange = data as MatchTeam
     setState(state => ({ ...state, orange }))
   })
 

@@ -15,6 +15,12 @@ export const openLogo = async () =>
     filters: [{ name: 'Image', extensions: ['png'] }]
   })
 
+export const logoToBlob = async (path: string) =>
+  new Blob([await readFile(path)], { type: 'image/png' })
+
+export const logoToURL = async (path: string) =>
+  URL.createObjectURL(await logoToBlob(path))
+
 export const saveLogo = async (path: string) => {
   const dir = await logosDir()
 

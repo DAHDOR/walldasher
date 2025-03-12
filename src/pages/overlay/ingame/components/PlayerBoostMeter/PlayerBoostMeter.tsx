@@ -38,11 +38,21 @@ export default function PlayerBoostMeter() {
   let boostMeterRef: SVGSVGElement | null
   const setBoostMeterRef = (el: SVGSVGElement) => (boostMeterRef = el)
 
-  const enterReplay = () =>
-    gsap.to(boostMeterRef, { y: -190, ease: 'power2.out', duration: 1 })
+  const [inReplayPosition, setInReplayPosition] = createSignal(false)
 
-  const exitReplay = () =>
-    gsap.to(boostMeterRef, { y: 0, ease: 'power2.out', duration: 1 })
+  const enterReplay = () => {
+    gsap
+      .to(boostMeterRef, { y: -190, ease: 'power2.out', duration: 1 })
+      .then(() => setInReplayPosition(true))
+      .catch(console.error)
+  }
+
+  const exitReplay = () => {
+    gsap
+      .to(boostMeterRef, { y: 0, ease: 'power2.out', duration: 1 })
+      .then(() => setInReplayPosition(false))
+      .catch(console.error)
+  }
 
   const ws = useWS()
   ws.subscribe('game', 'replay_start', () => {
@@ -58,6 +68,7 @@ export default function PlayerBoostMeter() {
         ref={setBoostMeterRef}
         width={RADIUS * 2}
         height={RADIUS * 2}
+        y={inReplayPosition() ? -190 : 0}
         class="absolute bottom-8 right-14"
       >
         {/* BACKGROUND */}

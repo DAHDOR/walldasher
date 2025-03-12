@@ -36,7 +36,7 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .plugin(
             tauri_plugin_sql::Builder::default()
-                .add_migrations("sqlite:test4.db", db::migrations::get_migrations())
+                .add_migrations("sqlite:test5.db", db::migrations::get_migrations())
                 .build(),
         )
         .plugin(tauri_plugin_store::Builder::new().build())
