@@ -2,7 +2,6 @@ import { useMatchState } from '@/contexts/matchState'
 import { useWS } from '@/contexts/ws'
 import TeamForm from '@components/TeamForm'
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card'
-import { Toaster } from '@components/ui/toast'
 import { createEffect, createSignal } from 'solid-js'
 import MatchBestOf from './MatchBestOf'
 import MatchGameNumber from './MatchGameNumber'
@@ -74,7 +73,6 @@ const Match = () => {
           </div>
         </CardContent>
       </Card>
-      <Toaster class="dark" />
     </div>
   )
 }

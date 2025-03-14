@@ -53,7 +53,7 @@ const BlueGames: Component<AnimatedSVGProps> = ({ setRef }) => {
             </g>
           </g>
           <g id="bluewins">
-            {matchState().blueWins > 3 ? (
+            {matchState().blue.wins > 3 ? (
               <g data-name="4">
                 <polygon
                   class="cls-7"
@@ -65,7 +65,7 @@ const BlueGames: Component<AnimatedSVGProps> = ({ setRef }) => {
                 />
               </g>
             ) : null}
-            {matchState().blueWins > 2 ? (
+            {matchState().blue.wins > 2 ? (
               <g data-name="3">
                 <polygon
                   class="cls-7"
@@ -77,7 +77,7 @@ const BlueGames: Component<AnimatedSVGProps> = ({ setRef }) => {
                 />
               </g>
             ) : null}
-            {matchState().blueWins > 1 ? (
+            {matchState().blue.wins > 1 ? (
               <g data-name="2">
                 <polygon
                   class="cls-7"
@@ -89,7 +89,7 @@ const BlueGames: Component<AnimatedSVGProps> = ({ setRef }) => {
                 />
               </g>
             ) : null}
-            {matchState().blueWins > 0 ? (
+            {matchState().blue.wins > 0 ? (
               <g data-name="1">
                 <polygon
                   class="cls-7"
@@ -149,7 +149,7 @@ const OrangeGames: Component<AnimatedSVGProps> = ({ setRef }) => {
             </g>
           </g>
           <g id="orangewins">
-            {matchState().orangeWins > 3 ? (
+            {matchState().orange.wins > 3 ? (
               <g data-name="4">
                 <polygon
                   class="cls-2"
@@ -161,7 +161,7 @@ const OrangeGames: Component<AnimatedSVGProps> = ({ setRef }) => {
                 />
               </g>
             ) : null}
-            {matchState().orangeWins > 2 ? (
+            {matchState().orange.wins > 2 ? (
               <g data-name="3">
                 <polygon
                   class="cls-2"
@@ -173,7 +173,7 @@ const OrangeGames: Component<AnimatedSVGProps> = ({ setRef }) => {
                 />
               </g>
             ) : null}
-            {matchState().orangeWins > 1 ? (
+            {matchState().orange.wins > 1 ? (
               <g data-name="2">
                 <polygon
                   class="cls-2"
@@ -185,7 +185,7 @@ const OrangeGames: Component<AnimatedSVGProps> = ({ setRef }) => {
                 />
               </g>
             ) : null}
-            {matchState().orangeWins > 0 ? (
+            {matchState().orange.wins > 0 ? (
               <g data-name="1">
                 <polygon
                   class="cls-2"
@@ -234,6 +234,7 @@ const Games: Component<AnimatedSVGProps> = ({ setRef }) => {
 
 const BlueTeam: Component<AnimatedSVGProps> = ({ setRef }) => {
   const gameState = useGameState()
+  const matchState = useMatchState()
   return (
     <>
       <mask id="blueteam-mask">
@@ -243,7 +244,13 @@ const BlueTeam: Component<AnimatedSVGProps> = ({ setRef }) => {
         <g ref={setRef} id="blueteam">
           <g data-name="logo">
             <polygon class="cls-4" points="24 108 120 108 96 36 0 36 24 108" />
-            <image href={unknown} x={36} y={47} width={48} height={48} />
+            <image
+              href={matchState().blue.logo_url || unknown}
+              x={36}
+              y={47}
+              width={48}
+              height={48}
+            />
           </g>
           <g data-name="name">
             <polygon class="cls-3" points="118 108 450 108 426 36 94 36 118 108" />
@@ -273,6 +280,7 @@ const BlueTeam: Component<AnimatedSVGProps> = ({ setRef }) => {
 
 const OrangeTeam: Component<AnimatedSVGProps> = ({ setRef }) => {
   const gameState = useGameState()
+  const matchState = useMatchState()
   return (
     <>
       <mask id="orangeteam-mask">
@@ -282,7 +290,13 @@ const OrangeTeam: Component<AnimatedSVGProps> = ({ setRef }) => {
         <g ref={setRef} id="orangeteam">
           <g data-name="logo">
             <polygon class="cls-4" points="1192 108 1096 108 1120 36 1216 36 1192 108" />
-            <image href={unknown} x={1133} y={47} width={48} height={48} />
+            <image
+              href={matchState().orange.logo_url || unknown}
+              x={1133}
+              y={47}
+              width={48}
+              height={48}
+            />
           </g>
           <g data-name="name">
             <polygon class="cls-3" points="1098 108 766 108 790 36 1122 36 1098 108" />

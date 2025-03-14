@@ -4,6 +4,7 @@ import { GameStateProvider } from '@/contexts/gameState'
 import { MatchStateProvider } from '@/contexts/matchState'
 import { SnapshotProvider } from '@/contexts/snapshot'
 import { WSProvider } from '@/contexts/ws'
+import { Toaster } from '@components/ui/toast'
 import {
   ColorModeProvider,
   ColorModeScript,
@@ -22,6 +23,7 @@ const Main: Component = () => {
             <ColorModeProvider storageManager={storageManager}>
               <div class="overflow-hidden">
                 <Pages />
+                <Toaster class="dark" />
               </div>
             </ColorModeProvider>
           </SnapshotProvider>

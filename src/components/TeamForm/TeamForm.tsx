@@ -21,6 +21,7 @@ import {
   TextFieldErrorMessage,
   TextFieldInput
 } from '@components/ui/text-field'
+import { showToast } from '@components/ui/toast'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { logoToBlob, openLogo } from '@lib/images'
 import { MatchTeam } from '@models/MatchState'
@@ -36,7 +37,9 @@ interface MatchTeamFormProps {
 const TeamForm = (props: MatchTeamFormProps) => {
   const bestOf = props.bestOf
   const [team, setTeam] = props.team
-  const [logoPath, setLogoPath] = createSignal(team().logo_url)
+  const [logoPath, setLogoPath] = createSignal(
+    !/.*\.png$/.exec(team().logo_url) ? '' : team().logo_url
+  )
   const [logoPathError, setLogoPathError] = createSignal(false)
   const [logoLoading, setLogoLoading] = createSignal(false)
 
@@ -50,7 +53,10 @@ const TeamForm = (props: MatchTeamFormProps) => {
     setLogoLoading(true)
     logoToBlob(logoPath())
       .then(blob => setTeam(team => ({ ...team, logo_url: URL.createObjectURL(blob) })))
-      .catch(console.error)
+      .then(() =>
+        showToast({ title: '¡Logo actualizado exitosamente!', variant: 'success' })
+      )
+      .catch(() => showToast({ title: 'Error al actualizar el logo.', variant: 'error' }))
     setLogoLoading(false)
   }
 
@@ -80,7 +86,7 @@ const TeamForm = (props: MatchTeamFormProps) => {
                     variant="outline"
                     class="hover:bg-transparent p-2 hover:cursor-default"
                   >
-                    <img src={logoPath()} class="h-6" />
+                    <img src={team().logo_url} class="h-6" />
                   </Button>
                 </DialogHeader>
                 <div class="flex flex-col items-center">
