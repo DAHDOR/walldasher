@@ -3,21 +3,268 @@ import { useSnapshot } from '@/contexts/snapshot'
 import { DeltaBar } from '@components/ui/delta-bar'
 import { Col, Grid } from '@components/ui/grid'
 import { USPlayer } from '@models/ingame/events/UpdateState/USPlayer'
-import { Component, createEffect } from 'solid-js'
+import { Component, createSignal, onMount, createEffect } from 'solid-js';
 import blueLogoBlock from './assets/blueLogoBlock.svg'
-import blueMatchLostBlock from './assets/blueMatchLostBlock.svg'
-import blueMatchWonBlock from './assets/blueMatchWonBlock.svg'
 import blueNameBlock from './assets/blueNameBlock.svg'
 import blueScoreBlock from './assets/blueScoreBlock.svg'
 import orangeLogoBlock from './assets/orangeLogoBlock.svg'
-import orangeMatchLostBlock from './assets/orangeMatchLostBlock.svg'
-import orangeMatchWonBlock from './assets/orangeMatchWonBlock.svg'
 import orangeNameBlock from './assets/orangeNameBlock.svg'
 import orangeScoreBlock from './assets/orangeScoreBlock.svg'
 import bg from './assets/PostGameBG.png'
-import MatchBestOf from '@pages/app/match/MatchBestOf'
+import gsap from 'gsap'
+
+let Blue = '22b0ff';
+let LightBlue = '36d0ff';
+let Orange = 'ff8a15';
+let LightOrange = 'ffbc00';
+
+let ColorA = Blue;
+let ColorB = LightBlue;
+
+interface AnimatedSVGProps {
+  setRef: (el: SVGSVGElement) => void
+}
+
+const LineAtoRight: Component<AnimatedSVGProps> = ({ setRef }) => {
+  return (
+    <svg ref={setRef} width="300" height="1080" style="position: absolute;">
+      <g>
+        <path
+          style={`fill:#${ColorA};stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1`}
+          d="M 0,0 150,540 0,1080 H 150 L 300,540 150,0 Z"
+          id="path1"
+        />
+      </g>
+    </svg>
+  )
+}
+
+const LineBtoRight: Component<AnimatedSVGProps> = ({ setRef }) => {
+  return (
+    <svg ref={setRef} width="300" height="1080" style="position: absolute;">
+      <g>
+        <path
+          style={`fill:#${ColorB};stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1`}
+          d="M 0,0 150,540 0,1080 H 150 L 300,540 150,0 Z"
+          id="path1"
+        />
+      </g>
+    </svg>
+  )
+}
+
+const LineAtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
+  return (
+    <svg ref={setRef} width="300" height="1080" style="position: absolute;">
+        <g transform="scale(-1 1) translate(-300 0)">
+            <path
+                style={`fill:#${ColorA};stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1`}
+                d="M 0,0 150,540 0,1080 H 150 L 300,540 150,0 Z"
+                id="path1"
+            />
+        </g>
+    </svg>
+  )
+}
+
+const LineBtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
+  return (
+    <svg ref={setRef} width="300" height="1080" style="position: absolute;">
+        <g transform="scale(-1 1) translate(-300 0)">
+            <path
+                style={`fill:#${ColorB};stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1`}
+                d="M 0,0 150,540 0,1080 H 150 L 300,540 150,0 Z"
+                id="path1"
+            />
+        </g>
+    </svg>
+  )
+}
 
 const PostGame: Component = () => {
+  const stats = useSnapshot()
+  const length = 20
+  const durationSecs = 2.5
+  const extraSpaceMultiplier = 300 * 5
+  const [svgElementsAtoRight, setSvgElementsAtoRight] = createSignal<(SVGSVGElement | undefined)[]>([])
+  const [svgElementsBtoRight, setSvgElementsBtoRight] = createSignal<(SVGSVGElement | undefined)[]>([])
+  const [svgElementsAtoLeft, setSvgElementsAtoLeft] = createSignal<(SVGSVGElement | undefined)[]>([])
+  const [svgElementsBtoLeft, setSvgElementsBtoLeft] = createSignal<(SVGSVGElement | undefined)[]>([])
+
+  onMount(() => {
+    enter()
+  })
+
+  const start = gsap.timeline({paused: true, repeat: 0})
+
+  const setStart = () => {
+    svgElementsAtoRight().forEach((el, i) => {
+      gsap.set(el, { x: 960 + extraSpaceMultiplier - 300 * i})
+      start.to(el, { x: -300 - 300 * i , duration: durationSecs, ease: 'sine.in' }, 0)
+    })
+
+    svgElementsBtoRight().forEach((el, i) => {
+      gsap.set(el, { x: 810 + extraSpaceMultiplier - 300 * i});
+      start.to(el, { x: -450 - 300 * i , duration: durationSecs, ease: 'sine.in' }, 0)
+    })
+
+    svgElementsAtoLeft().forEach((el, i) => {
+      gsap.set(el, { x: -960 - extraSpaceMultiplier + 300 * i});
+      start.to(el, { x: 300 + 300 * i , duration: durationSecs, ease: 'sine.in' }, 0)
+    })
+
+    svgElementsBtoLeft().forEach((el, i) => {
+      gsap.set(el, { x: -810 - extraSpaceMultiplier + 300 * i});
+      start.to(el, { x: 450 + 300 * i , duration: durationSecs, ease: 'sine.in' }, 0)
+    })
+
+    start.play();
+  }
+
+  const enter = () => {
+    setStart()
+  }
+
+  {if (stats().winner === stats().teams[0].name){
+    ColorA = Blue
+    ColorB = LightBlue
+  } else {
+    ColorA = Orange
+    ColorB = LightOrange
+  }}
+
+  const [lightOrangeStar, setLightOrangeStar] = createSignal(`
+    <svg
+      width="50"
+      height="200"
+      viewBox="0 0 50 200"
+      version="1.1"
+      id="svg1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:svg="http://www.w3.org/2000/svg">
+      <defs
+        id="defs1" />
+      <g
+        id="layer1">
+        <path
+          style="fill:#ffbc00;stroke-width:14.1421;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1"
+          d="M 0,200 12.5,100 50,0 37.5,100 0,200"
+          id="path2" />
+      </g>
+    </svg>`
+  );
+  const [lightBlueStar, setLightBlueStar] = createSignal(`
+    <svg
+      width="50"
+      height="200"
+      viewBox="0 0 50 200"
+      version="1.1"
+      id="svg1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:svg="http://www.w3.org/2000/svg">
+      <defs
+        id="defs1" />
+      <g
+        id="layer1">
+        <path
+          style="fill:#36d0ff;stroke-width:14.1421;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1"
+          d="M 0,200 12.5,100 50,0 37.5,100 0,200"
+          id="path2" />
+      </g>
+    </svg>
+    `);
+  const [orangeStar, setOrangeStar] = createSignal(`
+    <svg
+      width="50"
+      height="200"
+      viewBox="0 0 50 200"
+      version="1.1"
+      id="svg1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:svg="http://www.w3.org/2000/svg">
+      <defs
+        id="defs1" />
+      <g
+        id="layer1">
+        <path
+          style="fill:#ff8a15;stroke-width:14.1421;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1"
+          d="M 0,200 12.5,100 50,0 37.5,100 0,200"
+          id="path2" />
+      </g>
+    </svg>`
+  );
+  const [blueStar, setBlueStar] = createSignal(`
+    <svg
+      width="50"
+      height="200"
+      viewBox="0 0 50 200"
+      version="1.1"
+      id="svg1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:svg="http://www.w3.org/2000/svg">
+      <defs
+        id="defs1" />
+      <g
+        id="layer1">
+        <path
+          style="fill:#22b0ff;stroke-width:14.1421;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1"
+          d="M 0,200 12.5,100 50,0 37.5,100 0,200"
+          id="path2" />
+      </g>
+    </svg>`
+  );
+
+  onMount(() => {
+    const numStars = 25;
+    const container = document.getElementById("starry-sky");
+
+    if (!container) return;
+
+    const stars = [lightOrangeStar, lightBlueStar, orangeStar, blueStar];
+
+    for (let i = 0; i < numStars; i++) {
+      const star = document.createElement("div");
+      const randomStar = stars[Math.floor(Math.random() * stars.length)];
+      star.innerHTML = randomStar();
+      star.style.position = "absolute";
+      star.style.pointerEvents = "none";
+
+      const x = Math.round(Math.random() * 36) * 50
+      const y = Math.round(Math.random() * 4) * 200 + 50
+      const opacity = Math.random()/4;
+
+      star.style.left = `${x}px`;
+      star.style.top = `${y}px`;
+      star.style.opacity = opacity.toString();
+
+      container.appendChild(star);
+
+      const flicker = () => {
+        const fadeInDuration = Math.random() * 10;
+        const fadeOutDuration = Math.random() * 10;
+        const delay = Math.random() * 5;
+
+        gsap.to(star, {
+          opacity: 0.25,
+          duration: fadeInDuration,
+          ease: "power1.inOut",
+          onComplete: () => {
+            gsap.to(star, {
+              opacity: 0,
+              duration: fadeOutDuration,
+              ease: "power1.inOut",
+              onComplete: () => {
+                setTimeout(flicker, delay * 1000);
+              },
+            });
+          },
+        });
+      };
+
+      flicker();
+    }
+  });
+
   let players0: USPlayer[]
   let players1: USPlayer[]
   let scoreTotal0: number = 0
@@ -36,7 +283,6 @@ const PostGame: Component = () => {
 
   const matchState = useMatchState()
 
-  const stats = useSnapshot()
   const snapState = () => stats()
   createEffect(() => {
     players0 = snapState().players.filter(player => player.team === 0)
@@ -63,16 +309,34 @@ const PostGame: Component = () => {
       shotsTotal1 = shotsTotal1 + player.shots
       savesTotal1 = savesTotal1 + player.saves
     })
-    gameWins0 = matchState().blueWins
-    gameWins1 = matchState().orangeWins
+    gameWins0 = matchState().blue.wins
+    gameWins1 = matchState().orange.wins
     firstTo = (matchState().bestOf + 1) / 2
   }
   return (
     <>
-      <div
-        class="w-[1920px] h-[1080px] bg-[image:var(--bg)] bg-cotain bg-center"
-        style={{ '--bg': `url(${bg})` }}
-      >
+      <div class="absolute w-[1920px] h-[1080px] z-20">
+        <div class="overflow-hidden flex flex-row absolute w-[960px] h-[1080px]">
+          {Array.from({ length }, (_, index) => {
+            if (index % 2 === 0) {
+              return <LineAtoRight setRef={(el) => setSvgElementsAtoRight((prev) => [...prev, el])} />
+            } else {
+              return <LineBtoRight setRef={(el) => setSvgElementsBtoRight((prev) => [...prev, el])} />
+            }
+          })}
+        </div>
+        <div class="overflow-hidden flex flex-row-reverse absolute w-[960px] h-[1080px] translate-x-[960px]">
+          {Array.from({ length }, (_, index) => {
+            if (index % 2 === 0) {
+              return <LineAtoLeft setRef={(el) => setSvgElementsAtoLeft((prev) => [...prev, el])} />
+            } else {
+              return <LineBtoLeft setRef={(el) => setSvgElementsBtoLeft((prev) => [...prev, el])} />
+            }
+          })}
+        </div>
+      </div>
+      <div id="starry-sky" class='fixed top-0 left-0 w-[1920px] h-[1080px] overflow-hidden -z-50 bg-black'></div>
+      <div class='w-[1920px] h-[1080px]'>
         <div class="w-[1728px] text-center z-10 mx-auto font-[chivo]">
           <div class="text-gray-300 text-[25px] pt-[30px] font-bold opacity-50">
             {matchState().title}

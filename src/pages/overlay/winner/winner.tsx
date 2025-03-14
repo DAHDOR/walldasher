@@ -70,7 +70,7 @@ const LineBtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
   )
 }
 
-const PostGame: Component = () => {
+const Winner: Component = () => {
   const stats = useSnapshot()
   const length = 20
   const durationSecs = 5
@@ -96,22 +96,22 @@ const PostGame: Component = () => {
   const setStart = () => {
     svgElementsAtoRight().forEach((el, i) => {
       gsap.set(el, { x: -300 - 300 * i })
-      start.to(el, { x: 960 + extraSpaceMultiplier - 300 * i, duration: durationSecs, ease: 'linear' }, 0)
+      start.to(el, { x: 960 + extraSpaceMultiplier - 300 * i, duration: durationSecs, ease: 'expoScale(0.5,7,none)' }, 0)
     })
 
     svgElementsBtoRight().forEach((el, i) => {
       gsap.set(el, { x: -450 - 300 * i });
-      start.to(el, { x: 810 + extraSpaceMultiplier- 300 * i, duration: durationSecs, ease: 'linear' }, 0)
+      start.to(el, { x: 810 + extraSpaceMultiplier- 300 * i, duration: durationSecs, ease: 'expoScale(0.5,7,none)' }, 0)
     })
 
     svgElementsAtoLeft().forEach((el, i) => {
       gsap.set(el, { x: 300 + 300 * i });
-      start.to(el, { x: -960 - extraSpaceMultiplier + 300 * i, duration: durationSecs, ease: 'linear' }, 0)
+      start.to(el, { x: -960 - extraSpaceMultiplier + 300 * i, duration: durationSecs, ease: 'expoScale(0.5,7,none)' }, 0)
     })
 
     svgElementsBtoLeft().forEach((el, i) => {
       gsap.set(el, { x: 450 + 300 * i });
-      start.to(el, { x: -810 - extraSpaceMultiplier + 300 * i, duration: durationSecs, ease: 'linear' }, 0)
+      start.to(el, { x: -810 - extraSpaceMultiplier + 300 * i, duration: durationSecs, ease: 'expoScale(0.5,7,none)' }, 0)
     })
 
     start.play();
@@ -161,4 +161,4 @@ const PostGame: Component = () => {
   )
 }
 
-export default PostGame;
+export default Winner;
