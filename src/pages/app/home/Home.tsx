@@ -1,4 +1,3 @@
-import { Callout, CalloutContent } from '@components/ui/callout'
 import {
   Card,
   CardContent,
@@ -6,21 +5,34 @@ import {
   CardHeader,
   CardTitle
 } from '@components/ui/card'
-import { Button } from '@kobalte/core/button'
-import { openUrl } from '@tauri-apps/plugin-opener'
+import { showToast } from '@components/ui/toast'
+import { Button } from '@components/ui/button'
 import { Component } from 'solid-js'
 
+
 const Home: Component = () => {
+  function copyToClipboard(text: string) {
+      navigator.clipboard.writeText(text).then(
+        () =>  {showToast({
+                title: '',
+                description: 'La URL ha sido copiada al portapapeles',
+                variant: 'success',
+                duration: 2500
+              })},
+        err => alert('Failed to copy to clipboard')
+      )
+    }
+
   const onIngame = () => {
-    openUrl('http://localhost:9527/overlay/ingame').then().catch(console.error)
+    return 'http://localhost:9527/overlay/ingame'
   }
 
   const onWinner = () => {
-    openUrl('http://localhost:9527/overlay/winner').then().catch(console.error)
+    return 'http://localhost:9527/overlay/winner'
   }
 
   const onPostgame = () => {
-    openUrl('http://localhost:9527/overlay/postgame').then().catch(console.error)
+    return 'http://localhost:9527/overlay/postgame'
   }
 
   return (
@@ -29,34 +41,31 @@ const Home: Component = () => {
       <Card>
         <CardHeader>
           <CardTitle>Overlays</CardTitle>
-          <CardDescription>Estos son los links de los overlays.</CardDescription>
+          <CardDescription>Links de los overlays.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div class="flex flex-col gap-4">
-            <p>
-              En juego:{' '}
-              <Button class="underline" onClick={onIngame}>
-                http://localhost:9527/overlay/ingame
+            <div class="flex flex-col gap-4">
+              {/* items-center */}
+            {/* <div class="flex space-x-2 sm:space-x-4 md:space-x-6 lg:space-x-8 xl:space-x-12 justify-center"> */}
+            <p class="flex flex-col gap-4">
+              Marcador ingame: 'descripcion'
+              <Button class="w-40 " onclick={() => copyToClipboard(onIngame())}>
+                Ingame Overlay
               </Button>
             </p>
-            <p>
-              Ganador:{' '}
-              <Button class="underline" onClick={onWinner}>
-                http://localhost:9527/overlay/winner
+            <p class="flex flex-col gap-4">
+              Ganador: 'descripcion'
+              <Button class="w-40" onclick={() => copyToClipboard(onWinner())}>
+                Winner Overlay
               </Button>
             </p>
-            <p>
-              Post juego:{' '}
-              <Button class="underline" onClick={onPostgame}>
-                http://localhost:9527/overlay/postgame
+            <p class="flex flex-col gap-4">
+              Scoreboard postjuego: 'descripcion'
+              <Button class="w-40" onclick={() => copyToClipboard(onPostgame())}>
+                Postgame Overlay
               </Button>
             </p>
-            <Callout variant="warning" class="mt-2">
-              <CalloutContent class="mb-[10px]">
-                En modo de desarrollo el puerto es 1420.
-              </CalloutContent>
-            </Callout>
-          </div>
+            </div>
         </CardContent>
       </Card>
     </div>
