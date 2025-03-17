@@ -1,6 +1,7 @@
 import { Spinner } from '@assets'
 import { Button } from '@components/ui/button'
 import { TextField, TextFieldInput, TextFieldLabel } from '@components/ui/text-field'
+import { showToast } from '@components/ui/toast'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
 import { ErrorKind } from '@lib/error'
 import { invoke } from '@tauri-apps/api/core'
@@ -25,22 +26,17 @@ interface APIFormControl {
   setValue: Setter<string>
   state: Accessor<APIFormControlState>
   setState: Setter<APIFormControlState>
-  errors: Accessor<string[]>
-  setErrors: Setter<string[]>
 }
 
 function createAPIFormControl(initial: string) {
   const [value, setValue] = createSignal(initial)
   const [state, setState] = createSignal(APIFormControlState.DIRTY)
-  const [errors, setErrors] = createSignal<string[]>([])
 
   const control: APIFormControl = {
     value,
     setValue,
     state,
-    setState,
-    errors,
-    setErrors
+    setState
   }
 
   return control
@@ -53,7 +49,7 @@ interface APIFormProps {
 }
 
 const APIForm: Component<APIFormProps> = ({ label, placeholder, info }) => {
-  const { value, setValue, state, setState, errors, setErrors } = createAPIFormControl('')
+  const { value, setValue, state, setState } = createAPIFormControl('')
 
   const onInput = (e: Event) => {
     setValue((e.target as HTMLInputElement).value)
@@ -62,17 +58,40 @@ const APIForm: Component<APIFormProps> = ({ label, placeholder, info }) => {
 
   const onValidate = () => {
     setState(VALIDATING)
-    setErrors([])
     switch (label) {
       case 'Start.gg':
         invoke('set_start_key', { key: value() })
-          .then(res => (res ? setState(VALID) : setState(INVALID)))
+          .then(res => {
+            if (res) {
+              showToast({
+                title: 'Llave válida',
+                description: 'Llave aplicada con éxito.',
+                variant: 'success'
+              })
+              setState(VALID)
+            } else {
+              showToast({
+                title: 'Llave inválida',
+                description: 'La llave de la API de Start.gg no es válida.',
+                variant: 'error'
+              })
+              setState(INVALID)
+            }
+          })
           .catch((error: ErrorKind) => {
             if (error.kind === 'invalidKey') {
-              setErrors(['Llave inválida'])
+              showToast({
+                title: 'Llave inválida',
+                description: 'La llave de la API de Start.gg no es válida.',
+                variant: 'error'
+              })
             } else {
               console.error(error)
-              setErrors(['Error desconocido'])
+              showToast({
+                title: 'Error de conexión',
+                description: 'Comprueba tu conexión e intenta de nuevo.',
+                variant: 'error'
+              })
             }
             setState(INVALID)
           })
@@ -82,7 +101,12 @@ const APIForm: Component<APIFormProps> = ({ label, placeholder, info }) => {
           .then(() => setState(VALID))
           .catch(error => {
             console.error(error)
-            setErrors(['Error desconocido'])
+            showToast({
+              title: 'Error de conexión',
+              description:
+                'Comprueba que el plugin SOS está cargado en Rocket League y la URL es correcta.',
+              variant: 'error'
+            })
             setState(INVALID)
           })
     }
