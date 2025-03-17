@@ -13,13 +13,21 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["./src/components/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@start/*": ["./src/start/*"],
       "@models/*": ["./src/models/*"],
       "@assets/*": ["./src/assets/*"],
       "@assets": ["./src/assets"],
       "@pages/*": ["./src/pages/*"],
       "@lib/*": ["./src/lib/*"],
       "@/*": ["./src/*"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "@0no-co/graphqlsp",
+        "schema": "./schema.graphql"
+      }
+    ]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

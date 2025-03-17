@@ -4,7 +4,7 @@
   "author": "Walldashing Studio",
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "concurrently \"vite dev\" \"bun generate\"",
     "build": "vite build",
     "dev:tauri": "tauri dev",
     "build:tauri": "tauri build",
@@ -14,14 +14,20 @@
     "eslint": "eslint src",
     "eslint:fix": "eslint src --fix",
     "tauri": "tauri",
-    "test": "vitest"
+    "test": "vitest",
+    "generate": "graphql-codegen --config src/start/codegen.ts"
   },
   "license": "MIT",
   "devDependencies": {
+    "@0no-co/graphqlsp": "^1.12.16",
     "@eslint/js": "9.19.0",
+    "@graphql-codegen/cli": "^5.0.5",
+    "@graphql-codegen/schema-ast": "^4.1.0",
     "@ianvs/prettier-plugin-sort-imports": "4.4.1",
+    "@parcel/watcher": "^2.5.1",
     "@types/node": "^22.12.0",
     "autoprefixer": "10.4.20",
+    "concurrently": "^9.1.2",
     "eslint": "9.19.0",
     "eslint-config-prettier": "9.1.0",
     "jsdom": "^26.0.0",
@@ -39,7 +45,9 @@
     "vitest": "^3.0.5"
   },
   "dependencies": {
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@kobalte/core": "^0.13.9",
+    "@solid-primitives/graphql": "^2.2.0",
     "@solidjs/router": "^0.15.3",
     "@tauri-apps/api": "^2.3.0",
     "@tauri-apps/cli": "2.2.7",
@@ -51,6 +59,7 @@
     "@tauri-apps/plugin-store": "~2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "graphql": "^16.10.0",
     "gsap": "^3.12.7",
     "solid-forms": "^0.5.2",
     "solid-heroicons": "^3.2.4",

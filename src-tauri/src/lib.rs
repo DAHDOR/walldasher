@@ -1,14 +1,8 @@
 mod db;
 mod relay;
 mod rl;
-mod start;
-use reqwest::Client;
-use rl::client::{connect_to_rl, RLClient, RLInner};
+use rl::client::{connect_to_rl, connect_to_rl_without_validation, RLClient, RLInner};
 use serde_json::from_value;
-use start::{
-    client::{build, Start, StartInner},
-    query::{bracket_matches, event_players, set_start_key, tournament, tournaments},
-};
 use tauri::Manager;
 use tauri_plugin_store::StoreExt;
 
@@ -44,13 +38,6 @@ pub fn run() {
         .setup(move |app| {
             let store = app.store("store.json").unwrap();
 
-            let client = match store.get("key") {
-                Some(key) => build(key.as_str().unwrap_or_default()).unwrap_or_default(),
-                None => Client::default(),
-            };
-
-            app.manage(Start::new(StartInner { client }));
-
             let url = match store.get("rl_url") {
                 Some(url) => from_value::<String>(url).unwrap_or("localhost:49122".to_string()),
                 None => "localhost:49122".to_string(),
@@ -66,12 +53,8 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            set_start_key,
-            tournaments,
-            tournament,
-            bracket_matches,
-            event_players,
-            connect_to_rl
+            connect_to_rl,
+            connect_to_rl_without_validation
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -4,12 +4,8 @@
   "description": "Capability for the main window",
   "windows": ["main"],
   "permissions": [
-    "allow-set-start-key",
-    "allow-tournaments",
-    "allow-tournament",
-    "allow-bracket-matches",
-    "allow-event-players",
     "allow-connect-to-rl",
+    "allow-connect-to-rl-without-validation",
     "core:path:default",
     "core:event:default",
     "core:window:default",

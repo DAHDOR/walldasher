@@ -11,7 +11,7 @@ query Tournaments {
         id
         name
         slug
-        admins {
+        admins(roles: ["admin", "manager", "bracketManager", "reporter"]) {
           id
         }
       }
@@ -19,7 +19,7 @@ query Tournaments {
   }
 }
 
-query Tournament($slug: String) {
+query TournamentRounds($slug: String) {
   tournament(slug: $slug) {
     id
     name
@@ -50,15 +50,15 @@ query Tournament($slug: String) {
     }
     admins(roles: ["admin", "manager", "bracketManager", "reporter"]) {
       id
-      player {
-        gamerTag
-      }
     }
   }
 }
 
 query PhaseGroupSets($phaseGroupId: ID!) {
   phaseGroup(id: $phaseGroupId) {
+    id
+    displayIdentifier
+    bracketType
     sets {
       nodes {
         id

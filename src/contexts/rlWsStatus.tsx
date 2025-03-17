@@ -27,7 +27,7 @@ const RlWsStatusProvider = ({ children }) => {
   const connect = async () => {
     const store = await load('store.json')
     const url = await store.get<string>('rl_url')
-    await invoke('connect_to_rl', { url })
+    await invoke('connect_to_rl_without_validation', { url })
   }
 
   connect().catch(console.error)

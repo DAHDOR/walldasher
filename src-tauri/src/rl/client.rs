@@ -7,7 +7,11 @@ use std::time::Duration;
 use tauri::async_runtime::JoinHandle;
 use tauri::{Manager, Runtime};
 use tauri_plugin_store::StoreExt;
+use tokio::net::TcpStream;
 use tokio::sync::Mutex;
+use tokio_tungstenite::tungstenite::handshake::client::Response;
+use tokio_tungstenite::MaybeTlsStream;
+use tokio_tungstenite::WebSocketStream;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
 
 pub type RLClient = Mutex<RLInner>;
@@ -36,6 +40,15 @@ fn send_connected(relay: &UnboundedSender<Message>) {
 
 fn send_disconnected(relay: &UnboundedSender<Message>) {
     event_to_relay(relay, "rl:disconnected", json!(""));
+}
+
+async fn try_connect(
+    url: &String,
+) -> Result<
+    (WebSocketStream<MaybeTlsStream<TcpStream>>, Response),
+    tokio_tungstenite::tungstenite::Error,
+> {
+    connect_async(format!("ws://{}", url)).await
 }
 
 async fn connect(url: &String, relay: &UnboundedSender<Message>) {
@@ -90,7 +103,7 @@ fn set_url<R: Runtime>(app: &tauri::AppHandle<R>, url: &String) {
 }
 
 #[tauri::command]
-pub async fn connect_to_rl<R: Runtime>(
+pub async fn connect_to_rl_without_validation<R: Runtime>(
     app: tauri::AppHandle<R>,
     url: String,
 ) -> Result<(), String> {
@@ -109,6 +122,21 @@ pub async fn connect_to_rl<R: Runtime>(
     });
 
     app.state::<RLClient>().lock().await.handle = Some(handle);
+
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn connect_to_rl<R: Runtime>(
+    app: tauri::AppHandle<R>,
+    url: String,
+) -> Result<(), String> {
+    match try_connect(&url).await {
+        Ok(_) => (),
+        Err(_) => return Err(format!("connection-error")),
+    }
+
+    connect_to_rl_without_validation(app, url).await?;
 
     Ok(())
 }
