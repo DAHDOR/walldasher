@@ -235,6 +235,37 @@ export async function getEventsByTournament(tournamentId: number) {
     }
   }
 
+// CONSULTA PARA OBTENER LOS EQUIPOS A TRAVÉS DEL ID
+
+export async function getTeamById(teamId: number): Promise<Team | undefined> {
+  try {
+    const db = migration;
+    const result = await db.select<Team[]>(
+      'SELECT * FROM team WHERE id = $1', 
+      [teamId]
+    );
+    return result[0]; // Retorna el primer equipo encontrado (debería ser único)
+  } catch (error) {
+    console.error('Error al obtener el equipo por ID:', error);
+    throw error;
+  }
+}
+
+// CONSULTA PARA OBTENER un EQUIPO a través de su campo Name 
+
+export async function getTeamsByName(teamName: string): Promise<Team[]> {
+  try {
+    const db = migration;
+    return await db.select<Team[]>(
+      'SELECT * FROM team WHERE name = $1', 
+      [teamName]
+    );
+  } catch (error) {
+    console.error('Error al obtener equipos por nombre:', error);
+    throw error;
+  }
+}
+
 // CONSULTA PARA OBTENER PHASES POR EVENTO
 export async function getPhasesByEvent(eventId: number) {
   try {
