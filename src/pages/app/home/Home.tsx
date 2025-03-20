@@ -45,32 +45,32 @@ const Home: Component = () => {
       <Card>
         <CardHeader>
           <CardTitle>Overlays</CardTitle>
-          <CardDescription>Links de los overlays.</CardDescription>
+          <CardDescription>Haga click en el boton de la interfaz que desee para copiar el link de la interfaz.</CardDescription>
         </CardHeader>
         <CardContent>
         <div class="grid grid-cols-2 gap-4">
               {/* items-center */}
             {/* <div class="flex space-x-2 sm:space-x-4 md:space-x-6 lg:space-x-8 xl:space-x-12 justify-center"> */}
             <p class="flex flex-col text-center items-center gap-2">
-              Marcador ingame: 'descripcion'
+              {/* Marcador ingame: 'descripcion' */}
               <Button class="w-40 bg-white hover:bg-stone-300 text-black" onclick={() => copyToClipboard(onIngame())}>
                 Ingame Overlay
               </Button>
             </p>
             <p class="flex flex-col text-center items-center gap-2">
-              Pantalla de Round Robin: 'descripcion'
+              {/* Pantalla de Round Robin: 'descripcion' */}
               <Button class="w-40 bg-white hover:bg-stone-300 text-black" onclick={() => copyToClipboard(onRoundrobin())}>
                 Round Robin Overlay
               </Button>
             </p>
             <p class="flex flex-col text-center items-center gap-2">
-              Pantalla de Next Up: 'descripcion'
+              {/* Pantalla de Next Up: 'descripcion' */}
               <Button class="w-40 bg-white hover:bg-stone-300 text-black" onclick={() => copyToClipboard(onNextup())}>
                 Next Up Overlay
               </Button>
             </p>
             <p class="flex flex-col text-center items-center gap-2">
-              Pantalla de Fases: 'descripcion'
+              {/* Pantalla de Fases: 'descripcion' */}
               <Button class="w-40 bg-white hover:bg-stone-300 text-black" onclick={() => copyToClipboard(onPhase())}>
                 Phase Overlay
               </Button>
