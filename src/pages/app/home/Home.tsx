@@ -27,12 +27,16 @@ const Home: Component = () => {
     return 'http://localhost:9527/overlay/ingame'
   }
 
-  const onWinner = () => {
-    return 'http://localhost:9527/overlay/winner'
+  const onRoundrobin = () => {
+    return 'http://localhost:9527/overlay/roundrobin'
   }
 
-  const onPostgame = () => {
-    return 'http://localhost:9527/overlay/postgame'
+  const onNextup = () => {
+    return 'http://localhost:9527/overlay/nextup'
+  }
+
+  const onPhase = () => {
+    return 'http://localhost:9527/overlay/phase'
   }
 
   return (
@@ -44,28 +48,34 @@ const Home: Component = () => {
           <CardDescription>Links de los overlays.</CardDescription>
         </CardHeader>
         <CardContent>
-            <div class="flex flex-col gap-4">
+        <div class="grid grid-cols-2 gap-4">
               {/* items-center */}
             {/* <div class="flex space-x-2 sm:space-x-4 md:space-x-6 lg:space-x-8 xl:space-x-12 justify-center"> */}
-            <p class="flex flex-col gap-4">
+            <p class="flex flex-col text-center items-center gap-2">
               Marcador ingame: 'descripcion'
-              <Button class="w-40 " onclick={() => copyToClipboard(onIngame())}>
+              <Button class="w-40 bg-white hover:bg-stone-300 text-black" onclick={() => copyToClipboard(onIngame())}>
                 Ingame Overlay
               </Button>
             </p>
-            <p class="flex flex-col gap-4">
-              Ganador: 'descripcion'
-              <Button class="w-40" onclick={() => copyToClipboard(onWinner())}>
-                Winner Overlay
+            <p class="flex flex-col text-center items-center gap-2">
+              Pantalla de Round Robin: 'descripcion'
+              <Button class="w-40 bg-white hover:bg-stone-300 text-black" onclick={() => copyToClipboard(onRoundrobin())}>
+                Round Robin Overlay
               </Button>
             </p>
-            <p class="flex flex-col gap-4">
-              Scoreboard postjuego: 'descripcion'
-              <Button class="w-40" onclick={() => copyToClipboard(onPostgame())}>
-                Postgame Overlay
+            <p class="flex flex-col text-center items-center gap-2">
+              Pantalla de Next Up: 'descripcion'
+              <Button class="w-40 bg-white hover:bg-stone-300 text-black" onclick={() => copyToClipboard(onNextup())}>
+                Next Up Overlay
               </Button>
             </p>
-            </div>
+            <p class="flex flex-col text-center items-center gap-2">
+              Pantalla de Fases: 'descripcion'
+              <Button class="w-40 bg-white hover:bg-stone-300 text-black" onclick={() => copyToClipboard(onPhase())}>
+                Phase Overlay
+              </Button>
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>
