@@ -399,7 +399,7 @@ export async function getBrackets(page?: number, limit?: number): Promise<Bracke
   try {
     const db = migration;
     let query = 'SELECT * FROM bracket';
-    const params: any[] = [];
+    const params: unknown[] = [];
     
     if (page && limit) {
       query += ' LIMIT $1 OFFSET $2';
@@ -430,7 +430,7 @@ export async function getEvents(page?: number, limit?: number): Promise<Event[]>
   try {
     const db = migration;
     let query = 'SELECT * FROM event';
-    const params: any[] = [];
+    const params: unknown[] = [];
     
     if (page && limit) {
       query += ' LIMIT $1 OFFSET $2';
@@ -501,7 +501,7 @@ export async function getPhases(
     }
     
     let query = 'SELECT * FROM phase';
-    const params: any[] = [];
+    const params: unknown[] = [];
     
     if (page && limit) {
       query += ' LIMIT $1 OFFSET $2';
