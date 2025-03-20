@@ -3,6 +3,7 @@ import { Team } from '@models/db'
 
 export interface MatchTeam extends Team {
   wins: number
+  logo_bytes: Uint8Array
   logo: string
 }
 
@@ -12,7 +13,8 @@ const DEFAULT_BLUE_TEAM: MatchTeam = {
   logo_url: unknown,
   tournament: 0,
   wins: 0,
-  logo: ''
+  logo_bytes: null,
+  logo: unknown
 }
 
 const DEFAULT_ORANGE_TEAM: MatchTeam = {
@@ -21,7 +23,8 @@ const DEFAULT_ORANGE_TEAM: MatchTeam = {
   logo_url: unknown,
   tournament: 0,
   wins: 0,
-  logo: ''
+  logo_bytes: null,
+  logo: unknown
 }
 
 export const DEFAULT_MATCH_STATE: MatchState = {

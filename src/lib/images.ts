@@ -10,10 +10,7 @@ export const logosDir = async () => {
 }
 
 export const openLogo = async () =>
-  await open({
-    defaultPath: await logosDir(),
-    filters: [{ name: 'Image', extensions: ['png'] }]
-  })
+  await open({ filters: [{ name: 'Image', extensions: ['png'] }] })
 
 export const logoToBlob = async (path: string) =>
   new Blob([await readFile(path)], { type: 'image/png' })

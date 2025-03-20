@@ -23,10 +23,11 @@ import {
 } from '@components/ui/text-field'
 import { showToast } from '@components/ui/toast'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
-import { logoToBlob, openLogo } from '@lib/images'
+import { openLogo } from '@lib/images'
 import { MatchTeam } from '@models/MatchState'
+import { readFile } from '@tauri-apps/plugin-fs'
 import { Icon } from 'solid-heroicons'
-import { archiveBoxArrowDown, folderPlus } from 'solid-heroicons/solid'
+import { archiveBoxArrowDown, folderPlus, handThumbUp } from 'solid-heroicons/solid'
 import { Accessor, createEffect, createSignal, Match, Signal, Switch } from 'solid-js'
 
 interface MatchTeamFormProps {
@@ -37,11 +38,26 @@ interface MatchTeamFormProps {
 const TeamForm = (props: MatchTeamFormProps) => {
   const bestOf = props.bestOf
   const [team, setTeam] = props.team
-  const [logoPath, setLogoPath] = createSignal(
-    !/.*\.png$/.exec(team().logo_url) ? '' : team().logo_url
-  )
+  const [teamName, setTeamName] = createSignal(team().name)
+  const [logoPath, setLogoPath] = createSignal('')
   const [logoPathError, setLogoPathError] = createSignal(false)
   const [logoLoading, setLogoLoading] = createSignal(false)
+
+  const onTeamNameInput = (e: InputEvent) => {
+    setTeamName((e.target as HTMLInputElement).value)
+    if (teamName().length == 12)
+      showToast({
+        title: 'Aviso',
+        description: 'La longitud máxima del nombre del equipo es de 12 caracteres.',
+        variant: 'warning',
+        duration: 7000
+      })
+  }
+
+  const onTeamNameUpdate = () => {
+    setTeam(team => ({ ...team, name: teamName() }))
+    showToast({ description: 'Nombre del equipo actualizado.', variant: 'success' })
+  }
 
   const onSelectLogo = () => {
     openLogo()
@@ -51,11 +67,16 @@ const TeamForm = (props: MatchTeamFormProps) => {
 
   const onSaveLogo = () => {
     setLogoLoading(true)
-    logoToBlob(logoPath())
-      .then(blob => setTeam(team => ({ ...team, logo_url: URL.createObjectURL(blob) })))
-      .then(() =>
-        showToast({ title: '¡Logo actualizado exitosamente!', variant: 'success' })
-      )
+    readFile(logoPath())
+      .then(logo_bytes => {
+        setTeam(team => ({
+          ...team,
+          logo_bytes,
+          logo: URL.createObjectURL(new Blob([logo_bytes], { type: 'image/png' }))
+        }))
+        showToast({ title: 'Logo actualizado.', variant: 'success' })
+      })
+      .then(() => {})
       .catch(() => showToast({ title: 'Error al actualizar el logo.', variant: 'error' }))
     setLogoLoading(false)
   }
@@ -74,7 +95,7 @@ const TeamForm = (props: MatchTeamFormProps) => {
               <Tooltip>
                 <TooltipTrigger>
                   <DialogTrigger as={Button<'button'>} variant="outline" class="px-2">
-                    <img src={team().logo_url} class="w-6 h-6" />
+                    <img src={team().logo} class="w-6 h-6" />
                   </DialogTrigger>
                 </TooltipTrigger>
                 <TooltipContent>Cambiar logo</TooltipContent>
@@ -86,7 +107,7 @@ const TeamForm = (props: MatchTeamFormProps) => {
                     variant="outline"
                     class="hover:bg-transparent p-2 hover:cursor-default"
                   >
-                    <img src={team().logo_url} class="h-6" />
+                    <img src={team().logo} class="h-6" />
                   </Button>
                 </DialogHeader>
                 <div class="flex flex-col items-center">
@@ -96,7 +117,7 @@ const TeamForm = (props: MatchTeamFormProps) => {
                         <Match when={logoLoading()}>
                           <Spinner />
                         </Match>
-                        <Match when={!logoPathError()}>
+                        <Match when={!logoLoading()}>
                           <Icon path={folderPlus} />
                         </Match>
                       </Switch>
@@ -132,7 +153,14 @@ const TeamForm = (props: MatchTeamFormProps) => {
           </TooltipTrigger>
           <TooltipContent>Cambiar logo</TooltipContent>
         </Tooltip>
-        <CardTitle class="!m-0">{team().name}</CardTitle>
+        <CardTitle class="!m-0 flex-grow">
+          <TextField class="flex flex-row gap-3">
+            <TextFieldInput value={teamName()} onInput={onTeamNameInput} maxLength={12} />
+            <Button variant="outline" class="px-3" onClick={onTeamNameUpdate}>
+              <Icon path={handThumbUp} />
+            </Button>
+          </TextField>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <NumberField

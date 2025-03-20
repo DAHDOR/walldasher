@@ -5,7 +5,7 @@ const config: CodegenConfig = {
     {
       'https://api.start.gg/gql/alpha': {
         headers: {
-          Authorization: 'Bearer a1f9a2bf90a62e3931df098c02ad7126'
+          Authorization: 'Bearer bb44d00b08e43d06cf6d4cb891773ae6'
         }
       }
     }

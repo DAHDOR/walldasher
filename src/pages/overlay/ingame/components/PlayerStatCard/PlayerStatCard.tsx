@@ -1,3 +1,4 @@
+import { useMatchState } from '@contexts/matchState'
 import './PlayerStatCard.css'
 import { useGameState } from '@/contexts/gameState'
 import { GameService } from '@lib/gameService'
@@ -36,6 +37,7 @@ const SVGStat: Component<{ x: number; num: number; label: string }> = ({
 
 export default function PlayerStatCard() {
   const gameState = useGameState()
+  const matchState = useMatchState()
 
   const [targetPlayer, setTargetPlayer] = createSignal<USPlayer | undefined>(undefined)
 
@@ -45,10 +47,8 @@ export default function PlayerStatCard() {
     )
   )
 
-  createEffect(() => console.log(targetPlayer()))
-
   return (
-    <Show when={targetPlayer() && !gameState().isReplay}>
+    <Show when={targetPlayer() && !gameState().isReplay && matchState().isGameInProgress}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 818 36"

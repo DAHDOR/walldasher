@@ -76,16 +76,6 @@ async fn connect(url: &String, relay: &UnboundedSender<Message>) {
             };
 
             msg_to_relay(&relay, &msg);
-
-            let text = match msg.into_text() {
-                Ok(text) => text,
-                Err(e) => {
-                    println!("Error converting message to text: {}", e);
-                    return;
-                }
-            };
-
-            println!("Received a RL message: {}", text);
         })
     };
 

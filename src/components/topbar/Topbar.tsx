@@ -4,6 +4,7 @@ import { Icon } from 'solid-heroicons'
 import { square_2Stack, stop, xMark } from 'solid-heroicons/outline'
 import { minus } from 'solid-heroicons/solid'
 import { Component, createSignal } from 'solid-js'
+import NoInternet from './NoInternet'
 import RLStatus from './RLStatus'
 
 const Topbar: Component = () => {
@@ -33,6 +34,7 @@ const Topbar: Component = () => {
           Walldasher
         </div>
         <RLStatus />
+        <NoInternet />
       </div>
       <div class="flex flex-row items-center justify-center">
         <Button variant="ghost" onclick={minimize} class="cursor-default rounded-none">

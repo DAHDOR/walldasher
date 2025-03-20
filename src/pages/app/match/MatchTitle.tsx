@@ -19,9 +19,9 @@ const MatchTitle = (props: MatchTitleProps) => {
     if (title().length == 32)
       showToast({
         title: 'Aviso',
-        description: 'La longitud máxima del título es de 32 caracteres',
+        description: 'La longitud máxima del título es de 32 caracteres.',
         variant: 'warning',
-        duration: 5000
+        duration: 7000
       })
   })
 

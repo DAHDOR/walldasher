@@ -2412,6 +2412,27 @@ export type TournamentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type TournamentsQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', tournaments?: { __typename?: 'TournamentConnection', nodes?: Array<{ __typename?: 'Tournament', id?: string | null, name?: string | null, slug?: string | null, admins?: Array<{ __typename?: 'User', id?: string | null } | null> | null } | null> | null } | null } | null };
 
+export type TournamentRoundsQueryVariables = Exact<{
+  slug?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type TournamentRoundsQuery = { __typename?: 'Query', tournament?: { __typename?: 'Tournament', id?: string | null, name?: string | null, images?: Array<{ __typename?: 'Image', url?: string | null } | null> | null, events?: Array<{ __typename?: 'Event', id?: string | null, name?: string | null, phases?: Array<{ __typename?: 'Phase', id?: string | null, name?: string | null, phaseOrder?: number | null, phaseGroups?: { __typename?: 'PhaseGroupConnection', nodes?: Array<{ __typename?: 'PhaseGroup', id?: string | null, displayIdentifier?: string | null, bracketType?: BracketType | null, rounds?: Array<{ __typename?: 'Round', id?: string | null, number?: number | null, bestOf?: number | null, startAt?: any | null } | null> | null } | null> | null } | null } | null> | null } | null> | null, admins?: Array<{ __typename?: 'User', id?: string | null } | null> | null } | null };
+
+export type PhaseGroupSetsQueryVariables = Exact<{
+  phaseGroupId: Scalars['ID']['input'];
+}>;
+
+
+export type PhaseGroupSetsQuery = { __typename?: 'Query', phaseGroup?: { __typename?: 'PhaseGroup', id?: string | null, displayIdentifier?: string | null, bracketType?: BracketType | null, sets?: { __typename?: 'SetConnection', nodes?: Array<{ __typename?: 'Set', id?: string | null, identifier?: string | null, winnerId?: number | null, round?: number | null, slots?: Array<{ __typename?: 'SetSlot', slotIndex?: number | null, entrant?: { __typename?: 'Entrant', id?: string | null, name?: string | null } | null } | null> | null, games?: Array<{ __typename?: 'Game', id?: string | null, orderNum?: number | null, entrant1Score?: number | null, entrant2Score?: number | null, winnerId?: number | null } | null> | null } | null> | null } | null } | null };
+
+export type EventPlayersQueryVariables = Exact<{
+  eventId: Scalars['ID']['input'];
+}>;
+
+
+export type EventPlayersQuery = { __typename?: 'Query', event?: { __typename?: 'Event', name?: string | null, tournament?: { __typename?: 'Tournament', id?: string | null } | null, entrants?: { __typename?: 'EntrantConnection', nodes?: Array<{ __typename?: 'Entrant', id?: string | null, name?: string | null, team?: { __typename: 'EventTeam', images?: Array<{ __typename?: 'Image', url?: string | null, type?: string | null } | null> | null } | { __typename: 'GlobalTeam', images?: Array<{ __typename?: 'Image', url?: string | null, type?: string | null } | null> | null } | null, participants?: Array<{ __typename?: 'Participant', id?: string | null, gamerTag?: string | null } | null> | null } | null> | null } | null } | null };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -2454,3 +2475,97 @@ export const TournamentsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<TournamentsQuery, TournamentsQueryVariables>;
+export const TournamentRoundsDocument = new TypedDocumentString(`
+    query TournamentRounds($slug: String) {
+  tournament(slug: $slug) {
+    id
+    name
+    images(type: "profile") {
+      url
+    }
+    events(filter: {videogameId: [14]}) {
+      id
+      name
+      phases {
+        id
+        name
+        phaseOrder
+        phaseGroups {
+          nodes {
+            id
+            displayIdentifier
+            bracketType
+            rounds {
+              id
+              number
+              bestOf
+              startAt
+            }
+          }
+        }
+      }
+    }
+    admins(roles: ["admin", "manager", "bracketManager", "reporter"]) {
+      id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<TournamentRoundsQuery, TournamentRoundsQueryVariables>;
+export const PhaseGroupSetsDocument = new TypedDocumentString(`
+    query PhaseGroupSets($phaseGroupId: ID!) {
+  phaseGroup(id: $phaseGroupId) {
+    id
+    displayIdentifier
+    bracketType
+    sets(perPage: 500) {
+      nodes {
+        id
+        identifier
+        slots {
+          slotIndex
+          entrant {
+            id
+            name
+          }
+        }
+        winnerId
+        round
+        games {
+          id
+          orderNum
+          entrant1Score
+          entrant2Score
+          winnerId
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<PhaseGroupSetsQuery, PhaseGroupSetsQueryVariables>;
+export const EventPlayersDocument = new TypedDocumentString(`
+    query EventPlayers($eventId: ID!) {
+  event(id: $eventId) {
+    name
+    tournament {
+      id
+    }
+    entrants {
+      nodes {
+        id
+        name
+        team {
+          __typename
+          images(type: "profile") {
+            url
+            type
+          }
+        }
+        participants {
+          id
+          gamerTag
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<EventPlayersQuery, EventPlayersQueryVariables>;

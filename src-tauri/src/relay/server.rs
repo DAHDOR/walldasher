@@ -81,7 +81,6 @@ async fn handle_connection(connections: ConnectionMap, raw_stream: TcpStream, ad
     let id_clone = id.clone();
     let write_task = tauri::async_runtime::spawn(async move {
         while let Some(msg) = rx.next().await {
-            println!("Sending message to {}: {}", &id_clone, msg.to_string());
             if write.send(msg).await.is_err() {
                 println!("Error sending message to {}", &id_clone);
                 break;
@@ -239,14 +238,13 @@ async fn send_relay_message(sender_id: &str, msg: &str, conns: &ConnectionMap) {
 
     // Relay message to other connections that are registered for this event.
     let map = conns.lock().await;
-    for (id, conn) in map.iter() {
+    for (_, conn) in map.iter() {
         if conn
             .registered_functions
             .contains(&event_command.to_string())
         {
             let msg = Message::Text(msg.into());
             let _ = conn.tx.unbounded_send(msg);
-            println!("{}> Relayed to {}: {}", sender_id, id, event_command);
         }
     }
 }

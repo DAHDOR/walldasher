@@ -1,5 +1,6 @@
 import { useGameState } from '@/contexts/gameState'
 import { useWS } from '@/contexts/ws'
+import { useMatchState } from '@contexts/matchState'
 import { BoostService } from '@lib/boostService'
 import { GameService } from '@lib/gameService'
 import { USPlayer } from '@models/ingame/events/UpdateState/USPlayer'
@@ -12,6 +13,7 @@ function normalizeRadius(radius: number, thickness: number) {
 
 export default function PlayerBoostMeter() {
   const gameState = useGameState()
+  const matchState = useMatchState()
 
   const [targetPlayer, setTargetPlayer] = createSignal<USPlayer | undefined>(undefined)
 
@@ -63,7 +65,7 @@ export default function PlayerBoostMeter() {
   })
 
   return (
-    <Show when={targetPlayer()}>
+    <Show when={targetPlayer() && matchState().isGameInProgress}>
       <svg
         ref={setBoostMeterRef}
         width={RADIUS * 2}

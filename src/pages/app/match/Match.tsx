@@ -4,7 +4,6 @@ import TeamForm from '@components/TeamForm'
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card'
 import { createEffect, createSignal } from 'solid-js'
 import MatchBestOf from './MatchBestOf'
-import MatchGameNumber from './MatchGameNumber'
 import MatchTitle from './MatchTitle'
 
 const Match = () => {
@@ -13,37 +12,25 @@ const Match = () => {
 
   const [title, setTitle] = createSignal(matchState().title)
   const [bestOf, setBestOf] = createSignal(matchState().bestOf)
-  const [gameNumber, setGameNumber] = createSignal(matchState().gameNumber)
-  const [blueWins, setBlueWins] = createSignal(matchState().blue.wins)
-  const [blueTeam, setBlueTeam] = createSignal(matchState().blue)
-  const [orangeWins, setOrangeWins] = createSignal(matchState().orange.wins)
-  const [orangeTeam, setOrangeTeam] = createSignal(matchState().orange)
+  const [blue, setBlue] = createSignal(matchState().blue)
+  const [orange, setOrange] = createSignal(matchState().orange)
 
   createEffect(() => {
     ws.send('match', 'update_best_of', bestOf())
-    if (blueWins() > Math.ceil(bestOf() / 2)) setBlueWins(Math.ceil(bestOf() / 2))
-    if (orangeWins() > Math.ceil(bestOf() / 2)) setOrangeWins(Math.ceil(bestOf() / 2))
-    if (gameNumber() > bestOf()) setGameNumber(bestOf())
+    if (blue().wins > Math.ceil(bestOf() / 2))
+      setBlue({ ...blue(), wins: Math.ceil(bestOf() / 2) })
+    if (orange().wins > Math.ceil(bestOf() / 2))
+      setOrange({ ...orange(), wins: Math.ceil(bestOf() / 2) })
   })
 
   createEffect(() => {
-    ws.send('match', 'update_game_number', gameNumber())
+    ws.send('match', 'update_blue_team', blue())
+    ws.send('match', 'update_game_number', blue().wins + orange().wins + 1)
   })
 
   createEffect(() => {
-    ws.send('match', 'update_blue_wins', blueWins())
-  })
-
-  createEffect(() => {
-    ws.send('match', 'update_blue_team', blueTeam())
-  })
-
-  createEffect(() => {
-    ws.send('match', 'update_orange_team', orangeTeam())
-  })
-
-  createEffect(() => {
-    ws.send('match', 'update_orange_wins', orangeWins())
+    ws.send('match', 'update_orange_team', orange())
+    ws.send('match', 'update_game_number', blue().wins + orange().wins + 1)
   })
 
   return (
@@ -55,7 +42,6 @@ const Match = () => {
         <CardContent class="flex row flex-wrap gap-4">
           <MatchTitle titleSignal={[title, setTitle]} />
           <MatchBestOf bestOf={[bestOf, setBestOf]} />
-          <MatchGameNumber gameNumber={[gameNumber, setGameNumber]} bestOf={bestOf} />
         </CardContent>
       </Card>
       <Card>
@@ -65,10 +51,10 @@ const Match = () => {
         <CardContent>
           <div class="flex row gap-6 flex-wrap">
             <Card class="border-blue-500 flex-grow">
-              <TeamForm bestOf={bestOf} team={[blueTeam, setBlueTeam]} />
+              <TeamForm bestOf={bestOf} team={[blue, setBlue]} />
             </Card>
             <Card class="border-orange-500 flex-grow">
-              <TeamForm bestOf={bestOf} team={[orangeTeam, setOrangeTeam]} />
+              <TeamForm bestOf={bestOf} team={[orange, setOrange]} />
             </Card>
           </div>
         </CardContent>
