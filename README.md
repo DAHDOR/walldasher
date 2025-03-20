@@ -26,7 +26,8 @@ Durante este sprint, se completaron tareas adicionales debido a la carga de trab
 Durante este sprint, se agregaron algunas Historias de Desarrollador, pues se descubrieron algunas funciones que debían desarrollarse.
 
 #### Sprint 3
-Por planificar...
+![Burndown Chart - Sprint 3](https://github.com/user-attachments/assets/f031180b-2aa3-4785-8958-bf735db5f8d9)
+Durante este sprint, se agregó una historia de desarrollador que hacía falta para poder obtener información de start.gg, por lo que se postergaron las historias dependientes.
 
 #### Sprint 4
 Por planificar...
