@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="400"
+   height="260"
+   viewBox="0 0 400 260"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <rect
+     style="fill:#22b0ff;fill-opacity:1;stroke:none;stroke-width:8.894;stroke-linecap:round;stroke-miterlimit:88.6;stroke-opacity:0.62543;paint-order:markers fill stroke;opacity:1"
+     id="rect1"
+     width="64.933388"
+     height="26.627361"
+     x="-92.495041"
+     y="-18.218719" />
+  <rect
+     style="fill:#36d0ff;fill-opacity:1;stroke:none;stroke-width:8.894;stroke-linecap:round;stroke-miterlimit:88.6;stroke-opacity:0.62543;paint-order:markers fill stroke"
+     id="rect2"
+     width="59.327629"
+     height="24.758774"
+     x="-90.159309"
+     y="19.620163" />
+  <rect
+     style="fill:#ff8a15;fill-opacity:1;stroke:none;stroke-width:8.894;stroke-linecap:round;stroke-miterlimit:88.6;stroke-opacity:0.62543;paint-order:markers fill stroke"
+     id="rect3"
+     width="58.860481"
+     height="26.160213"
+     x="-89.692162"
+     y="61.196213" />
+  <rect
+     style="fill:#ffbc00;fill-opacity:1;stroke:none;stroke-width:8.894;stroke-linecap:round;stroke-miterlimit:88.6;stroke-opacity:0.62543;paint-order:markers fill stroke"
+     id="rect4"
+     width="50.451839"
+     height="35.503147"
+     x="-85.020691"
+     y="103.23941" />
+  <rect
+     style="fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:8.894;stroke-linecap:round;stroke-miterlimit:88.6;stroke-opacity:0.62543;paint-order:markers fill stroke"
+     id="rect5"
+     width="51.853279"
+     height="25.22592"
+     x="-83.619255"
+     y="156.02699" />
+  <rect
+     style="fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:79.3053;stroke-linecap:round;stroke-miterlimit:88.6;stroke-opacity:0.62543;paint-order:markers fill stroke"
+     id="rect5-8"
+     width="400"
+     height="260"
+     x="0"
+     y="0" />
+  <path
+     style="opacity:1;fill:#ff8a15;fill-opacity:1;stroke-width:8.894;stroke-linecap:round;stroke-miterlimit:88.6;stroke-opacity:0.62543;paint-order:markers fill stroke"
+     d="M -1e-6,260 300,235 v -90 h 100 v 115 z"
+     id="path8" />
+  <path
+     style="fill:#22b0ff;fill-opacity:1;stroke-width:8.894;stroke-linecap:round;stroke-miterlimit:88.6;stroke-opacity:0.62543;paint-order:markers fill stroke"
+     d="m 0,0 300,25 v 90 H 400 V 0 Z"
+     id="path8-1" />
+</svg>

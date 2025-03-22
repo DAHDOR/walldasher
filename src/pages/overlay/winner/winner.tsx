@@ -1,6 +1,7 @@
 import { useSnapshot } from '@/contexts/snapshot';
 import { Component, createSignal, onMount } from 'solid-js';
 import gsap from 'gsap';
+import { useMatchState } from '@contexts/matchState';
 
 let Blue = '22b0ff';
 let LightBlue = '36d0ff';
@@ -72,6 +73,7 @@ const LineBtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
 
 const Winner: Component = () => {
   const stats = useSnapshot()
+  const matchState = useMatchState()
   const length = 20
   const durationSecs = 5
   const extraSpaceMultiplier = 300 * 5
@@ -129,6 +131,13 @@ const Winner: Component = () => {
     ColorB = LightOrange
   }}
 
+  let winnerName = stats().winner
+  if (ColorA == Blue){
+    winnerName = matchState().blue.name
+  } else {
+    winnerName = matchState().blue.name
+  }
+
   return (
     <>
       <div class="absolute w-[1920px] h-[1080px]">
@@ -153,7 +162,7 @@ const Winner: Component = () => {
         <div class="absolute w-[1920px] h-[1080px] flex items-center justify-center text-[100px] font-[chivo] text-center">
           <div class={`text-black transition-opacity duration-1000 ${showText() ? "opacity-100" : "opacity-0"}`}>
             <div class="font-bold uppercase">Ganador</div>
-            <div>{stats().winner}</div>
+            <div>{winnerName}</div>
           </div>
         </div>
       </div>

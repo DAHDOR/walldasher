@@ -13,6 +13,7 @@ import orangeScoreBlock from './assets/orangeScoreBlock.svg'
 import bg from './assets/PostGameBG.png'
 import gsap from 'gsap'
 
+let White = 'ffffff'
 let Blue = '22b0ff';
 let LightBlue = '36d0ff';
 let Orange = 'ff8a15';
@@ -134,88 +135,176 @@ const PostGame: Component = () => {
   }}
 
   const [lightOrangeStar, setLightOrangeStar] = createSignal(`
-    <svg
-      width="50"
-      height="200"
-      viewBox="0 0 50 200"
-      version="1.1"
-      id="svg1"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:svg="http://www.w3.org/2000/svg">
-      <defs
-        id="defs1" />
-      <g
-        id="layer1">
-        <path
-          style="fill:#ffbc00;stroke-width:14.1421;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1"
-          d="M 0,200 12.5,100 50,0 37.5,100 0,200"
-          id="path2" />
-      </g>
-    </svg>`
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1" /><g
+     id="layer1"><circle
+       style="display:inline;fill:none;stroke:#ffffff;stroke-width:14.8249;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62542957;paint-order:normal"
+       id="path2"
+       cx="256"
+       cy="255.99998"
+       r="213.58755" /><ellipse
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:12;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       id="path3"
+       cx="256"
+       cy="255.99998"
+       rx="23.999996"
+       ry="24.000011" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.894;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="M 221.49334,181.55274 243.01122,80.447228 h 25.82145 l 21.51788,101.105512 z"
+       id="path5" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.89449;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="m 337.72656,263.34004 76.80101,69.18779 -12.91072,22.36203 -98.31889,-31.91773 z"
+       id="path5-2" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.89449;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="m 174.27348,263.34005 -76.801011,69.18779 12.910721,22.36203 98.31889,-31.91773 z"
+       id="path5-2-0" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 210.68913,264.48076 c 0,0 5.66987,-19.82051 10.66987,-28.48076 5,-8.66026 19.33013,-23.48076 19.33013,-23.48076 l -51.96153,-30 c 0,0 -14.33012,14.8205 -19.33012,23.48076 -5,8.66025 -10.66988,28.48076 -10.66988,28.48076 z"
+       id="path7" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 271.31092,212.51923 c 0,0 14.33012,14.82051 19.33011,23.48077 5.00001,8.66025 10.66987,28.48075 10.66987,28.48075 l 51.96153,-30 c 0,0 -5.66986,-19.8205 -10.66986,-28.48076 -5,-8.66025 -19.33013,-23.48076 -19.33013,-23.48076 z"
+       id="path7-3" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 286,291.00002 c 0,0 -20,5 -30,4.99998 -10,2e-5 -29.99999,-5 -29.99999,-5 v 60.00001 c 0,0 19.99999,5 29.99999,5.00001 10,-1e-5 30,-5.00001 30,-5.00001 z"
+       id="path7-3-4" /></g></svg>`
   );
   const [lightBlueStar, setLightBlueStar] = createSignal(`
-    <svg
-      width="50"
-      height="200"
-      viewBox="0 0 50 200"
-      version="1.1"
-      id="svg1"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:svg="http://www.w3.org/2000/svg">
-      <defs
-        id="defs1" />
-      <g
-        id="layer1">
-        <path
-          style="fill:#36d0ff;stroke-width:14.1421;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1"
-          d="M 0,200 12.5,100 50,0 37.5,100 0,200"
-          id="path2" />
-      </g>
-    </svg>
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1" /><g
+     id="layer1"><circle
+       style="display:inline;fill:none;stroke:#ffffff;stroke-width:14.8249;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62542957;paint-order:normal"
+       id="path2"
+       cx="256"
+       cy="255.99998"
+       r="213.58755" /><ellipse
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:12;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       id="path3"
+       cx="256"
+       cy="255.99998"
+       rx="23.999996"
+       ry="24.000011" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.894;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="M 221.49334,181.55274 243.01122,80.447228 h 25.82145 l 21.51788,101.105512 z"
+       id="path5" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.89449;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="m 337.72656,263.34004 76.80101,69.18779 -12.91072,22.36203 -98.31889,-31.91773 z"
+       id="path5-2" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.89449;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="m 174.27348,263.34005 -76.801011,69.18779 12.910721,22.36203 98.31889,-31.91773 z"
+       id="path5-2-0" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 210.68913,264.48076 c 0,0 5.66987,-19.82051 10.66987,-28.48076 5,-8.66026 19.33013,-23.48076 19.33013,-23.48076 l -51.96153,-30 c 0,0 -14.33012,14.8205 -19.33012,23.48076 -5,8.66025 -10.66988,28.48076 -10.66988,28.48076 z"
+       id="path7" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 271.31092,212.51923 c 0,0 14.33012,14.82051 19.33011,23.48077 5.00001,8.66025 10.66987,28.48075 10.66987,28.48075 l 51.96153,-30 c 0,0 -5.66986,-19.8205 -10.66986,-28.48076 -5,-8.66025 -19.33013,-23.48076 -19.33013,-23.48076 z"
+       id="path7-3" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 286,291.00002 c 0,0 -20,5 -30,4.99998 -10,2e-5 -29.99999,-5 -29.99999,-5 v 60.00001 c 0,0 19.99999,5 29.99999,5.00001 10,-1e-5 30,-5.00001 30,-5.00001 z"
+       id="path7-3-4" /></g></svg>
     `);
   const [orangeStar, setOrangeStar] = createSignal(`
-    <svg
-      width="50"
-      height="200"
-      viewBox="0 0 50 200"
-      version="1.1"
-      id="svg1"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:svg="http://www.w3.org/2000/svg">
-      <defs
-        id="defs1" />
-      <g
-        id="layer1">
-        <path
-          style="fill:#ff8a15;stroke-width:14.1421;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1"
-          d="M 0,200 12.5,100 50,0 37.5,100 0,200"
-          id="path2" />
-      </g>
-    </svg>`
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1" /><g
+     id="layer1"><circle
+       style="display:inline;fill:none;stroke:#ffffff;stroke-width:14.8249;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62542957;paint-order:normal"
+       id="path2"
+       cx="256"
+       cy="255.99998"
+       r="213.58755" /><ellipse
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:12;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       id="path3"
+       cx="256"
+       cy="255.99998"
+       rx="23.999996"
+       ry="24.000011" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.894;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="M 221.49334,181.55274 243.01122,80.447228 h 25.82145 l 21.51788,101.105512 z"
+       id="path5" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.89449;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="m 337.72656,263.34004 76.80101,69.18779 -12.91072,22.36203 -98.31889,-31.91773 z"
+       id="path5-2" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.89449;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="m 174.27348,263.34005 -76.801011,69.18779 12.910721,22.36203 98.31889,-31.91773 z"
+       id="path5-2-0" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 210.68913,264.48076 c 0,0 5.66987,-19.82051 10.66987,-28.48076 5,-8.66026 19.33013,-23.48076 19.33013,-23.48076 l -51.96153,-30 c 0,0 -14.33012,14.8205 -19.33012,23.48076 -5,8.66025 -10.66988,28.48076 -10.66988,28.48076 z"
+       id="path7" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 271.31092,212.51923 c 0,0 14.33012,14.82051 19.33011,23.48077 5.00001,8.66025 10.66987,28.48075 10.66987,28.48075 l 51.96153,-30 c 0,0 -5.66986,-19.8205 -10.66986,-28.48076 -5,-8.66025 -19.33013,-23.48076 -19.33013,-23.48076 z"
+       id="path7-3" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 286,291.00002 c 0,0 -20,5 -30,4.99998 -10,2e-5 -29.99999,-5 -29.99999,-5 v 60.00001 c 0,0 19.99999,5 29.99999,5.00001 10,-1e-5 30,-5.00001 30,-5.00001 z"
+       id="path7-3-4" /></g></svg>`
   );
   const [blueStar, setBlueStar] = createSignal(`
-    <svg
-      width="50"
-      height="200"
-      viewBox="0 0 50 200"
-      version="1.1"
-      id="svg1"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:svg="http://www.w3.org/2000/svg">
-      <defs
-        id="defs1" />
-      <g
-        id="layer1">
-        <path
-          style="fill:#22b0ff;stroke-width:14.1421;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1"
-          d="M 0,200 12.5,100 50,0 37.5,100 0,200"
-          id="path2" />
-      </g>
-    </svg>`
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1" /><g
+     id="layer1"><circle
+       style="display:inline;fill:none;stroke:#ffffff;stroke-width:14.8249;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62542957;paint-order:normal"
+       id="path2"
+       cx="256"
+       cy="255.99998"
+       r="213.58755" /><ellipse
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:12;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       id="path3"
+       cx="256"
+       cy="255.99998"
+       rx="23.999996"
+       ry="24.000011" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.894;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="M 221.49334,181.55274 243.01122,80.447228 h 25.82145 l 21.51788,101.105512 z"
+       id="path5" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.89449;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="m 337.72656,263.34004 76.80101,69.18779 -12.91072,22.36203 -98.31889,-31.91773 z"
+       id="path5-2" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:8.89449;stroke-linecap:square;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:normal"
+       d="m 174.27348,263.34005 -76.801011,69.18779 12.910721,22.36203 98.31889,-31.91773 z"
+       id="path5-2-0" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 210.68913,264.48076 c 0,0 5.66987,-19.82051 10.66987,-28.48076 5,-8.66026 19.33013,-23.48076 19.33013,-23.48076 l -51.96153,-30 c 0,0 -14.33012,14.8205 -19.33012,23.48076 -5,8.66025 -10.66988,28.48076 -10.66988,28.48076 z"
+       id="path7" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 271.31092,212.51923 c 0,0 14.33012,14.82051 19.33011,23.48077 5.00001,8.66025 10.66987,28.48075 10.66987,28.48075 l 51.96153,-30 c 0,0 -5.66986,-19.8205 -10.66986,-28.48076 -5,-8.66025 -19.33013,-23.48076 -19.33013,-23.48076 z"
+       id="path7-3" /><path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
+       d="m 286,291.00002 c 0,0 -20,5 -30,4.99998 -10,2e-5 -29.99999,-5 -29.99999,-5 v 60.00001 c 0,0 19.99999,5 29.99999,5.00001 10,-1e-5 30,-5.00001 30,-5.00001 z"
+       id="path7-3-4" /></g></svg>`
   );
 
   onMount(() => {
-    const numStars = 25;
+    const numStars = 4;
     const container = document.getElementById("starry-sky");
 
     if (!container) return;
@@ -223,45 +312,47 @@ const PostGame: Component = () => {
     const stars = [lightOrangeStar, lightBlueStar, orangeStar, blueStar];
 
     for (let i = 0; i < numStars; i++) {
-      const star = document.createElement("div");
-      const randomStar = stars[Math.floor(Math.random() * stars.length)];
-      star.innerHTML = randomStar();
-      star.style.position = "absolute";
-      star.style.pointerEvents = "none";
+      for (let j = 0; j < 2; j++) {
+        const star = document.createElement("div");
+        const randomStar = stars[Math.floor(Math.random() * stars.length)];
+        star.innerHTML = randomStar();
+        star.style.position = "absolute";
+        star.style.pointerEvents = "none";
 
-      const x = Math.round(Math.random() * 36) * 50
-      const y = Math.round(Math.random() * 4) * 200 + 50
-      const opacity = Math.random()/4;
+        const x = 450 * i + 25
+        const y = 450 * j + 50
+        const opacity = Math.random()/4;
 
-      star.style.left = `${x}px`;
-      star.style.top = `${y}px`;
-      star.style.opacity = opacity.toString();
+        star.style.left = `${x}px`;
+        star.style.top = `${y}px`;
+        star.style.opacity = opacity.toString();
 
-      container.appendChild(star);
+        container.appendChild(star);
 
-      const flicker = () => {
-        const fadeInDuration = Math.random() * 10;
-        const fadeOutDuration = Math.random() * 10;
-        const delay = Math.random() * 5;
+        const flicker = () => {
+          const fadeInDuration = Math.random() * 10;
+          const fadeOutDuration = Math.random() * 10;
+          const delay = Math.random() * 5;
 
-        gsap.to(star, {
-          opacity: 0.25,
-          duration: fadeInDuration,
-          ease: "power1.inOut",
-          onComplete: () => {
-            gsap.to(star, {
-              opacity: 0,
-              duration: fadeOutDuration,
-              ease: "power1.inOut",
-              onComplete: () => {
-                setTimeout(flicker, delay * 1000);
-              },
-            });
-          },
-        });
-      };
+          gsap.to(star, {
+            opacity: 0.25,
+            duration: fadeInDuration,
+            ease: "power1.inOut",
+            onComplete: () => {
+              gsap.to(star, {
+                opacity: 0,
+                duration: fadeOutDuration,
+                ease: "power1.inOut",
+                onComplete: () => {
+                  setTimeout(flicker, delay * 1000);
+                },
+              });
+            },
+          });
+        };
 
-      flicker();
+        flicker();
+      }
     }
   });
 
@@ -365,7 +456,7 @@ const PostGame: Component = () => {
                       />
                       <div class="absolute inset-0 z-10">
                         <div class="text-white text-[50px] whitespace-nowrap text-left translate-x-[-200px] translate-y-[10px]">
-                          {snapState().teams[1].name}
+                          {matchState().orange.name}
                         </div>
                       </div>
                     </Col>
@@ -374,9 +465,9 @@ const PostGame: Component = () => {
                         src={orangeLogoBlock}
                         class="w-[1000px] h-[100px] object-cover absolute inset-0 z-0"
                       />
-                      <div class="absolute inset-0 z-10">
-                        <div class="w-[100px] h-[100px] translate-x-[90px]">
-                          <img src={matchState().orange.logo_url} class="w-fit h-fit" />
+                      <div class="w-[100px] h-[100px] absolute inset-0 z-10 flex justify-center items-center">
+                        <div class="translate-x-[90px]">
+                          <img src={matchState().orange.logo} class="w-fit h-fit" />
                         </div>
                       </div>
                     </Col>
@@ -388,9 +479,9 @@ const PostGame: Component = () => {
                         src={blueLogoBlock}
                         class="w-[1000px] h-[100px] object-cover absolute inset-0 z-0"
                       />
-                      <div class="absolute inset-0 z-10">
-                        <div class="w-[100px] h-[100px] translate-x-[50px]">
-                          <img src={matchState().blue.logo_url} class="w-fit h-fit" />
+                      <div class="w-[100px] h-[100px] absolute inset-0 z-10 flex justify-center items-center">
+                        <div class="translate-x-[50px]">
+                          <img src={matchState().blue.logo} class="w-fit h-fit scale-[70%]" />
                         </div>
                       </div>
                     </Col>
@@ -401,7 +492,7 @@ const PostGame: Component = () => {
                       />
                       <div class="absolute inset-0 z-10">
                         <div class="text-white text-[50px] flex flex-row-reverse whitespace-nowrap text-right translate-x-[200px] translate-y-[10px]">
-                          {snapState().teams[0].name}
+                          {matchState().blue.name}
                         </div>
                       </div>
                     </Col>
