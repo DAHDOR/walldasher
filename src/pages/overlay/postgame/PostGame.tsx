@@ -520,7 +520,7 @@ const PostGame: Component = () => {
             {gameWins0 < firstTo && gameWins1 < firstTo ? (
               gameWins0 > gameWins1 ? (
                 <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
-                  {snapState().teams[0].name + ' lidera (' + gameWins0 + '-' + gameWins1 + ')'}
+                  {matchState().blue.name + ' lidera (' + gameWins0 + '-' + gameWins1 + ')'}
                 </div>
               ) : (
                 gameWins0 === gameWins1 ? (
@@ -529,18 +529,18 @@ const PostGame: Component = () => {
                   </div>
                 ) : (
                   <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
-                    {snapState().teams[1].name + ' lidera (' + gameWins0 + '-' + gameWins1 + ')'}
+                    {matchState().orange.name + ' lidera (' + gameWins0 + '-' + gameWins1 + ')'}
                   </div>
                 )
               )
             ) : (
               gameWins0 > gameWins1 ? (
                 <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
-                  {snapState().teams[0].name + ' gana (' + gameWins0 + '-' + gameWins1 + ')'}
+                  {matchState().blue.name + ' gana (' + gameWins0 + '-' + gameWins1 + ')'}
                 </div>
               ) : (
                 <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
-                  {snapState().teams[1].name + ' gana (' + gameWins0 + '-' + gameWins1 + ')'}
+                  {matchState().orange.name + ' gana (' + gameWins0 + '-' + gameWins1 + ')'}
                 </div>
               )
             )}
