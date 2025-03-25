@@ -467,7 +467,7 @@ const PostGame: Component = () => {
                       />
                       <div class="w-[100px] h-[100px] absolute inset-0 z-10 flex justify-center items-center">
                         <div class="translate-x-[90px]">
-                          <img src={matchState().orange.logo} class="w-fit h-fit" />
+                          <img src={matchState().orange.logo} class="w-fit h-fit scale-[70%]" />
                         </div>
                       </div>
                     </Col>
