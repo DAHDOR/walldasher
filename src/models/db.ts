@@ -1,7 +1,7 @@
 export interface Tournament {
   id: number
   name: string
-  logo_url: string
+  logo: string
 }
 
 export interface Event {
@@ -75,7 +75,7 @@ export interface Standing {
 export interface Team {
   id: number
   name: string
-  logo_url: string
+  logo: string
   tournament: number
 }
 

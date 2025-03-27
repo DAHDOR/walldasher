@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import { Bracket, Event, Match, Phase, Player, Round, Team, Tournament } from './db'
+import {
+  Bracket,
+  Event,
+  Match,
+  Phase,
+  Player,
+  Round,
+  Standing,
+  Team,
+  Tournament
+} from './db'
 
 export interface TeamPlayer extends Player {}
 
@@ -17,10 +27,15 @@ export interface EventPhase extends Phase {
 
 export interface PhaseBracket extends Bracket {
   rounds: BracketRound[]
+  standings: BracketStanding[]
 }
 
 export interface BracketRound extends Round {
   matches: RoundMatch[]
+}
+
+export interface BracketStanding extends Standing {
+  teamInfo: TournamentTeam
 }
 
 export interface RoundMatch extends Match {}
@@ -35,7 +50,7 @@ export default TournamentState
 export const DEFAULT_TOURNAMENT_STATE: TournamentState = {
   id: 0,
   name: 'Ninguno',
-  logo_url: '',
+  logo: '',
   events: [],
   teams: []
 }
