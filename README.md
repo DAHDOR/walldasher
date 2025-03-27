@@ -30,7 +30,8 @@ Durante este sprint, se agregaron algunas Historias de Desarrollador, pues se de
 Durante este sprint, se agregó una historia de desarrollador que hacía falta para poder obtener información de start.gg, por lo que se postergaron las historias dependientes.
 
 #### Sprint 4
-Por planificar...
+![Burndown Chart - Sprint 4](https://github.com/user-attachments/assets/7b76a6a5-9d21-43c7-bcb3-e8025e75af30)
+En este sprint se completaron todas las historias de usuario restantes.
 
 ### 📆 Trello
 
