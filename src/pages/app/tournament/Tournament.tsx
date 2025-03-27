@@ -1,4 +1,4 @@
-import { useStartKey } from '@contexts/startKey'
+import { useStartKey } from '@contexts/store'
 import { Component, Match, Switch } from 'solid-js'
 import NoKey from './NoKey'
 import Page from './Page'

@@ -10,7 +10,7 @@ import {
 import { TextField, TextFieldInput } from '@components/ui/text-field'
 import { showToast } from '@components/ui/toast'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
-import { useStartKey } from '@contexts/startKey'
+import { useStartKey } from '@contexts/store'
 import { useWS } from '@contexts/ws'
 import { getSlugFromUrl } from '@lib/utils'
 import { getFullTournament } from '@start/get'
