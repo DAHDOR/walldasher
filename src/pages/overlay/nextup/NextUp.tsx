@@ -12,7 +12,7 @@ const NextGameComponent: Component<{}> = (props) => {
       <div class='relative flex'>
         <div class="w-[100px] h-[100px] relative flex justify-center items-center">
           <img src={logoNextGame} class="w-full h-full object-cover absolute inset-0 z-0"></img>
-          <img src={matchState().blue.logo_url} class="w-fit h-fit z-10 text-[50px]"></img>
+          <img src={matchState().blue.logo} class="w-fit h-fit z-10 text-[50px]"></img>
         </div>
         <div class="w-[200px] h-[100px] relative flex justify-center items-center">
           <img src={blueNextGame} class="w-full h-full object-cover absolute inset-0 z-0" />
@@ -25,7 +25,7 @@ const NextGameComponent: Component<{}> = (props) => {
         </div>
         <div class="w-[100px] h-[100px] relative flex justify-center items-center">
           <img src={logoNextGame} class="w-full h-full object-cover absolute inset-0 z-0"></img>
-          <img src={matchState().orange.logo_url} class="w-fit h-fit z-10 text-[50px]"></img>
+          <img src={matchState().orange.logo} class="w-fit h-fit z-10 text-[50px]"></img>
         </div>
       </div>
     </>

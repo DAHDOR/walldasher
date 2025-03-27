@@ -1,6 +1,5 @@
 import { Match, Team } from "@models/db"
 import { Component, createEffect, onMount, createSignal, For } from 'solid-js'
-import { getPhases } from '@lib/start'
 import { useMatchState } from '@/contexts/matchState'
 import bluePhase from './assets/phaseBlue.svg'
 import orangePhase from './assets/phaseOrange.svg'
@@ -10,9 +9,75 @@ import logoPhase from './assets/logoPhase.svg'
 import bottomPhase from './assets/bottomBracketPhase.svg'
 import topPhase from './assets/upperBracketPhase.svg'
 import finalBackground from './assets/finalBracketPhase.svg'
+import cloud9 from './assets/logos/cloud9.png'
+import vitality from './assets/logos/vitality.png'
+import faze from './assets/logos/faze.png'
+import navi from './assets/logos/navi.png'
+import spacestation from './assets/logos/spacestation.png'
+import tsm from './assets/logos/tsm.png'
+import fnatic from './assets/logos/fnatic.png'
+import heroic from './assets/logos/heroic.png'
+
+interface TeamData {
+  id: number;
+  name: string;
+  pfp: string;
+  players: number;
+}
+
+const teams: TeamData[] = [
+  {
+    id: 1,
+    name: "Cloud 9",
+    pfp: cloud9,
+    players: 27
+  },
+  {
+    id: 2,
+    name: "Vitality",
+    pfp: vitality,
+    players: 22
+  },
+  {
+    id: 3,
+    name: "Faze",
+    pfp: faze,
+    players: 18
+  },
+  {
+    id: 4,
+    name: "Navi",
+    pfp: navi,
+    players: 17
+  },
+  {
+    id: 5,
+    name: "Spacestation Gaming",
+    pfp: spacestation,
+    players: 10
+  },
+  {
+    id: 6,
+    name: "TSM",
+    pfp: tsm,
+    players: 9
+  },
+  {
+    id: 7,
+    name: "Heroic",
+    pfp: heroic,
+    players: 8
+  },
+  {
+    id: 8,
+    name: "Fnatic",
+    pfp: fnatic,
+    players: 3
+  }
+]
 
 const matchState = useMatchState()
-const playOffMatches = 8
+const playOffMatches = 4
 
 const TransparentPhaseComponent: Component<{}> = (props) => {
   const normalHeight = 100 * 4/playOffMatches
@@ -34,7 +99,7 @@ const TransparentPhaseComponent: Component<{}> = (props) => {
   )
 }
 
-const EmptyPhaseComponent: Component<{}> = (props) => {
+const EmptyPhaseComponent: Component<{}> = (position) => {
   const normalHeight = 100 * 4/playOffMatches
   const doubleHeight = 200 * 4/playOffMatches
   const betweenTeams = 10 * 4/playOffMatches
@@ -54,7 +119,14 @@ const EmptyPhaseComponent: Component<{}> = (props) => {
   )
 }
 
-const PhaseComponent: Component<{}> = (props) => {
+interface PositionNumber {
+  positionA: number
+  positionB: number
+}
+
+const PhaseComponent: Component<PositionNumber> = (props) => {
+  const [valueA, setValueA] = createSignal(props.positionA)
+  const [valueB, setValueB] = createSignal(props.positionB)
   const normalHeight = 100 * 4/playOffMatches
   const doubleHeight = 200 * 4/playOffMatches
   const betweenTeams = 10 * 4/playOffMatches
@@ -69,11 +141,13 @@ const PhaseComponent: Component<{}> = (props) => {
       <div class="relative flex">
         <div class="w-[var(--nw)] h-[var(--nh)] relative flex justify-center items-center">
           <img src={logoPhase} class="w-fit h-fit object-cover absolute inset-0 z-0"></img>
-          <img src={matchState().blue.logo_url} class="w-fit h-fit z-10 absolute"></img>
+          <img src={teams[valueA()].pfp} class="w-fit h-fit z-10 absolute"></img>
         </div>
         <div class="w-[var(--dw)] h-[var(--nh)] relative flex justify-center items-center">
           <img src={bluePhase} class="w-fit h-fit object-cover absolute inset-0 z-0"/>
-          <div class='w-fit h-fit z-10 text-[length:--ls] text-center absolute'>{'Team A'}</div>
+          <div class='w-fit h-fit z-10 text-[length:--ls] text-center absolute'>
+            {teams[valueA()].name}
+          </div>
         </div>
         <div class="w-[var(--nw)] h-[var(--nh)] relative flex justify-center items-center">
           <img src={blueScore} class="w-fit h-fit object-cover absolute inset-0 z-0"></img>
@@ -86,11 +160,13 @@ const PhaseComponent: Component<{}> = (props) => {
       <div class='relative flex'>
         <div class="w-[var(--nw)] h-[var(--nh)] relative flex justify-center items-center">
           <img src={logoPhase} class="w-fit h-fit object-cover absolute inset-0 z-0"></img>
-          <img src={matchState().orange.logo_url} class="w-fit h-fit z-10 absolute"></img>
+          <img src={teams[valueB()].pfp} class="w-fit h-fit z-10 absolute"></img>
         </div>
         <div class="w-[var(--dw)] h-[var(--nh)] relative flex justify-center items-center">
           <img src={orangePhase} class="w-fit h-fit object-cover absolute inset-0 z-0"/>
-          <div class='w-fit h-fit z-10 text-[length:--ls] text-center absolute'>{'Team B'}</div>
+          <div class='w-fit h-fit z-10 text-[length:--ls] text-center absolute'>
+            {teams[valueB()].name}
+          </div>
         </div>
         <div class="w-[var(--nw)] h-[var(--nh)] relative flex justify-center items-center">
           <img src={orangeScore} class="w-fit h-fit object-cover absolute inset-0 z-0"></img>
@@ -109,6 +185,7 @@ const Phase: Component = () => {
   const matchWidth = 400 * 4/playOffMatches
   let phaseBackground = bottomPhase
   let lineCounter = 0
+  let teamCounter = -1
   return (
     <>
       <div class='w-[1920px] h-[1080px] flex absolute mx-auto justify-center z-0' style={{'--mw': `${matchWidth}px`,'--mh': `${matchHeight}px`}}>
@@ -284,8 +361,6 @@ const Phase: Component = () => {
                       </div>
                       <div class="w-[100px] flex text-[50px] ml-[-100px] [writing-mode:vertical-lr] justify-center items-center text-nowrap">
                         {Array.from({ length: (playOffMatches/(2**i))}, (_, j) => {
-                          console.log((playOffMatches/(2**i)))
-                          console.log(matchHeight)
                           if (j === 0){
                             return (
                               <>
@@ -434,7 +509,12 @@ const Phase: Component = () => {
                   lineCounter = 0
                   return null
                 })()}
+                {(() => {
+                  teamCounter = -1
+                  return null
+                })()}
                 {Array.from({ length: (playOffMatches/(2**i))}, (_, j) => {
+                  console.log("i: " + i + " j: "+ j)
                   if (j < playOffMatches/(2**i) && j != 0 && i != 0){
                     return(
                       <>
@@ -448,14 +528,31 @@ const Phase: Component = () => {
                         })}
                         {(() => {
                           lineCounter++
-                          return null
-                        })()}
-                        <PhaseComponent/>
+                          if (i == 2){
+                            teamCounter = teamCounter + 4
+                            return <PhaseComponent positionA={teamCounter-3} positionB={teamCounter+1}/>
+                          } else if (i == 1){
+                            teamCounter = teamCounter + 4
+                            return <PhaseComponent positionA={teamCounter-1} positionB={teamCounter+1}/>
+                          } else {
+                            teamCounter = teamCounter + 2
+                            return <PhaseComponent positionA={teamCounter-1} positionB={teamCounter}/>
+                          }
+                        })()} 
                       </>
                     )
                   } else {
                     lineCounter++
-                    return <PhaseComponent/>
+                    if (i == 2){
+                      teamCounter = teamCounter + 4
+                      return <PhaseComponent positionA={teamCounter-3} positionB={teamCounter+1}/>
+                    } else if (i == 1){
+                      teamCounter = teamCounter + 2
+                      return <PhaseComponent positionA={teamCounter-1} positionB={teamCounter+1}/>
+                    } else {
+                      teamCounter = teamCounter + 2
+                      return <PhaseComponent positionA={teamCounter-1} positionB={teamCounter}/>
+                    }
                   }
                 })}
               </div>

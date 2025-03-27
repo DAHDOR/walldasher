@@ -4,6 +4,14 @@ import wallpaperImage from './assets/Wallpaper.jpg';
 import bg from './assets/PostGameBG.png';
 import tableBG from './assets/roundRobin.svg'
 import gsap from 'gsap'
+import cloud9 from './assets/logos/cloud9.png'
+import vitality from './assets/logos/vitality.png'
+import faze from './assets/logos/faze.png'
+import navi from './assets/logos/navi.png'
+import spacestation from './assets/logos/spacestation.png'
+import tsm from './assets/logos/tsm.png'
+import fnatic from './assets/logos/fnatic.png'
+import heroic from './assets/logos/heroic.png'
 import { Team } from '@start/graphql/graphql';
 
 interface TeamData {
@@ -16,70 +24,70 @@ interface TeamData {
 const teams: TeamData[] = [
   {
     id: 1,
-    name: "Equipo Exagerado A",
-    pfp: wallpaperImage,
+    name: "Cloud 9",
+    pfp: cloud9,
     players: 27
   },
   {
     id: 2,
-    name: "Equipo Exagerado B",
-    pfp: wallpaperImage,
+    name: "Vitality",
+    pfp: vitality,
     players: 22
   },
   {
     id: 3,
-    name: "Equipo Exagerado C",
-    pfp: wallpaperImage,
+    name: "Faze",
+    pfp: faze,
     players: 18
   },
   {
     id: 4,
-    name: "Equipo Exagerado D",
-    pfp: wallpaperImage,
+    name: "Navi",
+    pfp: navi,
     players: 17
   },
   {
     id: 5,
-    name: "Equipo Exagerado E",
-    pfp: wallpaperImage,
+    name: "Spacestation Gaming",
+    pfp: spacestation,
     players: 10
   },
   {
     id: 6,
-    name: "Equipo Exagerado F",
-    pfp: wallpaperImage,
+    name: "TSM",
+    pfp: tsm,
     players: 9
   },
   {
     id: 7,
-    name: "Equipo Exagerado G",
-    pfp: wallpaperImage,
+    name: "Heroic",
+    pfp: heroic,
     players: 8
   },
   {
     id: 8,
-    name: "Equipo Exagerado H",
-    pfp: wallpaperImage,
-    players: 7
-  },
-  {
-    id: 9,
-    name: "Equipo Exagerado I",
-    pfp: wallpaperImage,
-    players: 6
-  },
-  {
-    id: 10,
-    name: "Equipo Exagerado J",
-    pfp: wallpaperImage,
-    players: 5
-  },
-  {
-    id: 11,
-    name: "Equipo Exagerado K",
-    pfp: wallpaperImage,
-    players: 4
+    name: "Fnatic",
+    pfp: fnatic,
+    players: 3
   }
+  // {
+  //   id: 9,
+  //   name: "Equipo Exagerado I",
+  //   pfp: wallpaperImage,
+  //   players: 6
+  // },
+  // {
+  //   id: 10,
+  //   name: "Equipo Exagerado J",
+  //   pfp: wallpaperImage,
+  //   players: 5
+  // },
+  // {
+  //   id: 11,
+  //   name: "Equipo Exagerado K",
+  //   pfp: wallpaperImage,
+  //   players: 4
+  // }
 ]
 
 interface TeamComponentProps {
@@ -91,7 +99,8 @@ const TeamComponent: Component<TeamComponentProps> = (props) => {
   return (
     <>
       <div class="grid grid-cols-3 gap-2 font-[chivo]">
-        <div>{team.id}</div>
+        {/* <div>{team.id}</div> */}
+        <img src={team.pfp} class="w-[50px] h-[50px] mx-auto"/>
         <div class="text-left">{team.name}</div>
         <div>{team.players}</div>
       </div>
@@ -104,7 +113,8 @@ const LeaderComponent: Component<TeamComponentProps> = (props) => {
   return (
     <>
       <div class="grid grid-cols-3 gap-2 bg-white text-black font-[chivo]">
-        <div>{team.id}</div>
+        {/* <div>{team.id}</div> */}
+        <img src={team.pfp} class="w-[50px] h-[50px] mx-auto" />
         <div class="text-left">{team.name}</div>
         <div>{team.players}</div>
       </div>
@@ -159,7 +169,7 @@ const roundRobin: Component = () => {
     prepareSlide()
     animateInitDivs()
     setTimeout(() => slideTeam(), 1000)
-    setTimeout(() => hideTeam(), 5000)
+    setTimeout(() => hideTeam(), 15000)
   }
 
   return (
@@ -170,17 +180,17 @@ const roundRobin: Component = () => {
           <div class="absolute inset-0 z-10">
             <div class="text-white text-center text-[2.5vw] text-nowrap px-[10vw] mx-auto leading-none" style={{ top: '50%', left: '50%', transform: 'translate(0%,-5%)'}}>
               <div id='init' class='pt-[8vw] text-[3vw] font-semibold text-left text-[color:#22b0ff]'>
-                {"LIGA BLA BLA BLA"}
+                {"GRAN LIGA DE PRUEBA SPRINT 4"}
               </div>
               <Grid cols={2} id='init'>
                 <Col span={1}>
                   <div class='pt-[0vw] text-[2.5vw] text-left text-[color:#22b0ff]'>
-                    {"WEEK 8"}
+                    {"SEMANA 12"}
                   </div>
                 </Col>
                 <Col span={1}>
-                  <div class='pt-[1vw] pr-[6.5vw] text-[1.5vw] font-semibold text-right text-[color:#22b0ff]'>
-                    {"POINTS"}
+                  <div class='pt-[1vw] pr-[6vw] text-[1.5vw] font-semibold text-right text-[color:#22b0ff]'>
+                    {"PUNTOS"}
                   </div>
                 </Col>
               </Grid>
