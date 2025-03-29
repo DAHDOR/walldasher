@@ -1,5 +1,6 @@
 use crate::relay::server::Relay;
 use futures::channel::mpsc::UnboundedSender;
+use futures::stream::SplitStream;
 use futures_util::StreamExt;
 use serde_json::json;
 use serde_json::Value;
@@ -9,7 +10,6 @@ use tauri::{Manager, Runtime};
 use tauri_plugin_store::StoreExt;
 use tokio::net::TcpStream;
 use tokio::sync::Mutex;
-use tokio_tungstenite::tungstenite::handshake::client::Response;
 use tokio_tungstenite::MaybeTlsStream;
 use tokio_tungstenite::WebSocketStream;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
@@ -42,47 +42,53 @@ fn send_disconnected(relay: &UnboundedSender<Message>) {
     event_to_relay(relay, "rl:disconnected", json!(""));
 }
 
-async fn try_connect(
+async fn connect(
     url: &String,
-) -> Result<
-    (WebSocketStream<MaybeTlsStream<TcpStream>>, Response),
-    tokio_tungstenite::tungstenite::Error,
-> {
-    connect_async(format!("ws://{}", url)).await
+) -> Result<SplitStream<WebSocketStream<MaybeTlsStream<TcpStream>>>, String> {
+    return match connect_async(format!("ws://{}", url)).await {
+        Ok((ws_stream, _)) => Ok(ws_stream.split().1),
+        Err(e) => Err(e.to_string()),
+    };
 }
 
-async fn connect(url: &String, relay: &UnboundedSender<Message>) {
+async fn handle_connection(url: &String, relay: &UnboundedSender<Message>) {
     send_connecting(relay);
 
-    let ws_stream = match connect_async(format!("ws://{}", url)).await {
-        Ok((ws_stream, _)) => ws_stream,
-        Err(e) => {
-            println!("Failed to connect to Rocket League: {}", e);
+    let ws = match connect(url).await {
+        Ok(ws) => ws,
+        Err(_) => {
             return;
         }
     };
+
     send_connected(relay);
 
-    let (_, read) = ws_stream.split();
+    let msg_handler = ws.for_each(|msg| async {
+        match msg {
+            Ok(msg) => msg_to_relay(&relay, &msg),
+            Err(e) => {
+                println!("Error receiving a RL message: {}", e);
+                return;
+            }
+        };
+    });
 
-    let ws_to_relay = {
-        read.for_each(|message| async {
-            let msg = match message {
-                Ok(msg) => msg,
-                Err(e) => {
-                    println!("Error receiving a message: {}", e);
-                    return;
-                }
-            };
+    msg_handler.await;
 
-            msg_to_relay(&relay, &msg);
-        })
-    };
-
-    ws_to_relay.await;
+    ()
 }
 
-async fn abort<R: Runtime>(app: &tauri::AppHandle<R>) {
+fn spawn_connection(url: String, relay: UnboundedSender<Message>) -> JoinHandle<()> {
+    return tauri::async_runtime::spawn(async move {
+        loop {
+            handle_connection(&url, &relay).await;
+            send_disconnected(&relay);
+            tokio::time::sleep(Duration::from_secs(5)).await;
+        }
+    });
+}
+
+async fn abort_current_connection<R: Runtime>(app: &tauri::AppHandle<R>) {
     if let Some(handle) = app.state::<RLClient>().lock().await.handle.take() {
         handle.abort();
     }
@@ -97,19 +103,13 @@ pub async fn connect_to_rl_without_validation<R: Runtime>(
     app: tauri::AppHandle<R>,
     url: String,
 ) -> Result<(), String> {
-    abort(&app).await;
+    abort_current_connection(&app).await;
 
     set_url(&app, &url);
 
     let relay = app.state::<Relay>().inner().clone();
 
-    let handle = tauri::async_runtime::spawn(async move {
-        loop {
-            connect(&url, &relay).await;
-            send_disconnected(&relay);
-            tokio::time::sleep(Duration::from_secs(5)).await;
-        }
-    });
+    let handle = spawn_connection(url, relay);
 
     app.state::<RLClient>().lock().await.handle = Some(handle);
 
@@ -121,7 +121,7 @@ pub async fn connect_to_rl<R: Runtime>(
     app: tauri::AppHandle<R>,
     url: String,
 ) -> Result<(), String> {
-    match try_connect(&url).await {
+    match connect(&url).await {
         Ok(_) => (),
         Err(_) => return Err(format!("connection-error")),
     }
@@ -155,7 +155,7 @@ mod tests {
         // Use an address that is unlikely to be open.
         let invalid_url = "ws://127.0.0.1:59999".to_owned();
         // Call connect; it should send an "rl:connecting" event, then fail to connect.
-        connect(&invalid_url, &tx).await;
+        handle_connection(&invalid_url, &tx).await;
 
         // Check that we got a "rl:connecting" event.
         let msg = try_recv(&mut rx).await.expect("Expected a message");
@@ -193,7 +193,7 @@ mod tests {
 
         let (tx, mut rx) = unbounded();
         let url = format!("ws://{}", addr);
-        connect(&url, &tx).await;
+        handle_connection(&url, &tx).await;
 
         // Verify that we first got a "rl:connecting" event.
         let msg1 = try_recv(&mut rx)

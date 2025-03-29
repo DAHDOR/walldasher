@@ -1,14 +1,12 @@
+use futures::channel::mpsc::{unbounded, UnboundedReceiver, UnboundedSender};
+use futures_util::{stream::TryStreamExt, SinkExt, StreamExt};
+use serde_json::Value;
 use std::{
     collections::HashMap,
     io::Error as IoError,
-    net::SocketAddr,
     sync::Arc,
     time::{SystemTime, UNIX_EPOCH},
 };
-
-use futures::channel::mpsc::{unbounded, UnboundedSender};
-use futures_util::{stream::TryStreamExt, SinkExt, StreamExt};
-use serde_json::Value;
 use tauri::{Manager, Runtime};
 use tokio::net::{TcpListener, TcpStream};
 use tokio::sync::Mutex;
@@ -16,15 +14,41 @@ use tokio_tungstenite::{accept_async, tungstenite::protocol::Message};
 
 pub type Relay = UnboundedSender<Message>;
 
-// Connection info structure.
 #[derive(Debug)]
 pub struct Connection {
     pub tx: UnboundedSender<Message>,
     registered_functions: Vec<String>,
 }
 
+impl Connection {
+    pub fn new(tx: UnboundedSender<Message>) -> Self {
+        Self {
+            tx,
+            registered_functions: Vec::new(),
+        }
+    }
+}
+
 // Global connections map: mapping connection id to ConnectionInfo.
 pub type ConnectionMap = Arc<Mutex<HashMap<String, Connection>>>;
+
+trait ConnectionMapExt {
+    async fn create_connection(&self, tx: UnboundedSender<Message>);
+}
+
+impl ConnectionMapExt for ConnectionMap {
+    async fn create_connection(&self, tx: UnboundedSender<Message>) {
+        self.lock().await.insert(get_new_id(), Connection::new(tx));
+    }
+}
+
+fn get_new_id() -> String {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect("Time went backwards")
+        .as_millis()
+        .to_string()
+}
 
 /// Handles incoming WebSocket connections and manages the connection lifecycle.
 ///
@@ -37,45 +61,20 @@ pub type ConnectionMap = Arc<Mutex<HashMap<String, Connection>>>;
 ///
 /// * `connections` - A shared, thread-safe map of active connections.
 /// * `raw_stream` - The raw TCP stream for the incoming connection.
-/// * `addr` - The socket address of the incoming connection.
-async fn handle_connection(connections: ConnectionMap, raw_stream: TcpStream, addr: SocketAddr) {
-    println!("Incoming TCP connection from: {}", addr);
-
-    let ws_stream = accept_async(raw_stream)
+async fn handle_connection(connections: ConnectionMap, raw_stream: TcpStream) {
+    let stream = accept_async(raw_stream)
         .await
-        .expect("Error during the websocket handshake occurred");
-    println!("WebSocket connection established: {}", addr);
-
-    // Create a unique id based on current timestamp.
-    let id = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .expect("Time went backwards")
-        .as_millis()
-        .to_string();
+        .expect("Error during WebSocket handshake");
+    let id = get_new_id();
     println!("Received connection: {}", id);
 
     // Split the websocket stream.
-    let (mut write, read) = ws_stream.split();
+    let (mut write, read) = stream.split();
 
     // Create a channel for sending messages to this connection.
     let (tx, mut rx) = unbounded::<Message>();
 
-    // Insert connection info in the global map.
-    connections.lock().await.insert(
-        id.clone(),
-        Connection {
-            tx,
-            registered_functions: Vec::new(),
-        },
-    );
-
-    // Immediately send an initial JSON message to the client.
-    let init_msg = serde_json::json!({
-        "event": "relay:info",
-        "data": "Connected!"
-    })
-    .to_string();
-    let _ = write.send(Message::Text(init_msg.into())).await;
+    connections.create_connection(tx).await;
 
     // Spawn a task that forwards messages from our rx channel to the websocket write sink.
     let id_clone = id.clone();
@@ -249,6 +248,25 @@ async fn send_relay_message(sender_id: &str, msg: &str, conns: &ConnectionMap) {
     }
 }
 
+fn process_server_messages(connections: ConnectionMap, mut rx: UnboundedReceiver<Message>) {
+    tauri::async_runtime::spawn(async move {
+        while let Some(msg) = rx.next().await {
+            if let Message::Text(text) = msg {
+                send_relay_message("server", &text, &connections).await;
+            }
+        }
+    });
+}
+
+async fn handle_connections(connections: ConnectionMap, listener: TcpListener) {
+    while let Ok((raw_stream, _)) = listener.accept().await {
+        let connections = connections.clone();
+        tauri::async_runtime::spawn(async move {
+            handle_connection(connections, raw_stream).await;
+        });
+    }
+}
+
 /// Initializes the WebSocket server and listens for incoming connections.
 ///
 /// This function binds a TCP listener to the specified address and port, and then
@@ -276,35 +294,22 @@ pub async fn init<R: Runtime>(app: tauri::AppHandle<R>) -> Result<(), IoError> {
 
     let listener = TcpListener::bind(&addr).await?;
 
-    println!("Opened WebSocket server on port {}", addr);
-
     let connections: ConnectionMap = Arc::new(Mutex::new(HashMap::new()));
 
-    // Create a channel for the server itself.
-    let (sender, mut receiver) = unbounded::<Message>();
+    let (sender, receiver) = unbounded::<Message>();
 
-    // Store the connections map in the app state.
-    app.manage::<Relay>(sender.clone());
+    app.manage::<Relay>(sender);
 
-    // Spawn a task to handle messages sent to the server.
-    let conns = connections.clone();
-    tauri::async_runtime::spawn(async move {
-        while let Some(msg) = receiver.next().await {
-            if let Message::Text(text) = msg {
-                send_relay_message("server", &text, &conns).await;
-            }
-        }
-    });
+    process_server_messages(connections.clone(), receiver);
 
-    // Spawn a task for each incoming connection.
-    while let Ok((raw_stream, addr)) = listener.accept().await {
-        let connections = connections.clone();
-        tauri::async_runtime::spawn(async move {
-            handle_connection(connections, raw_stream, addr).await;
-        });
-    }
+    handle_connections(connections.clone(), listener).await;
 
     Ok(())
+}
+
+/// Spawns the app's WebSocket server in a separate thread.
+pub fn spawn_server(app: tauri::AppHandle) {
+    tauri::async_runtime::spawn(init(app));
 }
 
 #[cfg(test)]

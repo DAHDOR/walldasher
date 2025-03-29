@@ -39,7 +39,7 @@
   },
   "plugins": {
     "sql": {
-      "preload": ["sqlite:test5.db"]
+      "preload": ["sqlite:walldasher.db"]
     }
   }
 }

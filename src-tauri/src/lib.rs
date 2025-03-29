@@ -1,10 +1,17 @@
 mod db;
 mod relay;
 mod rl;
+use relay::server::spawn_server;
 use rl::client::{connect_to_rl, connect_to_rl_without_validation, RLClient, RLInner};
-use serde_json::from_value;
 use tauri::Manager;
 use tauri_plugin_store::StoreExt;
+
+fn check_store<R: tauri::Runtime>(store: &tauri_plugin_store::Store<R>) {
+    store
+        .get("rl_url")
+        .is_none()
+        .then(|| store.set("rl_url", "localhost:49122".to_string()));
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -30,25 +37,19 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .plugin(
             tauri_plugin_sql::Builder::default()
-                .add_migrations("sqlite:test5.db", db::migrations::get_migrations())
+                .add_migrations("sqlite:walldasher.db", db::migrations::get_migrations())
                 .build(),
         )
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_localhost::Builder::new(port).build())
         .setup(move |app| {
             let store = app.store("store.json").unwrap();
-
-            let url = match store.get("rl_url") {
-                Some(url) => from_value::<String>(url).unwrap_or("localhost:49122".to_string()),
-                None => "localhost:49122".to_string(),
-            };
-
-            store.set("rl_url", url);
+            check_store(&store);
 
             app.manage(RLClient::new(RLInner { handle: None }));
 
-            let app_handle = app.handle().clone();
-            tauri::async_runtime::spawn(relay::server::init(app_handle));
+            let app_handle_clone = app.handle().clone();
+            spawn_server(app_handle_clone);
 
             Ok(())
         })

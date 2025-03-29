@@ -6,13 +6,12 @@
 PRAGMA foreign_keys = off;
 
 -- Table: bracket
-DROP TABLE IF EXISTS bracket;
 
 CREATE TABLE IF NOT EXISTS bracket (
     id         INTEGER PRIMARY KEY,
     phase      INTEGER,
     identifier TEXT,
-    type       TEXT    CHECK (type IN ('SINGLE_ELIMINATION', 'DOUBLE_ELIMINATION', 'ROUND_ROBIN', 'SWISS', 'CUSSTOM_SCHEDULE', 'MATCHMAKING') ),
+    type       TEXT    CHECK (type IN ('SINGLE_ELIMINATION', 'DOUBLE_ELIMINATION', 'ROUND_ROBIN', 'SWISS', 'CUSTOM_SCHEDULE', 'MATCHMAKING') ),
     FOREIGN KEY (
         phase
     )
@@ -25,7 +24,6 @@ CREATE TABLE IF NOT EXISTS bracket (
 
 
 -- Table: event
-DROP TABLE IF EXISTS event;
 
 CREATE TABLE IF NOT EXISTS event (
     id         INTEGER PRIMARY KEY,
@@ -39,7 +37,6 @@ CREATE TABLE IF NOT EXISTS event (
 
 
 -- Table: game
-DROP TABLE IF EXISTS game;
 
 CREATE TABLE IF NOT EXISTS game (
     id     INTEGER PRIMARY KEY,
@@ -60,7 +57,6 @@ CREATE TABLE IF NOT EXISTS game (
 
 
 -- Table: match
-DROP TABLE IF EXISTS match;
 
 CREATE TABLE IF NOT EXISTS match (
     id         INTEGER PRIMARY KEY,
@@ -101,7 +97,6 @@ CREATE TABLE IF NOT EXISTS match (
 
 
 -- Table: phase
-DROP TABLE IF EXISTS phase;
 
 CREATE TABLE IF NOT EXISTS phase (
     id     INTEGER PRIMARY KEY,
@@ -120,7 +115,6 @@ CREATE TABLE IF NOT EXISTS phase (
 
 
 -- Table: player
-DROP TABLE IF EXISTS player;
 
 CREATE TABLE IF NOT EXISTS player (
     id   INTEGER PRIMARY KEY,
@@ -134,7 +128,6 @@ CREATE TABLE IF NOT EXISTS player (
 
 
 -- Table: round
-DROP TABLE IF EXISTS round;
 
 CREATE TABLE IF NOT EXISTS round (
     id       INTEGER PRIMARY KEY,
@@ -158,7 +151,6 @@ CREATE TABLE IF NOT EXISTS round (
 
 
 -- Table: standing
-DROP TABLE IF EXISTS standing;
 
 CREATE TABLE IF NOT EXISTS standing (
     id        INTEGER PRIMARY KEY,
@@ -181,7 +173,6 @@ CREATE TABLE IF NOT EXISTS standing (
 
 
 -- Table: stat
-DROP TABLE IF EXISTS stat;
 
 CREATE TABLE IF NOT EXISTS stat (
     id      INTEGER PRIMARY KEY,
@@ -208,13 +199,12 @@ CREATE TABLE IF NOT EXISTS stat (
 
 
 -- Table: team
-DROP TABLE IF EXISTS team;
 
 CREATE TABLE IF NOT EXISTS team (
     id         INTEGER PRIMARY KEY,
     tournament INTEGER,
     name       TEXT,
-    logo_url   BLOB,
+    logo   BLOB,
     FOREIGN KEY (
         tournament
     )
@@ -223,12 +213,11 @@ CREATE TABLE IF NOT EXISTS team (
 
 
 -- Table: tournament
-DROP TABLE IF EXISTS tournament;
 
 CREATE TABLE IF NOT EXISTS tournament (
     id       INTEGER PRIMARY KEY,
     name     TEXT,
-    logo_url BLOB
+    logo BLOB
 );
 
 PRAGMA foreign_keys = on;

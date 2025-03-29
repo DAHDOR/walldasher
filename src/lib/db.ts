@@ -16,7 +16,7 @@ import {
 } from '../models/db'
 
 // Cargar una sola vez la BD y usar la misma instancia en cada query
-const db = await Database.load('sqlite:test4.db')
+const db = await Database.load('sqlite:walldasher.db')
 
 // INSERTS
 
