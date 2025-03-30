@@ -1,4 +1,4 @@
-use crate::relay::server::Relay;
+use crate::relay::server::RelayHandle;
 use futures::channel::mpsc::UnboundedSender;
 use futures::stream::SplitStream;
 use futures_util::StreamExt;
@@ -107,9 +107,9 @@ pub async fn connect_to_rl_without_validation<R: Runtime>(
 
     set_url(&app, &url);
 
-    let relay = app.state::<Relay>().inner().clone();
+    let relay = app.state::<RelayHandle>().inner().clone();
 
-    let handle = spawn_connection(url, relay);
+    let handle = spawn_connection(url, relay.get_tx());
 
     app.state::<RLClient>().lock().await.handle = Some(handle);
 

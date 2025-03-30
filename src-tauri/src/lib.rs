@@ -1,7 +1,6 @@
 mod db;
 mod relay;
 mod rl;
-use relay::server::spawn_server;
 use rl::client::{connect_to_rl, connect_to_rl_without_validation, RLClient, RLInner};
 use tauri::Manager;
 use tauri_plugin_store::StoreExt;
@@ -48,8 +47,7 @@ pub fn run() {
 
             app.manage(RLClient::new(RLInner { handle: None }));
 
-            let app_handle_clone = app.handle().clone();
-            spawn_server(app_handle_clone);
+            relay::server::spawn(app.handle().clone());
 
             Ok(())
         })
