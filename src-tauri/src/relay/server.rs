@@ -10,7 +10,7 @@ use tokio::{
     net::{TcpListener, TcpStream},
     sync::Mutex,
 };
-use tokio_tungstenite::{accept_async, tungstenite::Message};
+use tokio_tungstenite::{accept_async, tungstenite::Message, WebSocketStream};
 
 use crate::relay::connections::{ConnectionMap, ConnectionMapExt};
 
@@ -40,103 +40,84 @@ impl Relay {
         self.tx.clone()
     }
 
-    async fn relay_message(&self, sender_id: &str, msg: &str) {
-        let json: Value = match serde_json::from_str(msg) {
-            Ok(v) => v,
-            Err(_) => {
-                return;
-            }
-        };
-
-        let event = match json.get("event").and_then(|v| v.as_str()) {
-            Some(e) => e,
-            None => {
-                return;
-            }
-        };
-
-        if json.get("data").is_none() {
-            return;
+    async fn register(&self, id: &str, data: String) {
+        let mut map = self.connections.lock().await;
+        if let Some(connection) = map.get_mut(id) {
+            connection.register_function(data);
         }
+    }
 
-        let (channel, command) = match event.split_once(':') {
-            Some((channel, command)) => (channel, command),
-            None => {
-                return;
-            }
-        };
-
-        // If it's a relay command, handle registration/unregistration.
-        if channel == "relay" {
-            let data = match json.get("data").and_then(|v| v.as_str()) {
-                Some(d) => d.to_string(),
-                None => {
-                    return;
-                }
-            };
-            match command {
-                "register" => {
-                    let mut map = self.connections.lock().await;
-                    if let Some(connection) = map.get_mut(sender_id) {
-                        connection.register_function(data);
-                    }
-                }
-                "unregister" => {
-                    let mut map = self.connections.lock().await;
-                    if let Some(connection) = map.get_mut(sender_id) {
-                        connection.unregister_function(data);
-                    }
-                }
-                _ => {
-                    println!("{}> Unknown relay command: {}", sender_id, command);
-                }
-            }
-            return;
+    async fn unregister(&self, id: &str, data: String) {
+        let mut map = self.connections.lock().await;
+        if let Some(connection) = map.get_mut(id) {
+            connection.unregister_function(data);
         }
+    }
 
+    async fn send_message(&self, event: &str, msg: &str) {
         let map = self.connections.lock().await;
         for (_, connection) in map.iter() {
-            if connection
-                .registered_functions
-                .contains(&channel.to_string())
-            {
+            if connection.registered_functions.contains(&event.to_string()) {
                 let msg = Message::Text(msg.into());
                 let _ = connection.tx.unbounded_send(msg);
             }
         }
+    }
+
+    async fn relay_message(&self, sender_id: &str, msg: &str) {
+        let json: Value = match serde_json::from_str(msg) {
+            Ok(v) => v,
+            Err(_) => return,
+        };
+
+        let event = match json.get("event").and_then(|v| v.as_str()) {
+            Some(e) => e,
+            None => return,
+        };
+
+        let data = match json.get("data").and_then(|v| v.as_str()) {
+            Some(d) => d.to_string(),
+            None => return,
+        };
+
+        let (channel, command) = match event.split_once(':') {
+            Some((channel, command)) => (channel, command),
+            None => return,
+        };
+
+        if channel == "relay" {
+            match command {
+                "register" => self.register(sender_id, data).await,
+                "unregister" => self.unregister(sender_id, data).await,
+                _ => println!("{}> Unknown relay command: {}", sender_id, command),
+            }
+            return;
+        }
+
+        self.send_message(event, msg).await;
 
         println!("{}> Sent {}", sender_id, event);
     }
 
-    async fn handle_connection(&self, raw_stream: TcpStream) {
-        let stream = accept_async(raw_stream)
-            .await
-            .expect("Error during WebSocket handshake");
-
-        // Split the websocket stream.
+    async fn handle_connection(&self, stream: WebSocketStream<TcpStream>) {
         let (mut write, read) = stream.split();
 
-        // Create a channel for sending messages to this connection.
         let (tx, mut rx) = unbounded::<Message>();
 
         let id = self.connections.create_connection(tx).await;
 
-        // Spawn a task that forwards messages from our rx channel to the websocket write sink.
         let id_clone = id.clone();
         let write_task = tauri::async_runtime::spawn(async move {
             while let Some(msg) = rx.next().await {
                 if write.send(msg).await.is_err() {
                     println!("Error sending message to {}", &id_clone);
-                    break;
                 }
             }
         });
 
-        // Process each incoming message.
         let read_task = read.try_for_each(|msg| {
             let id_clone = id.clone();
             async move {
-                // Assume messages come as Text.
                 let text = match msg.to_text() {
                     Ok(t) => t,
                     Err(e) => {
@@ -144,21 +125,18 @@ impl Relay {
                         return Ok(());
                     }
                 };
-
-                // Process this message.
                 self.relay_message(&id_clone, text).await;
                 Ok(())
             }
         });
 
-        // Await both tasks concurrently.
         tokio::select! {
             _ = write_task => (),
             _ = read_task => (),
         }
 
         println!("{} disconnected", &id);
-        // Remove the connection from the map.
+
         self.connections.lock().await.remove(&id);
     }
 
@@ -177,7 +155,8 @@ impl Relay {
         while let Ok((raw_stream, _)) = self.listener.accept().await {
             let relay = self.clone();
             tauri::async_runtime::spawn(async move {
-                relay.handle_connection(raw_stream).await;
+                let stream = accept_async(raw_stream).await.expect("WS handshake error");
+                relay.handle_connection(stream).await;
             });
         }
     }
