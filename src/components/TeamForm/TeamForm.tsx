@@ -23,7 +23,7 @@ import {
 } from '@components/ui/text-field'
 import { showToast } from '@components/ui/toast'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
-import { openLogo } from '@lib/images'
+import { openPngFile } from '@lib/images'
 import { MatchTeam } from '@models/MatchState'
 import { readFile } from '@tauri-apps/plugin-fs'
 import { Icon } from 'solid-heroicons'
@@ -60,7 +60,7 @@ const TeamForm = (props: MatchTeamFormProps) => {
   }
 
   const onSelectLogo = () => {
-    openLogo()
+    openPngFile()
       .then(path => (path ? setLogoPath(path) : {}))
       .catch(console.error)
   }

@@ -1,12 +1,15 @@
 import { useWS } from '@/contexts/ws'
 import { Button } from '@components/ui/button'
+import { openSvgFile, svgFileToURLWithXmlnsFix } from '@lib/images'
+import { createSignal } from 'solid-js'
 
 const Dev = () => {
   const ws = useWS()
 
+  const [svg, setSvg] = createSignal('')
+
   const onTestFunction = () => {
-    const now = new Date()
-    console.log(now.getDate())
+    openSvgFile().then(svgFileToURLWithXmlnsFix).then(setSvg).catch(console.error)
   }
 
   return (
@@ -23,6 +26,7 @@ const Dev = () => {
       <h1 class="text-xl font-bold">Test functions</h1>
       <div class="flex items-center gap-5 font-bold">
         <Button onClick={onTestFunction}>Prueba</Button>
+        <img src={svg()} alt="Scorebug" class="w-32 h-32" />
       </div>
     </div>
   )

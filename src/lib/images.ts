@@ -1,31 +1,135 @@
-import { appDataDir, BaseDirectory, join } from '@tauri-apps/api/path'
 import { open } from '@tauri-apps/plugin-dialog'
-import { exists, mkdir, readFile, writeFile } from '@tauri-apps/plugin-fs'
-import { createUniqueId } from 'solid-js'
+import { readFile } from '@tauri-apps/plugin-fs'
 
-export const logosDir = async () => {
-  const dir = await join(await appDataDir(), 'logos')
-  if (!(await exists(dir))) await mkdir('logos', { baseDir: BaseDirectory.AppData })
-  return dir
-}
+/**
+ * Opens a file selection dialog to choose a PNG file.
+ *
+ *
+ * @returns A promise that resolves with the selected PNG file path,
+ * or null if the selection is cancelled.
+ */
+export const openPngFile = async () =>
+  await open({ filters: [{ name: 'PNG', extensions: ['png'] }] })
 
-export const openLogo = async () =>
-  await open({ filters: [{ name: 'Image', extensions: ['png'] }] })
-
-export const logoToBlob = async (path: string) =>
+/**
+ * Converts a PNG file at the provided path into a Blob.
+ *
+ * @param path - The file path to the PNG image.
+ * @returns A promise that resolves to a Blob containing the PNG image data.
+ */
+export const pngFileToBlob = async (path: string) =>
   new Blob([await readFile(path)], { type: 'image/png' })
 
-export const logoToURL = async (path: string) =>
-  URL.createObjectURL(await logoToBlob(path))
+/**
+ * Converts a PNG file specified by its file path into a Blob and generates a URL for it.
+ *
+ * @param path - The file path of the PNG image to process.
+ * @returns A Promise that resolves to a URL string representing the PNG Blob.
+ */
+export const pngFileToURL = async (path: string) =>
+  URL.createObjectURL(await pngFileToBlob(path))
 
-export const saveLogo = async (path: string) => {
-  const dir = await logosDir()
+/**
+ * Opens a file dialog that filters and displays only SVG files.
+ *
+ * @returns A promise that resolves with the selected SVG file path, or undefined if no file is selected.
+ */
+export const openSvgFile = async () =>
+  await open({ filters: [{ name: 'SVG', extensions: ['svg'] }] })
 
-  const name = createUniqueId() + '.png'
-  const data = await readFile(path)
-  const logoPath = await join(dir, name)
+/**
+ * Reads the file content from the specified path and returns it as a string.
+ *
+ * @param path - The file system path to the file.
+ * @returns A promise that resolves with the file's content as a string.
+ */
+export const fileToString = async (path: string) =>
+  new TextDecoder().decode(await readFile(path))
 
-  await writeFile(logoPath, data)
+/**
+ * Parses a given string as an SVG XML document and retrieves the first SVG element.
+ *
+ * @param string - The input string containing the SVG markup.
+ * @returns The first SVG element found in the parsed document, or null if no SVG element is present.
+ */
+export const stringToSvg = (string: string) =>
+  new DOMParser().parseFromString(string, 'image/svg+xml').querySelector('svg')
 
-  return logoPath
+/**
+ * Converts an SVG file at the specified path into an SVG representation.
+ *
+ * @param path - The file system path of the SVG file.
+ * @returns A promise that resolves to a string containing the SVG data.
+ */
+export const svgFileToSvg = async (path: string) => stringToSvg(await fileToString(path))
+
+/**
+ * Ensures that the given SVG element includes the correct XML namespace.
+ *
+ * This function checks if the provided SVG element has the "xmlns" attribute set.
+ * If the attribute is missing, it adds "http://www.w3.org/2000/svg" as the namespace.
+ *
+ * @param svg - The SVG element to check and fix.
+ * @returns The modified SVG element with the "xmlns" attribute guaranteed to be present.
+ */
+export const svgWithXmlnsFix = (svg: SVGSVGElement) => {
+  if (!svg.getAttribute('xmlns')) svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+  return svg
 }
+
+/**
+ * Reads an SVG file from the specified path and returns an SVG string with the xmlns attribute fixed.
+ *
+ * This function first loads the SVG file content using `svgFileToSvg`, and then processes the SVG
+ * string with `svgWithXmlnsFix` to ensure that the xmlns attribute is correctly set.
+ *
+ * @param path - The file path of the SVG file.
+ * @returns A promise that resolves to an SVG string with the fixed xmlns attribute.
+ */
+export const svgFileToSvgWithXmlnsFix = async (path: string) =>
+  svgWithXmlnsFix(await svgFileToSvg(path))
+
+/**
+ * Serializes an SVG element into a string.
+ *
+ * @param svg - The SVG element that will be converted to a string.
+ * @returns The string representation of the provided SVG element.
+ */
+export const svgToString = (svg: SVGSVGElement) =>
+  new XMLSerializer().serializeToString(svg)
+
+/**
+ * Reads an SVG file from the specified path, applies XML namespace fixes, and converts it to a string.
+ *
+ * This function asynchronously processes the SVG file by first fixing its XML namespace issues using
+ * svgFileToSvgWithXmlnsFix, and then converting the resulting SVG element to a string using svgToString.
+ *
+ * @param path - The file path to the SVG file.
+ * @returns A Promise that resolves to the string representation of the SVG with corrected XML namespaces.
+ */
+export const svgFileToStringWithXmlnsFix = async (path: string) =>
+  svgToString(await svgFileToSvgWithXmlnsFix(path))
+
+/**
+ * Converts an SVG file to a Blob after fixing its xmlns attribute.
+ *
+ * This async function reads the SVG file from the provided path, applies necessary fixes
+ * to the XML namespace declarations, and returns a Blob object containing the modified SVG data.
+ *
+ * @param path - The file system path to the SVG file.
+ * @returns A Promise that resolves to a Blob representing the SVG file with the xmlns attribute fixed.
+ */
+export const svgFileToBlobWithXmlnsFix = async (path: string) =>
+  new Blob([await svgFileToStringWithXmlnsFix(path)], { type: 'image/svg+xml' })
+
+/**
+ * Converts an SVG file located at the given path into a Blob URL, ensuring that the XML namespace is properly fixed.
+ *
+ * This function retrieves the SVG file, applies any necessary fixes to its XML namespace,
+ * and creates a Blob URL that can be used within the application.
+ *
+ * @param path - A string representing the file system path to the SVG file.
+ * @returns A promise that resolves to a Blob URL representing the fixed SVG content.
+ */
+export const svgFileToURLWithXmlnsFix = async (path: string) =>
+  URL.createObjectURL(await svgFileToBlobWithXmlnsFix(path))
