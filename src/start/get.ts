@@ -122,7 +122,7 @@ const getEventFromTeamToPlayers = async (
       id: startEntrant.id as unknown as number,
       tournament: startEvent.tournament.id as unknown as number,
       name: startEntrant.name,
-      logo: startEntrant.team.images[0]?.url || '',
+      logo_url: startEntrant.team.images[0]?.url || '',
       players: []
     }
 

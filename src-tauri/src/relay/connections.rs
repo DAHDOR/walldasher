@@ -22,15 +22,15 @@ impl Connection {
         }
     }
 
-    pub fn register_function(&mut self, data: String) {
-        if !self.registered_functions.contains(&data) {
-            self.registered_functions.push(data.clone());
+    pub fn register_function(&mut self, name: &String) {
+        if !self.registered_functions.contains(name) {
+            self.registered_functions.push(name.clone());
         }
     }
 
-    pub fn unregister_function(&mut self, data: String) {
-        if let Some(pos) = self.registered_functions.iter().position(|f| f == &data) {
-            self.registered_functions.remove(pos);
+    pub fn unregister_function(&mut self, data: &String) {
+        if let Some(index) = self.registered_functions.iter().position(|f| f == data) {
+            self.registered_functions.remove(index);
         }
     }
 }

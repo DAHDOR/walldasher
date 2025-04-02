@@ -3,7 +3,8 @@ import { useSnapshot } from '@/contexts/snapshot'
 import { DeltaBar } from '@components/ui/delta-bar'
 import { Col, Grid } from '@components/ui/grid'
 import { USPlayer } from '@models/ingame/events/UpdateState/USPlayer'
-import { Component, createSignal, onMount, createEffect } from 'solid-js';
+import gsap from 'gsap'
+import { Component, createEffect, createSignal, onMount } from 'solid-js'
 import blueLogoBlock from './assets/blueLogoBlock.svg'
 import blueNameBlock from './assets/blueNameBlock.svg'
 import blueScoreBlock from './assets/blueScoreBlock.svg'
@@ -11,16 +12,15 @@ import orangeLogoBlock from './assets/orangeLogoBlock.svg'
 import orangeNameBlock from './assets/orangeNameBlock.svg'
 import orangeScoreBlock from './assets/orangeScoreBlock.svg'
 import bg from './assets/PostGameBG.png'
-import gsap from 'gsap'
 
 let White = 'ffffff'
-let Blue = '22b0ff';
-let LightBlue = '36d0ff';
-let Orange = 'ff8a15';
-let LightOrange = 'ffbc00';
+let Blue = '22b0ff'
+let LightBlue = '36d0ff'
+let Orange = 'ff8a15'
+let LightOrange = 'ffbc00'
 
-let ColorA = Blue;
-let ColorB = LightBlue;
+let ColorA = Blue
+let ColorB = LightBlue
 
 interface AnimatedSVGProps {
   setRef: (el: SVGSVGElement) => void
@@ -57,13 +57,13 @@ const LineBtoRight: Component<AnimatedSVGProps> = ({ setRef }) => {
 const LineAtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
   return (
     <svg ref={setRef} width="300" height="1080" style="position: absolute;">
-        <g transform="scale(-1 1) translate(-300 0)">
-            <path
-                style={`fill:#${ColorA};stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1`}
-                d="M 0,0 150,540 0,1080 H 150 L 300,540 150,0 Z"
-                id="path1"
-            />
-        </g>
+      <g transform="scale(-1 1) translate(-300 0)">
+        <path
+          style={`fill:#${ColorA};stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1`}
+          d="M 0,0 150,540 0,1080 H 150 L 300,540 150,0 Z"
+          id="path1"
+        />
+      </g>
     </svg>
   )
 }
@@ -71,13 +71,13 @@ const LineAtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
 const LineBtoLeft: Component<AnimatedSVGProps> = ({ setRef }) => {
   return (
     <svg ref={setRef} width="300" height="1080" style="position: absolute;">
-        <g transform="scale(-1 1) translate(-300 0)">
-            <path
-                style={`fill:#${ColorB};stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1`}
-                d="M 0,0 150,540 0,1080 H 150 L 300,540 150,0 Z"
-                id="path1"
-            />
-        </g>
+      <g transform="scale(-1 1) translate(-300 0)">
+        <path
+          style={`fill:#${ColorB};stroke-width:20;stroke-linecap:square;stroke-miterlimit:5.8;fill-opacity:1`}
+          d="M 0,0 150,540 0,1080 H 150 L 300,540 150,0 Z"
+          id="path1"
+        />
+      </g>
     </svg>
   )
 }
@@ -87,52 +87,62 @@ const PostGame: Component = () => {
   const length = 20
   const durationSecs = 2.5
   const extraSpaceMultiplier = 300 * 5
-  const [svgElementsAtoRight, setSvgElementsAtoRight] = createSignal<(SVGSVGElement | undefined)[]>([])
-  const [svgElementsBtoRight, setSvgElementsBtoRight] = createSignal<(SVGSVGElement | undefined)[]>([])
-  const [svgElementsAtoLeft, setSvgElementsAtoLeft] = createSignal<(SVGSVGElement | undefined)[]>([])
-  const [svgElementsBtoLeft, setSvgElementsBtoLeft] = createSignal<(SVGSVGElement | undefined)[]>([])
+  const [svgElementsAtoRight, setSvgElementsAtoRight] = createSignal<
+    (SVGSVGElement | undefined)[]
+  >([])
+  const [svgElementsBtoRight, setSvgElementsBtoRight] = createSignal<
+    (SVGSVGElement | undefined)[]
+  >([])
+  const [svgElementsAtoLeft, setSvgElementsAtoLeft] = createSignal<
+    (SVGSVGElement | undefined)[]
+  >([])
+  const [svgElementsBtoLeft, setSvgElementsBtoLeft] = createSignal<
+    (SVGSVGElement | undefined)[]
+  >([])
 
   onMount(() => {
     enter()
   })
 
-  const start = gsap.timeline({paused: true, repeat: 0})
+  const start = gsap.timeline({ paused: true, repeat: 0 })
 
   const setStart = () => {
     svgElementsAtoRight().forEach((el, i) => {
-      gsap.set(el, { x: 960 + extraSpaceMultiplier - 300 * i})
-      start.to(el, { x: -300 - 300 * i , duration: durationSecs, ease: 'sine.in' }, 0)
+      gsap.set(el, { x: 960 + extraSpaceMultiplier - 300 * i })
+      start.to(el, { x: -300 - 300 * i, duration: durationSecs, ease: 'sine.in' }, 0)
     })
 
     svgElementsBtoRight().forEach((el, i) => {
-      gsap.set(el, { x: 810 + extraSpaceMultiplier - 300 * i});
-      start.to(el, { x: -450 - 300 * i , duration: durationSecs, ease: 'sine.in' }, 0)
+      gsap.set(el, { x: 810 + extraSpaceMultiplier - 300 * i })
+      start.to(el, { x: -450 - 300 * i, duration: durationSecs, ease: 'sine.in' }, 0)
     })
 
     svgElementsAtoLeft().forEach((el, i) => {
-      gsap.set(el, { x: -960 - extraSpaceMultiplier + 300 * i});
-      start.to(el, { x: 300 + 300 * i , duration: durationSecs, ease: 'sine.in' }, 0)
+      gsap.set(el, { x: -960 - extraSpaceMultiplier + 300 * i })
+      start.to(el, { x: 300 + 300 * i, duration: durationSecs, ease: 'sine.in' }, 0)
     })
 
     svgElementsBtoLeft().forEach((el, i) => {
-      gsap.set(el, { x: -810 - extraSpaceMultiplier + 300 * i});
-      start.to(el, { x: 450 + 300 * i , duration: durationSecs, ease: 'sine.in' }, 0)
+      gsap.set(el, { x: -810 - extraSpaceMultiplier + 300 * i })
+      start.to(el, { x: 450 + 300 * i, duration: durationSecs, ease: 'sine.in' }, 0)
     })
 
-    start.play();
+    start.play()
   }
 
   const enter = () => {
     setStart()
   }
 
-  {if (stats().winner === stats().teams[0].name){
-    ColorA = Blue
-    ColorB = LightBlue
-  } else {
-    ColorA = Orange
-    ColorB = LightOrange
-  }}
+  {
+    if (stats().winner === stats().teams[0].name) {
+      ColorA = Blue
+      ColorB = LightBlue
+    } else {
+      ColorA = Orange
+      ColorB = LightOrange
+    }
+  }
 
   const [lightOrangeStar, setLightOrangeStar] = createSignal(`
 <svg
@@ -174,8 +184,7 @@ const PostGame: Component = () => {
        id="path7-3" /><path
        style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
        d="m 286,291.00002 c 0,0 -20,5 -30,4.99998 -10,2e-5 -29.99999,-5 -29.99999,-5 v 60.00001 c 0,0 19.99999,5 29.99999,5.00001 10,-1e-5 30,-5.00001 30,-5.00001 z"
-       id="path7-3-4" /></g></svg>`
-  );
+       id="path7-3-4" /></g></svg>`)
   const [lightBlueStar, setLightBlueStar] = createSignal(`
 <svg
    width="512"
@@ -217,7 +226,7 @@ const PostGame: Component = () => {
        style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
        d="m 286,291.00002 c 0,0 -20,5 -30,4.99998 -10,2e-5 -29.99999,-5 -29.99999,-5 v 60.00001 c 0,0 19.99999,5 29.99999,5.00001 10,-1e-5 30,-5.00001 30,-5.00001 z"
        id="path7-3-4" /></g></svg>
-    `);
+    `)
   const [orangeStar, setOrangeStar] = createSignal(`
 <svg
    width="512"
@@ -258,8 +267,7 @@ const PostGame: Component = () => {
        id="path7-3" /><path
        style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
        d="m 286,291.00002 c 0,0 -20,5 -30,4.99998 -10,2e-5 -29.99999,-5 -29.99999,-5 v 60.00001 c 0,0 19.99999,5 29.99999,5.00001 10,-1e-5 30,-5.00001 30,-5.00001 z"
-       id="path7-3-4" /></g></svg>`
-  );
+       id="path7-3-4" /></g></svg>`)
   const [blueStar, setBlueStar] = createSignal(`
 <svg
    width="512"
@@ -300,61 +308,60 @@ const PostGame: Component = () => {
        id="path7-3" /><path
        style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:5.8;stroke-dasharray:none;stroke-opacity:0.62543;paint-order:markers fill stroke"
        d="m 286,291.00002 c 0,0 -20,5 -30,4.99998 -10,2e-5 -29.99999,-5 -29.99999,-5 v 60.00001 c 0,0 19.99999,5 29.99999,5.00001 10,-1e-5 30,-5.00001 30,-5.00001 z"
-       id="path7-3-4" /></g></svg>`
-  );
+       id="path7-3-4" /></g></svg>`)
 
   onMount(() => {
-    const numStars = 4;
-    const container = document.getElementById("starry-sky");
+    const numStars = 4
+    const container = document.getElementById('starry-sky')
 
-    if (!container) return;
+    if (!container) return
 
-    const stars = [lightOrangeStar, lightBlueStar, orangeStar, blueStar];
+    const stars = [lightOrangeStar, lightBlueStar, orangeStar, blueStar]
 
     for (let i = 0; i < numStars; i++) {
       for (let j = 0; j < 2; j++) {
-        const star = document.createElement("div");
-        const randomStar = stars[Math.floor(Math.random() * stars.length)];
-        star.innerHTML = randomStar();
-        star.style.position = "absolute";
-        star.style.pointerEvents = "none";
+        const star = document.createElement('div')
+        const randomStar = stars[Math.floor(Math.random() * stars.length)]
+        star.innerHTML = randomStar()
+        star.style.position = 'absolute'
+        star.style.pointerEvents = 'none'
 
         const x = 450 * i + 25
         const y = 450 * j + 50
-        const opacity = Math.random()/4;
+        const opacity = Math.random() / 4
 
-        star.style.left = `${x}px`;
-        star.style.top = `${y}px`;
-        star.style.opacity = opacity.toString();
+        star.style.left = `${x}px`
+        star.style.top = `${y}px`
+        star.style.opacity = opacity.toString()
 
-        container.appendChild(star);
+        container.appendChild(star)
 
         const flicker = () => {
-          const fadeInDuration = Math.random() * 10;
-          const fadeOutDuration = Math.random() * 10;
-          const delay = Math.random() * 5;
+          const fadeInDuration = Math.random() * 10
+          const fadeOutDuration = Math.random() * 10
+          const delay = Math.random() * 5
 
           gsap.to(star, {
             opacity: 0.25,
             duration: fadeInDuration,
-            ease: "power1.inOut",
+            ease: 'power1.inOut',
             onComplete: () => {
               gsap.to(star, {
                 opacity: 0,
                 duration: fadeOutDuration,
-                ease: "power1.inOut",
+                ease: 'power1.inOut',
                 onComplete: () => {
-                  setTimeout(flicker, delay * 1000);
-                },
-              });
-            },
-          });
-        };
+                  setTimeout(flicker, delay * 1000)
+                }
+              })
+            }
+          })
+        }
 
-        flicker();
+        flicker()
       }
     }
-  });
+  })
 
   let players0: USPlayer[]
   let players1: USPlayer[]
@@ -410,24 +417,43 @@ const PostGame: Component = () => {
         <div class="overflow-hidden flex flex-row absolute w-[960px] h-[1080px]">
           {Array.from({ length }, (_, index) => {
             if (index % 2 === 0) {
-              return <LineAtoRight setRef={(el) => setSvgElementsAtoRight((prev) => [...prev, el])} />
+              return (
+                <LineAtoRight
+                  setRef={el => setSvgElementsAtoRight(prev => [...prev, el])}
+                />
+              )
             } else {
-              return <LineBtoRight setRef={(el) => setSvgElementsBtoRight((prev) => [...prev, el])} />
+              return (
+                <LineBtoRight
+                  setRef={el => setSvgElementsBtoRight(prev => [...prev, el])}
+                />
+              )
             }
           })}
         </div>
         <div class="overflow-hidden flex flex-row-reverse absolute w-[960px] h-[1080px] translate-x-[960px]">
           {Array.from({ length }, (_, index) => {
             if (index % 2 === 0) {
-              return <LineAtoLeft setRef={(el) => setSvgElementsAtoLeft((prev) => [...prev, el])} />
+              return (
+                <LineAtoLeft
+                  setRef={el => setSvgElementsAtoLeft(prev => [...prev, el])}
+                />
+              )
             } else {
-              return <LineBtoLeft setRef={(el) => setSvgElementsBtoLeft((prev) => [...prev, el])} />
+              return (
+                <LineBtoLeft
+                  setRef={el => setSvgElementsBtoLeft(prev => [...prev, el])}
+                />
+              )
             }
           })}
         </div>
       </div>
-      <div id="starry-sky" class='fixed top-0 left-0 w-[1920px] h-[1080px] overflow-hidden -z-50 bg-black'></div>
-      <div class='w-[1920px] h-[1080px]'>
+      <div
+        id="starry-sky"
+        class="fixed top-0 left-0 w-[1920px] h-[1080px] overflow-hidden -z-50 bg-black"
+      ></div>
+      <div class="w-[1920px] h-[1080px]">
         <div class="w-[1728px] text-center z-10 mx-auto font-[chivo]">
           <div class="text-gray-300 text-[25px] pt-[30px] font-bold opacity-50">
             {matchState().title}
@@ -467,7 +493,10 @@ const PostGame: Component = () => {
                       />
                       <div class="w-[100px] h-[100px] absolute inset-0 z-10 flex justify-center items-center">
                         <div class="translate-x-[90px]">
-                          <img src={matchState().orange.logo} class="w-fit h-fit scale-[70%]" />
+                          <img
+                            src={matchState().orange.logoUrl}
+                            class="w-fit h-fit scale-[70%]"
+                          />
                         </div>
                       </div>
                     </Col>
@@ -481,7 +510,10 @@ const PostGame: Component = () => {
                       />
                       <div class="w-[100px] h-[100px] absolute inset-0 z-10 flex justify-center items-center">
                         <div class="translate-x-[50px]">
-                          <img src={matchState().blue.logo} class="w-fit h-fit scale-[70%]" />
+                          <img
+                            src={matchState().blue.logoUrl}
+                            class="w-fit h-fit scale-[70%]"
+                          />
                         </div>
                       </div>
                     </Col>
@@ -512,37 +544,43 @@ const PostGame: Component = () => {
               </>
             ))}
           </Grid>
-          <div class='relative pt-[80px] mx-auto'>
+          <div class="relative pt-[80px] mx-auto">
             <div class="text-white text-center text-[30px] text-nowrap translate-y-[-125px]">
               {'JUEGO '}
               {matchState().gameNumber}
             </div>
             {gameWins0 < firstTo && gameWins1 < firstTo ? (
               gameWins0 > gameWins1 ? (
-                <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
-                  {matchState().blue.name + ' lidera (' + gameWins0 + '-' + gameWins1 + ')'}
+                <div class="text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]">
+                  {matchState().blue.name +
+                    ' lidera (' +
+                    gameWins0 +
+                    '-' +
+                    gameWins1 +
+                    ')'}
+                </div>
+              ) : gameWins0 === gameWins1 ? (
+                <div class="text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]">
+                  {'Empatados (' + gameWins0 + '-' + gameWins1 + ')'}
                 </div>
               ) : (
-                gameWins0 === gameWins1 ? (
-                  <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
-                    {'Empatados (' + gameWins0 + '-' + gameWins1 + ')'}
-                  </div>
-                ) : (
-                  <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
-                    {matchState().orange.name + ' lidera (' + gameWins0 + '-' + gameWins1 + ')'}
-                  </div>
-                )
+                <div class="text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]">
+                  {matchState().orange.name +
+                    ' lidera (' +
+                    gameWins0 +
+                    '-' +
+                    gameWins1 +
+                    ')'}
+                </div>
               )
+            ) : gameWins0 > gameWins1 ? (
+              <div class="text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]">
+                {matchState().blue.name + ' gana (' + gameWins0 + '-' + gameWins1 + ')'}
+              </div>
             ) : (
-              gameWins0 > gameWins1 ? (
-                <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
-                  {matchState().blue.name + ' gana (' + gameWins0 + '-' + gameWins1 + ')'}
-                </div>
-              ) : (
-                <div class='text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]'>
-                  {matchState().orange.name + ' gana (' + gameWins0 + '-' + gameWins1 + ')'}
-                </div>
-              )
+              <div class="text-white text-center text-[30px] text-nowrap translate-y-[-15px] uppercase mt-[-10px]">
+                {matchState().orange.name + ' gana (' + gameWins0 + '-' + gameWins1 + ')'}
+              </div>
             )}
           </div>
           <Grid cols={7} class="pt-[30px]">

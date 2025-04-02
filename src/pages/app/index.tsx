@@ -1,6 +1,7 @@
 import RlWsStatusProvider from '@/contexts/rlWsStatus'
 import Explorer from '@components/explorer'
 import Topbar from '@components/topbar'
+import { DbProvider } from '@contexts/db'
 import { StoreProvider } from '@contexts/store'
 import { Route, useNavigate } from '@solidjs/router'
 import { isTauri } from '@tauri-apps/api/core'
@@ -17,17 +18,19 @@ const Layout: Component<ParentProps> = props => {
 
   return (
     <div class="flex h-screen flex-col">
-      <StoreProvider>
-        <RlWsStatusProvider>
-          <Topbar />
-          <div class="flex grow flex-row max-h-[calc(100vh-40px)]">
-            <Explorer />
-            <div class="flex h-full grow flex-col rounded-tl-md bg-zinc-900 overflow-y-scroll">
-              {props.children}
+      <DbProvider>
+        <StoreProvider>
+          <RlWsStatusProvider>
+            <Topbar />
+            <div class="flex grow flex-row max-h-[calc(100vh-40px)]">
+              <Explorer />
+              <div class="flex h-full grow flex-col rounded-tl-md bg-zinc-900 overflow-y-scroll">
+                {props.children}
+              </div>
             </div>
-          </div>
-        </RlWsStatusProvider>
-      </StoreProvider>
+          </RlWsStatusProvider>
+        </StoreProvider>
+      </DbProvider>
     </div>
   )
 }

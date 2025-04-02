@@ -26,6 +26,7 @@ const Match = () => {
   createEffect(() => {
     ws.send('match', 'update_blue_team', blue())
     ws.send('match', 'update_game_number', blue().wins + orange().wins + 1)
+    console.log('sent blue team', blue())
   })
 
   createEffect(() => {

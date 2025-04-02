@@ -45,13 +45,10 @@ const MatchStateProvider = ({ children }) => {
 
   ws.subscribe('match', 'update_blue_team', data => {
     const blue = data as MatchTeam
-    console.log('blue', blue)
-    if (blue.logo_bytes) {
-      blue.logo_bytes = new Uint8Array(Object.values(blue.logo_bytes))
-      if (blue.logo_bytes != state().blue.logo_bytes) {
-        blue.logo = URL.createObjectURL(
-          new Blob([blue.logo_bytes], { type: 'image/png' })
-        )
+    if (blue.logo) {
+      blue.logo = new Uint8Array(Object.values(blue.logo))
+      if (blue.logo != state().blue.logo) {
+        blue.logoUrl = URL.createObjectURL(new Blob([blue.logo], { type: 'image/png' }))
       }
     }
     setState(state => ({ ...state, blue }))
@@ -59,11 +56,11 @@ const MatchStateProvider = ({ children }) => {
 
   ws.subscribe('match', 'update_orange_team', data => {
     const orange = data as MatchTeam
-    if (orange.logo_bytes) {
-      orange.logo_bytes = new Uint8Array(Object.values(orange.logo_bytes))
-      if (orange.logo_bytes != state().orange.logo_bytes) {
-        orange.logo = URL.createObjectURL(
-          new Blob([orange.logo_bytes], { type: 'image/png' })
+    if (orange.logo) {
+      orange.logo = new Uint8Array(Object.values(orange.logo))
+      if (orange.logo != state().orange.logo) {
+        orange.logoUrl = URL.createObjectURL(
+          new Blob([orange.logo], { type: 'image/png' })
         )
       }
     }

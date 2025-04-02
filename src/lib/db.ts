@@ -1,6 +1,5 @@
 import TournamentState from '@models/TournamentState'
 import Database from '@tauri-apps/plugin-sql'
-// Import all the tables from models/db.ts
 import {
   Bracket,
   Event,
@@ -14,511 +13,435 @@ import {
   Team,
   Tournament
 } from '../models/db'
+import { uint8ArrayStringTouint8Array as uint8ArrayStringToUint8Array } from './images'
 
-// Cargar una sola vez la BD y usar la misma instancia en cada query
-const db = await Database.load('sqlite:walldasher.db')
+class DB {
+  private db: Database
 
-// INSERTS
-
-// INSERT everything from TournamentState
-export async function insertTournamentState(tournamentState: TournamentState) {
-  for (const team of tournamentState.teams) {
-    await insertTeam(team)
-    for (const player of team.players) {
-      await insertPlayer(player)
-    }
+  constructor(db: Database) {
+    this.db = db
   }
-  for (const event of tournamentState.events) {
-    await insertEvent(event)
-    for (const phase of event.phases) {
-      await insertPhase(phase)
-      for (const bracket of phase.brackets) {
-        await insertBracket(bracket)
-        for (const round of bracket.rounds) {
-          await insertRound(round)
-          for (const standing of bracket.standings) {
-            await insertStanding(standing)
+
+  insertTournamentState = async (tournamentState: TournamentState) => {
+    for (const team of tournamentState.teams) {
+      await this.insertTeam(team)
+      for (const player of team.players) {
+        await this.insertPlayer(player)
+      }
+    }
+    for (const event of tournamentState.events) {
+      await this.insertEvent(event)
+      for (const phase of event.phases) {
+        await this.insertPhase(phase)
+        for (const bracket of phase.brackets) {
+          await this.insertBracket(bracket)
+          for (const round of bracket.rounds) {
+            await this.insertRound(round)
+            for (const standing of bracket.standings) {
+              await this.insertStanding(standing)
+            }
           }
         }
       }
     }
   }
-}
 
-// INSERT into Table Bracket
-export async function insertBracket(bracket: Bracket) {
-  try {
-    const result = await db.execute(
+  insertBracket = async (bracket: Bracket) =>
+    await this.db.execute(
       'INSERT INTO stats (id, phase, identifier, type) VALUES ($1, $2, $3, $4)',
       [bracket.id, bracket.phase, bracket.identifier, bracket.type]
     )
-    console.log('Bracket inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting bracket:', error)
-    throw error
-  }
-}
 
-// INSERT into Table Event
-export async function insertEvent(event: Event) {
-  try {
-    const result = await db.execute(
+  insertEvent = async (event: Event) =>
+    await this.db.execute(
       'INSERT INTO event (id, tournament, name) VALUES ($1, $2, $3)',
       [event.id, event.tournament, event.name]
     )
-    console.log('Event inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting event:', error)
-    throw error
-  }
-}
 
-// INSERT into Table Game
-export async function insertGame(game: Game) {
-  try {
-    const result = await db.execute(
+  insertGame = async (game: Game) =>
+    await this.db.execute(
       'INSERT INTO game (id, match, number, score1, score2) VALUES ($1, $2, $3, $4, $5)',
       [game.id, game.match, game.number, game.score1, game.score2]
     )
-    console.log('Game inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting game:', error)
-    throw error
-  }
-}
 
-//INSERT a Table Match
-export async function insertMatch(match: Match) {
-  try {
-    const result = await db.execute(
+  insertMatch = async (match: Match) =>
+    await this.db.execute(
       'INSERT INTO match (id, title, round, identifier, number, best_of, team1, team2, winner) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-      Object.values(match)
+      [
+        match.id,
+        match.title,
+        match.round,
+        match.identifier,
+        match.number,
+        match.best_of,
+        match.team1,
+        match.team2,
+        match.winner
+      ]
     )
-    console.log('Match inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting match:', error)
-    throw error
-  }
-}
 
-// INSERT into Table Phase
-export async function insertPhase(phase: Phase) {
-  try {
-    const result = await db.execute(
+  insertPhase = async (phase: Phase) =>
+    await this.db.execute(
       'INSERT INTO phase (id, event, number, name) VALUES ($1, $2, $3, $4)',
-      Object.values(phase)
+      [phase.id, phase.event, phase.number, phase.name]
     )
-    console.log('Phase inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting event:', error)
-    throw error
-  }
-}
 
-// INSERT a Table Player
-export async function insertPlayer(player: Player) {
-  try {
-    const result = await db.execute(
-      'INSERT INTO player (id, team, name) VALUES ($1, $2, $3)',
-      Object.values(player)
-    )
-    console.log('Player inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting player:', error)
-    throw error
-  }
-}
+  insertPlayer = async (player: Player) =>
+    await this.db.execute('INSERT INTO player (id, team, name) VALUES ($1, $2, $3)', [
+      player.id,
+      player.team,
+      player.name
+    ])
 
-// INSERT into Table Round
-export async function insertRound(round: Round) {
-  try {
-    const result = await db.execute(
+  insertRound = async (round: Round) =>
+    await this.db.execute(
       'INSERT INTO round (id, bracket, number, best_of, start_at) VALUES ($1, $2, $3, $4, $5)',
-      Object.values(round)
+      [round.id, round.bracket, round.number, round.best_of, round.start_at]
     )
-    console.log('Round inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting round:', error)
-    throw error
-  }
-}
 
-// INSERT into Table Standing
-export async function insertStanding(standing: Standing) {
-  try {
-    const result = await db.execute(
-      'INSERT INTO standing (id, bracket, number, team) VALUES ($1, $2, $3, $4)',
-      Object.values(standing)
+  insertStanding = async (standing: Standing) =>
+    await this.db.execute(
+      'INSERT INTO standing (id, bracket, placement, team) VALUES ($1, $2, $3, $4)',
+      [standing.id, standing.bracket, standing.placement, standing.team]
     )
-    console.log('Standing inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting standing:', error)
-    throw error
-  }
-}
 
-// INSERT into Table Stat
-export async function insertStat(stat: Stat) {
-  try {
-    const result = await db.execute(
-      'INSERT INTO stat (id, score, game, goals, assists, saves, shots, player) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-      Object.values(stat)
+  insertStat = async (stat: Stat) =>
+    await this.db.execute(
+      'INSERT INTO stat (id, game, player, score, goals, assists, saves, shots) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+      [
+        stat.id,
+        stat.game,
+        stat.player,
+        stat.score,
+        stat.goals,
+        stat.assists,
+        stat.saves,
+        stat.shots
+      ]
     )
-    console.log('Stat inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting stat:', error)
-    throw error
-  }
-}
 
-// INSERT a Table Team
-export async function insertTeam(team: Team) {
-  try {
-    const result = await db.execute(
-      'INSERT INTO team (id, team, logo) VALUES ($1, $2, $3)',
-      Object.values(team)
+  insertTeam = async (team: Team) =>
+    await this.db.execute(
+      'INSERT INTO team (id, tournament, name, logo) VALUES ($1, $2, $3, $4)',
+      [team.id, team.tournament, team.name, team.logo]
     )
-    console.log('Team inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting team:', error)
-    throw error
-  }
-}
 
-// INSERT into Table Tournament
-export async function insertTournament(tournament: Tournament) {
-  try {
-    const result = await db.execute(
-      'INSERT INTO tournament (id, name, logo) VALUES ($1, $2, $3)',
-      Object.values(tournament)
-    )
-    console.log('Tournament inserted successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error inserting tournament:', error)
-    throw error
-  }
-}
-
-// CONSULTAS
-// CONSULTA PARA OBTENER TODOS LOS TORNEOS
-export async function getTournaments() {
-  try {
-    const tournaments = await db.select<Tournament[]>('SELECT * FROM tournament')
-    console.log('Tournaments:', tournaments)
-    return tournaments
-  } catch (error) {
-    console.error('Error getting tournaments:', error)
-    throw error
-  }
-}
-
-// CONSULTA PARA OBTENER TORNEOS POR ID
-export async function getTournamentById(id: number) {
-  try {
-    const tournament = await db.select<Tournament[]>(
-      'SELECT * FROM tournament WHERE id = $1',
-      [id]
-    )
-    console.log('Tournament:', tournament)
-    return tournament
-  } catch (error) {
-    console.error('Error getting tournament:', error)
-    throw error
-  }
-}
-
-// CONSULTA PARA OBTENER LOS EVENTOS POR TORNEO
-export async function getEventsByTournament(tournamentId: number) {
-  try {
-    const events = await db.select<Event[]>(
-      'SELECT * FROM event WHERE tournament_id = $1',
-      [tournamentId]
-    )
-    console.log('Events:', events)
-    return events
-  } catch (error) {
-    console.error('Error getting events:', error)
-    throw error
-  }
-}
-
-// CONSULTA PARA OBTENER LOS EQUIPOS A TRAVÉS DEL ID
-
-export async function getTeamById(teamId: number): Promise<Team | undefined> {
-  try {
-    const result = await db.select<Team[]>('SELECT * FROM team WHERE id = $1', [teamId])
-    return result[0] // Retorna el primer equipo encontrado (debería ser único)
-  } catch (error) {
-    console.error('Error al obtener el equipo por ID:', error)
-    throw error
-  }
-}
-
-// CONSULTA PARA OBTENER un EQUIPO a través de su campo Name
-
-export async function getTeamsByName(teamName: string): Promise<Team[]> {
-  try {
-    return await db.select<Team[]>('SELECT * FROM team WHERE name = $1', [teamName])
-  } catch (error) {
-    console.error('Error al obtener equipos por nombre:', error)
-    throw error
-  }
-}
-
-// CONSULTA PARA OBTENER PHASES POR EVENTO
-export async function getPhasesByEvent(eventId: number) {
-  try {
-    const phases = await db.select<Phase[]>('SELECT * FROM phase WHERE event_id = $1', [
-      eventId
+  insertTournament = async (tournament: Tournament) =>
+    await this.db.execute('INSERT INTO tournament (id, name, logo) VALUES ($1, $2, $3)', [
+      tournament.id,
+      tournament.name,
+      tournament.logo
     ])
-    console.log('Phases:', phases)
-    return phases
-  } catch (error) {
-    console.error('Error getting phases:', error)
-    throw error
-  }
-}
 
-// CONSULTA PARA OBTENER BRACKETS POR PHASE
-export async function getBracketsByPhase(phaseId: number) {
-  try {
-    const brackets = await db.select<Bracket[]>(
-      'SELECT * FROM bracket WHERE phase_id = $1',
-      [phaseId]
+  // UPDATE functions
+  updateBracket = async (bracket: Bracket) =>
+    await this.db.execute(
+      'UPDATE bracket SET phase = $1, identifier = $2, type = $3 WHERE id = $4',
+      [bracket.phase, bracket.identifier, bracket.type, bracket.id]
     )
-    console.log('Brackets:', brackets)
-    return brackets
-  } catch (error) {
-    console.error('Error getting brackets:', error)
-    throw error
-  }
-}
 
-// CONSULTA PARA OBTENER ROUND POR PHASE
-export async function getRoundByPhase(phaseId: number) {
-  try {
-    const rounds = await db.select<Round[]>(
-      'SELECT r.id, r.number, r.bo, r.startAt, r.bracket FROM round r  JOIN bracket b ON r.bracket = b.id WHERE b.phase = $1',
-      [phaseId]
+  updateEvent = async (event: Event) =>
+    await this.db.execute('UPDATE event SET tournament = $1, name = $2 WHERE id = $3', [
+      event.tournament,
+      event.name,
+      event.id
+    ])
+
+  updateGame = async (game: Game) =>
+    await this.db.execute(
+      'UPDATE game SET match = $1, number = $2, score1 = $3, score2 = $4 WHERE id = $5',
+      [game.match, game.number, game.score1, game.score2, game.id]
     )
-    console.log('Rounds: ', rounds)
-    return rounds
-  } catch (error) {
-    console.error('Error getting rounds:', error)
-    throw error
-  }
-}
 
-// CONSULTA PARA MODIFICAR match.number
-export async function updateMatchNumber(matchId: number, newNumber: number) {
-  try {
-    const result = await db.execute('UPDATE match SET number = $1 WHERE id = $2', [
-      newNumber,
-      matchId
-    ])
-    console.log('Match updated successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error updating match:', error)
-    throw error
-  }
-}
-
-// CONSULTA PARA OBTENER STANDINGS+TEAMS POR BRACKET
-export async function getStandingsByBracket(bracketId: number) {
-  try {
-    const standings = await db.select<Standing[]>(
-      'SELECT s.id, s.placement, s.team, t.name, t.logo FROM standing s JOIN team t ON s.team = t.id WHERE s.bracket = $1 ORDER BY s.placement',
-      [bracketId]
+  updateMatch = async (match: Match) =>
+    await this.db.execute(
+      'UPDATE match SET title = $1, round = $2, identifier = $3, number = $4, best_of = $5, team1 = $6, team2 = $7, winner = $8 WHERE id = $9',
+      [
+        match.title,
+        match.round,
+        match.identifier,
+        match.number,
+        match.best_of,
+        match.team1,
+        match.team2,
+        match.winner,
+        match.id
+      ]
     )
-    console.log('Standings:', standings)
-    return standings
-  } catch (error) {
-    console.error('Error getting standings:', error)
-    throw error
-  }
-}
 
-// CONSULTA PARA MODIFICAR team.name
-export async function updateTeamName(teamId: number, newName: string) {
-  try {
-    const result = await db.execute('UPDATE team SET name = $1 WHERE id = $2', [
-      newName,
-      teamId
+  updatePhase = async (phase: Phase) =>
+    await this.db.execute(
+      'UPDATE phase SET event = $1, number = $2, name = $3 WHERE id = $4',
+      [phase.event, phase.number, phase.name, phase.id]
+    )
+
+  updatePlayer = async (player: Player) =>
+    await this.db.execute('UPDATE player SET team = $1, name = $2 WHERE id = $3', [
+      player.team,
+      player.name,
+      player.id
     ])
-    console.log('Team updated successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error updating team:', error)
-    throw error
-  }
-}
 
-// CONSULTA PARA MODIFICAR team.logo
-export async function updateTeamLogo(teamId: number, newLogo: string) {
-  try {
-    const result = await db.execute('UPDATE team SET logo = $1 WHERE id = $2', [
-      newLogo,
-      teamId
+  updateRound = async (round: Round) =>
+    await this.db.execute(
+      'UPDATE round SET bracket = $1, number = $2, best_of = $3, start_at = $4 WHERE id = $5',
+      [round.bracket, round.number, round.best_of, round.start_at, round.id]
+    )
+
+  updateStanding = async (standing: Standing) =>
+    await this.db.execute(
+      'UPDATE standing SET bracket = $1, placement = $2, team = $3 WHERE id = $4',
+      [standing.bracket, standing.placement, standing.team, standing.id]
+    )
+
+  updateStat = async (stat: Stat) =>
+    await this.db.execute(
+      'UPDATE stat SET game = $1, player = $2, score = $3, goals = $4, assists = $5, saves = $6, shots = $7 WHERE id = $8',
+      [
+        stat.game,
+        stat.player,
+        stat.score,
+        stat.goals,
+        stat.assists,
+        stat.saves,
+        stat.shots,
+        stat.id
+      ]
+    )
+
+  updateTeam = async (team: Team) =>
+    await this.db.execute(
+      'UPDATE team SET tournament = $1, name = $2, logo = $3 WHERE id = $4',
+      [team.tournament, team.name, team.logo, team.id]
+    )
+
+  updateTournament = async (tournament: Tournament) =>
+    await this.db.execute('UPDATE tournament SET name = $1, logo = $2 WHERE id = $3', [
+      tournament.name,
+      tournament.logo,
+      tournament.id
     ])
-    console.log('Team updated successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error updating team:', error)
-    throw error
-  }
-}
 
-// CONSULTA PARA CAMBIAR player.name
-export async function updatePlayerName(playerId: number, newName: string) {
-  try {
-    const result = await db.execute('UPDATE player SET name = $1 WHERE id = $2', [
-      newName,
-      playerId
-    ])
-    console.log('Player updated successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error updating player:', error)
-    throw error
-  }
-}
+  // SELECT functions
 
-// CONSULTA PARA MODIFICAR match.winner
-export async function updateMatchWinner(matchId: number, newWinnerId: string) {
-  try {
-    const result = await db.execute('UPDATE match SET winner = $1 WHERE id = $2', [
-      newWinnerId,
-      matchId
-    ])
-    console.log('Match updated successfully!', result)
-    return result
-  } catch (error) {
-    console.error('Error updating match:', error)
-    throw error
-  }
-}
-
-// GET PARA TODAS LAS TABLAS CON PAGINACIÓN Y TIPADO FUERTE **************************************
-
-// BRACKET
-export async function getBrackets(page?: number, limit?: number): Promise<Bracket[]> {
-  try {
-    let query = 'SELECT * FROM bracket'
-    const params: unknown[] = []
-
-    if (page && limit) {
-      query += ' LIMIT $1 OFFSET $2'
-      const offset = (page - 1) * limit
-      params.push(limit, offset)
+  selectTournaments = async (): Promise<Tournament[]> => {
+    try {
+      return await this.db.select<Tournament[]>('SELECT * FROM tournament')
+    } catch (error) {
+      console.error('Error selecting tournaments:', error)
+      throw error
     }
-
-    return db.select<Bracket[]>(query, params)
-  } catch (error) {
-    console.error('Error getting brackets:', error)
-    throw error
   }
-}
 
-export async function getBracketById(id: number): Promise<Bracket> {
-  try {
-    const result = await db.select<Bracket[]>('SELECT * FROM bracket WHERE id = $1', [id])
-    return result[0]
-  } catch (error) {
-    console.error('Error getting bracket:', error)
-    throw error
-  }
-}
-
-// EVENT
-export async function getEvents(page?: number, limit?: number): Promise<Event[]> {
-  try {
-    let query = 'SELECT * FROM event'
-    const params: unknown[] = []
-
-    if (page && limit) {
-      query += ' LIMIT $1 OFFSET $2'
-      const offset = (page - 1) * limit
-      params.push(limit, offset)
+  selectTournamentById = async (id: number): Promise<Tournament | undefined> => {
+    try {
+      const results = await this.db.select<Tournament[]>(
+        'SELECT * FROM tournament WHERE id = $1',
+        [id]
+      )
+      return results[0]
+    } catch (error) {
+      console.error('Error selecting tournament by id:', error)
+      throw error
     }
-
-    return db.select<Event[]>(query, params)
-  } catch (error) {
-    console.error('Error getting events:', error)
-    throw error
   }
-}
 
-export async function getEventById(id: number): Promise<Event> {
-  try {
-    const result = await db.select<Event[]>('SELECT * FROM event WHERE id = $1', [id])
-    return result[0]
-  } catch (error) {
-    console.error('Error getting event:', error)
-    throw error
-  }
-}
-
-// GAME (Ejemplo con paginación avanzada y conteo total)
-export async function getGamesPaginated(
-  page: number = 1,
-  limit: number = 10
-): Promise<{ data: Game[]; total: number }> {
-  try {
-    const offset = (page - 1) * limit
-
-    const data = await db.select<Game[]>('SELECT * FROM game LIMIT $1 OFFSET $2', [
-      limit,
-      offset
-    ])
-
-    const totalResult = await db.select<{ count: number }[]>(
-      'SELECT COUNT(*) as count FROM game'
-    )
-
-    return {
-      data,
-      total: totalResult[0].count
+  selectEvents = async (): Promise<Event[]> => {
+    try {
+      return await this.db.select<Event[]>('SELECT * FROM event')
+    } catch (error) {
+      console.error('Error selecting events:', error)
+      throw error
     }
-  } catch (error) {
-    console.error('Error getting games:', error)
-    throw error
   }
-}
 
-// PHASE (Versión completa con validación)
-export async function getPhases(page?: number, limit?: number): Promise<Phase[]> {
-  try {
-    // Validación de parámetros
-    if (page && limit) {
-      if (page < 1 || limit < 1) {
-        throw new Error('Los parámetros de paginación deben ser números positivos')
+  selectEventById = async (id: number): Promise<Event | undefined> => {
+    try {
+      const results = await this.db.select<Event[]>('SELECT * FROM event WHERE id = $1', [
+        id
+      ])
+      return results[0]
+    } catch (error) {
+      console.error('Error selecting event by id:', error)
+      throw error
+    }
+  }
+
+  selectGames = async (): Promise<Game[]> => {
+    try {
+      return await this.db.select<Game[]>('SELECT * FROM game')
+    } catch (error) {
+      console.error('Error selecting games:', error)
+      throw error
+    }
+  }
+
+  selectGameById = async (id: number): Promise<Game | undefined> => {
+    try {
+      const results = await this.db.select<Game[]>('SELECT * FROM game WHERE id = $1', [
+        id
+      ])
+      return results[0]
+    } catch (error) {
+      console.error('Error selecting game by id:', error)
+      throw error
+    }
+  }
+
+  selectMatches = async (): Promise<Match[]> => {
+    try {
+      return await this.db.select<Match[]>('SELECT * FROM match')
+    } catch (error) {
+      console.error('Error selecting matches:', error)
+      throw error
+    }
+  }
+
+  selectMatchById = async (id: number): Promise<Match | undefined> => {
+    try {
+      const results = await this.db.select<Match[]>('SELECT * FROM match WHERE id = $1', [
+        id
+      ])
+      return results[0]
+    } catch (error) {
+      console.error('Error selecting match by id:', error)
+      throw error
+    }
+  }
+
+  selectPhases = async (): Promise<Phase[]> => {
+    try {
+      return await this.db.select<Phase[]>('SELECT * FROM phase')
+    } catch (error) {
+      console.error('Error selecting phases:', error)
+      throw error
+    }
+  }
+
+  selectPhaseById = async (id: number): Promise<Phase | undefined> => {
+    try {
+      const results = await this.db.select<Phase[]>('SELECT * FROM phase WHERE id = $1', [
+        id
+      ])
+      return results[0]
+    } catch (error) {
+      console.error('Error selecting phase by id:', error)
+      throw error
+    }
+  }
+
+  selectPlayers = async (): Promise<Player[]> => {
+    try {
+      return await this.db.select<Player[]>('SELECT * FROM player')
+    } catch (error) {
+      console.error('Error selecting players:', error)
+      throw error
+    }
+  }
+
+  selectPlayerById = async (id: number): Promise<Player | undefined> => {
+    try {
+      const results = await this.db.select<Player[]>(
+        'SELECT * FROM player WHERE id = $1',
+        [id]
+      )
+      return results[0]
+    } catch (error) {
+      console.error('Error selecting player by id:', error)
+      throw error
+    }
+  }
+
+  selectRounds = async (): Promise<Round[]> => {
+    try {
+      return await this.db.select<Round[]>('SELECT * FROM round')
+    } catch (error) {
+      console.error('Error selecting rounds:', error)
+      throw error
+    }
+  }
+
+  selectRoundById = async (id: number): Promise<Round | undefined> => {
+    try {
+      const results = await this.db.select<Round[]>('SELECT * FROM round WHERE id = $1', [
+        id
+      ])
+      return results[0]
+    } catch (error) {
+      console.error('Error selecting round by id:', error)
+      throw error
+    }
+  }
+
+  selectStandings = async (): Promise<Standing[]> => {
+    try {
+      return await this.db.select<Standing[]>('SELECT * FROM standing')
+    } catch (error) {
+      console.error('Error selecting standings:', error)
+      throw error
+    }
+  }
+
+  selectStandingById = async (id: number): Promise<Standing | undefined> => {
+    try {
+      const results = await this.db.select<Standing[]>(
+        'SELECT * FROM standing WHERE id = $1',
+        [id]
+      )
+      return results[0]
+    } catch (error) {
+      console.error('Error selecting standing by id:', error)
+      throw error
+    }
+  }
+
+  selectStats = async (): Promise<Stat[]> => {
+    try {
+      return await this.db.select<Stat[]>('SELECT * FROM stat')
+    } catch (error) {
+      console.error('Error selecting stats:', error)
+      throw error
+    }
+  }
+
+  selectStatById = async (id: number): Promise<Stat | undefined> => {
+    try {
+      const results = await this.db.select<Stat[]>('SELECT * FROM stat WHERE id = $1', [
+        id
+      ])
+      return results[0]
+    } catch (error) {
+      console.error('Error selecting stat by id:', error)
+      throw error
+    }
+  }
+
+  selectTeams = async (): Promise<Team[]> => {
+    try {
+      const teams = await this.db.select<Team[]>('SELECT * FROM team')
+      for (const team of teams) {
+        team.logo = uint8ArrayStringToUint8Array(team.logo as unknown as string)
       }
+      return teams
+    } catch (error) {
+      console.error('Error selecting teams:', error)
+      throw error
     }
+  }
 
-    let query = 'SELECT * FROM phase'
-    const params: unknown[] = []
-
-    if (page && limit) {
-      query += ' LIMIT $1 OFFSET $2'
-      const offset = (page - 1) * limit
-      params.push(limit, offset)
+  selectTeamById = async (id: number): Promise<Team | undefined> => {
+    try {
+      const results = await this.db.select<Team[]>('SELECT * FROM team WHERE id = $1', [
+        id
+      ])
+      const team = results[0]
+      team.logo = uint8ArrayStringToUint8Array(team.logo as unknown as string)
+      return team
+    } catch (error) {
+      console.error('Error selecting team by id:', error)
+      throw error
     }
-
-    return db.select<Phase[]>(query, params)
-  } catch (error) {
-    console.error('Error getting phases:', error)
-    throw error
   }
 }
+
+export default DB

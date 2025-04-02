@@ -244,7 +244,7 @@ const BlueTeam: Component<AnimatedSVGProps> = ({ setRef }) => {
           <g data-name="logo">
             <polygon class="cls-4" points="24 108 120 108 96 36 0 36 24 108" />
             <image
-              href={matchState().blue.logo || unknown}
+              href={matchState().blue.logoUrl || unknown}
               x={36}
               y={47}
               width={48}
@@ -289,7 +289,7 @@ const OrangeTeam: Component<AnimatedSVGProps> = ({ setRef }) => {
           <g data-name="logo">
             <polygon class="cls-4" points="1192 108 1096 108 1120 36 1216 36 1192 108" />
             <image
-              href={matchState().orange.logo || unknown}
+              href={matchState().orange.logoUrl || unknown}
               x={1133}
               y={47}
               width={48}

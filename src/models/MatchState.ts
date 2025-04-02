@@ -3,28 +3,26 @@ import { Team } from '@models/db'
 
 export interface MatchTeam extends Team {
   wins: number
-  logo_bytes: Uint8Array
-  logo: string
+  logo: Uint8Array
+  logoUrl: string
 }
 
-const DEFAULT_BLUE_TEAM: MatchTeam = {
+export const DEFAULT_BLUE_TEAM: MatchTeam = {
   id: 0,
   name: 'Azul',
-  logo_url: unknown,
   tournament: 0,
   wins: 0,
-  logo_bytes: null,
-  logo: unknown
+  logo: null,
+  logoUrl: unknown
 }
 
-const DEFAULT_ORANGE_TEAM: MatchTeam = {
+export const DEFAULT_ORANGE_TEAM: MatchTeam = {
   id: 0,
   name: 'Naranja',
-  logo_url: unknown,
   tournament: 0,
   wins: 0,
-  logo_bytes: null,
-  logo: unknown
+  logo: null,
+  logoUrl: unknown
 }
 
 export const DEFAULT_MATCH_STATE: MatchState = {

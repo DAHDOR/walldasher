@@ -1,7 +1,7 @@
 export interface Tournament {
   id: number
   name: string
-  logo: string
+  logo: Uint8Array
 }
 
 export interface Event {
@@ -75,7 +75,7 @@ export interface Standing {
 export interface Team {
   id: number
   name: string
-  logo: string
+  logo: Uint8Array
   tournament: number
 }
 

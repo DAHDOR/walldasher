@@ -40,17 +40,17 @@ impl Relay {
         self.tx.clone()
     }
 
-    async fn register(&self, id: &str, data: String) {
+    async fn register(&self, id: &str, name: &String) {
         let mut map = self.connections.lock().await;
         if let Some(connection) = map.get_mut(id) {
-            connection.register_function(data);
+            connection.register_function(name);
         }
     }
 
-    async fn unregister(&self, id: &str, data: String) {
+    async fn unregister(&self, id: &str, name: &String) {
         let mut map = self.connections.lock().await;
         if let Some(connection) = map.get_mut(id) {
-            connection.unregister_function(data);
+            connection.unregister_function(name);
         }
     }
 
@@ -67,28 +67,47 @@ impl Relay {
     async fn relay_message(&self, sender_id: &str, msg: &str) {
         let json: Value = match serde_json::from_str(msg) {
             Ok(v) => v,
-            Err(_) => return,
+            Err(_) => {
+                println!("{}> Invalid JSON: {}", sender_id, msg);
+                return;
+            }
         };
 
         let event = match json.get("event").and_then(|v| v.as_str()) {
             Some(e) => e,
-            None => return,
+            None => {
+                println!("{}> Missing event in JSON: {}", sender_id, msg);
+                return;
+            }
         };
 
-        let data = match json.get("data").and_then(|v| v.as_str()) {
-            Some(d) => d.to_string(),
-            None => return,
+        let data = match json.get("data") {
+            Some(d) => d,
+            None => {
+                println!("{}> Missing data in JSON: {}", sender_id, msg);
+                return;
+            }
         };
 
         let (channel, command) = match event.split_once(':') {
             Some((channel, command)) => (channel, command),
-            None => return,
+            None => {
+                println!("{}> Invalid event format: {}", sender_id, event);
+                return;
+            }
         };
 
         if channel == "relay" {
+            let name = match data.as_str() {
+                Some(n) => n.to_string(),
+                None => {
+                    println!("{}> Invalid data format: {}", sender_id, msg);
+                    return;
+                }
+            };
             match command {
-                "register" => self.register(sender_id, data).await,
-                "unregister" => self.unregister(sender_id, data).await,
+                "register" => self.register(sender_id, &name).await,
+                "unregister" => self.unregister(sender_id, &name).await,
                 _ => println!("{}> Unknown relay command: {}", sender_id, command),
             }
             return;

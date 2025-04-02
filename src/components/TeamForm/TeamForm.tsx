@@ -68,15 +68,14 @@ const TeamForm = (props: MatchTeamFormProps) => {
   const onSaveLogo = () => {
     setLogoLoading(true)
     readFile(logoPath())
-      .then(logo_bytes => {
+      .then(logoBytes => {
         setTeam(team => ({
           ...team,
-          logo_bytes,
-          logo: URL.createObjectURL(new Blob([logo_bytes], { type: 'image/png' }))
+          logoBytes,
+          logoUrl: URL.createObjectURL(new Blob([logoBytes], { type: 'image/png' }))
         }))
         showToast({ title: 'Logo actualizado.', variant: 'success' })
       })
-      .then(() => {})
       .catch(() => showToast({ title: 'Error al actualizar el logo.', variant: 'error' }))
     setLogoLoading(false)
   }
@@ -95,7 +94,7 @@ const TeamForm = (props: MatchTeamFormProps) => {
               <Tooltip>
                 <TooltipTrigger>
                   <DialogTrigger as={Button<'button'>} variant="outline" class="px-2">
-                    <img src={team().logo} class="w-6 h-6" />
+                    <img src={team().logoUrl} class="w-6 h-6" />
                   </DialogTrigger>
                 </TooltipTrigger>
                 <TooltipContent>Cambiar logo</TooltipContent>
@@ -107,7 +106,7 @@ const TeamForm = (props: MatchTeamFormProps) => {
                     variant="outline"
                     class="hover:bg-transparent p-2 hover:cursor-default"
                   >
-                    <img src={team().logo} class="h-6" />
+                    <img src={team().logoUrl} class="h-6" />
                   </Button>
                 </DialogHeader>
                 <div class="flex flex-col items-center">

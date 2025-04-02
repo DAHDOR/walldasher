@@ -50,7 +50,7 @@ export default TournamentState
 export const DEFAULT_TOURNAMENT_STATE: TournamentState = {
   id: 0,
   name: 'Ninguno',
-  logo: '',
+  logo: null,
   events: [],
   teams: []
 }

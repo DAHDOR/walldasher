@@ -1,6 +1,9 @@
 import { open } from '@tauri-apps/plugin-dialog'
 import { readFile } from '@tauri-apps/plugin-fs'
 
+export const uint8ArrayStringTouint8Array = (string: string) =>
+  new Uint8Array(JSON.parse(string) as number[])
+
 /**
  * Opens a file selection dialog to choose a PNG file.
  *
@@ -12,13 +15,30 @@ export const openPngFile = async () =>
   await open({ filters: [{ name: 'PNG', extensions: ['png'] }] })
 
 /**
+ * Reads a PNG file from the specified path and returns its content as a Uint8Array.
+ *
+ * @param path - The file path to the PNG image.
+ * @returns A promise that resolves to a Uint8Array containing the PNG image data.
+ */
+export const pngBytesToBlob = (array: Uint8Array) =>
+  new Blob([array], { type: 'image/png' })
+
+/**
  * Converts a PNG file at the provided path into a Blob.
  *
  * @param path - The file path to the PNG image.
  * @returns A promise that resolves to a Blob containing the PNG image data.
  */
-export const pngFileToBlob = async (path: string) =>
-  new Blob([await readFile(path)], { type: 'image/png' })
+export const pngFileToBlob = async (path: string) => pngBytesToBlob(await readFile(path))
+
+/**
+ * Converts a PNG array into a Blob URL.
+ *
+ * @param array - The PNG image data as a Uint8Array.
+ * @returns A Blob URL representing the PNG image.
+ */
+export const pngBytesToURL = (array: Uint8Array) =>
+  URL.createObjectURL(pngBytesToBlob(array))
 
 /**
  * Converts a PNG file specified by its file path into a Blob and generates a URL for it.
