@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1216 144">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        letter-spacing: 0em;
+      }
+
+      .cls-3 {
+        fill: #e6e6e6;
+        font-family: ChivoItalic-SemiBoldItalic, Chivo;
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6 {
+        font-style: italic;
+      }
+
+      .cls-3, .cls-7, .cls-8 {
+        font-variation-settings: 'wght' 600;
+        font-weight: 600;
+      }
+
+      .cls-3, .cls-9, .cls-10 {
+        font-size: 20px;
+      }
+
+      .cls-11, .cls-12 {
+        font-size: 14px;
+      }
+
+      .cls-13 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-13, .cls-14, .cls-6, .cls-15 {
+        font-size: 18px;
+      }
+
+      .cls-4, .cls-16, .cls-6 {
+        font-variation-settings: 'wght' 500;
+        font-weight: 500;
+      }
+
+      .cls-4, .cls-17, .cls-6 {
+        fill: #e2e2e2;
+      }
+
+      .cls-4, .cls-6 {
+        font-family: Chivo-MediumItalic, Chivo;
+      }
+
+      .cls-18 {
+        fill: #1c1c1c;
+      }
+
+      .cls-18, .cls-19, .cls-20, .cls-21, .cls-22, .cls-23, .cls-24, .cls-17, .cls-25 {
+        stroke-width: 0px;
+      }
+
+      .cls-19, .cls-7 {
+        fill: #ff8a15;
+      }
+
+      .cls-7, .cls-8 {
+        font-family: ChivoMono-SemiBold, 'Chivo Mono';
+        font-size: 60px;
+      }
+
+      .cls-26 {
+        letter-spacing: 0em;
+      }
+
+      .cls-27 {
+        letter-spacing: 0em;
+      }
+
+      .cls-28 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-20 {
+        fill: #1a1a1a;
+      }
+
+      .cls-21 {
+        fill: #161616;
+      }
+
+      .cls-29 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-30 {
+        letter-spacing: 0em;
+      }
+
+      .cls-5 {
+        font-family: ChivoItalic-BoldItalic, Chivo;
+        font-size: 28px;
+        font-variation-settings: 'wght' 700;
+        font-weight: 700;
+      }
+
+      .cls-5, .cls-16 {
+        fill: #fff;
+      }
+
+      .cls-31 {
+        letter-spacing: 0em;
+      }
+
+      .cls-12 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-32 {
+        letter-spacing: 0em;
+      }
+
+      .cls-22 {
+        fill: #0f0f0f;
+      }
+
+      .cls-16 {
+        font-family: AzeretMonoRoman-Medium, 'Azeret Mono';
+        font-size: 44px;
+      }
+
+      .cls-33 {
+        letter-spacing: 0em;
+      }
+
+      .cls-34 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-23 {
+        fill: #ffbc00;
+      }
+
+      .cls-14 {
+        letter-spacing: 0em;
+      }
+
+      .cls-9 {
+        letter-spacing: 0em;
+      }
+
+      .cls-24, .cls-8 {
+        fill: #22b0ff;
+      }
+
+      .cls-35 {
+        letter-spacing: 0em;
+      }
+
+      .cls-25 {
+        fill: #36d0ff;
+      }
+
+      .cls-36 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-37 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-38 {
+        letter-spacing: -.03em;
+      }
+    </style>
+    <image id="image" width="780" height="780" xlink:href="../../../../../Documents/Libros/Manuales/Spacestation_Gaming_logo.png"/>
+  </defs>
+  <g id="Scorebug">
+    <g id="Games">
+      <g id="Orange">
+        <g id="Panel">
+          <polygon id="Main" class="cls-18" points="760 126 918 126 924 108 766 108 760 126"/>
+          <g id="TBD">
+            <polygon id="_4" data-name="4" class="cls-22" points="912 120 882 120 884 114 914 114 912 120"/>
+            <polygon id="_3" data-name="3" class="cls-22" points="874 120 844 120 846 114 876 114 874 120"/>
+            <polygon id="_2" data-name="2" class="cls-22" points="836 120 806 120 808 114 838 114 836 120"/>
+            <polygon id="_1" data-name="1" class="cls-22" points="798 120 768 120 770 114 800 114 798 120"/>
+          </g>
+        </g>
+        <g id="Wins">
+          <g id="_4-2" data-name="4">
+            <polygon class="cls-19" points="882.69 119.5 884.36 114.5 913.31 114.5 911.64 119.5 882.69 119.5"/>
+            <path class="cls-23" d="M912.61,115l-1.33,4h-27.89l1.33-4h27.89M914,114h-30l-2,6h30l2-6h0Z"/>
+          </g>
+          <g id="_3-2" data-name="3">
+            <polygon class="cls-19" points="844.69 119.5 846.36 114.5 875.31 114.5 873.64 119.5 844.69 119.5"/>
+            <path class="cls-23" d="M874.61,115l-1.33,4h-27.89l1.33-4h27.89M876,114h-30l-2,6h30l2-6h0Z"/>
+          </g>
+          <g id="_2-2" data-name="2">
+            <polygon class="cls-19" points="806.69 119.5 808.36 114.5 837.31 114.5 835.64 119.5 806.69 119.5"/>
+            <path class="cls-23" d="M836.61,115l-1.33,4h-27.89l1.33-4h27.89M838,114h-30l-2,6h30l2-6h0Z"/>
+          </g>
+          <g id="_1-2" data-name="1">
+            <polygon class="cls-19" points="768.69 119.5 770.36 114.5 799.31 114.5 797.64 119.5 768.69 119.5"/>
+            <path class="cls-23" d="M798.61,115l-1.33,4h-27.89l1.33-4h27.89M800,114h-30l-2,6h30l2-6h0Z"/>
+          </g>
+        </g>
+      </g>
+      <g id="Blue">
+        <g id="Panel-2" data-name="Panel">
+          <polygon id="Main-2" data-name="Main" class="cls-18" points="456 126 298 126 292 108 450 108 456 126"/>
+          <g id="TBD-2" data-name="TBD">
+            <polygon id="_4-3" data-name="4" class="cls-22" points="334 120 304 120 302 114 332 114 334 120"/>
+            <polygon id="_3-3" data-name="3" class="cls-22" points="372 120 342 120 340 114 370 114 372 120"/>
+            <polygon id="_2-3" data-name="2" class="cls-22" points="410 120 380 120 378 114 408 114 410 120"/>
+            <polygon id="_1-3" data-name="1" class="cls-22" points="448 120 418 120 416 114 446 114 448 120"/>
+          </g>
+        </g>
+        <g id="Wins-2" data-name="Wins">
+          <g id="_4-4" data-name="4">
+            <polygon class="cls-24" points="304.36 119.5 302.69 114.5 331.64 114.5 333.31 119.5 304.36 119.5"/>
+            <path class="cls-25" d="M331.28,115l1.33,4h-27.89l-1.33-4h27.89M332,114h-30l2,6h30l-2-6h0Z"/>
+          </g>
+          <g id="_3-4" data-name="3">
+            <polygon class="cls-24" points="342.36 119.5 340.69 114.5 369.64 114.5 371.31 119.5 342.36 119.5"/>
+            <path class="cls-25" d="M369.28,115l1.33,4h-27.89l-1.33-4h27.89M370,114h-30l2,6h30l-2-6h0Z"/>
+          </g>
+          <g id="_2-4" data-name="2">
+            <polygon class="cls-24" points="380.36 119.5 378.69 114.5 407.64 114.5 409.31 119.5 380.36 119.5"/>
+            <path class="cls-25" d="M407.28,115l1.33,4h-27.89l-1.33-4h27.89M408,114h-30l2,6h30l-2-6h0Z"/>
+          </g>
+          <g id="_1-4" data-name="1">
+            <polygon class="cls-24" points="418.36 119.5 416.69 114.5 445.64 114.5 447.31 119.5 418.36 119.5"/>
+            <path class="cls-25" d="M445.28,115l1.33,4h-27.89l-1.33-4h27.89M446,114h-30l2,6h30l-2-6h0Z"/>
+          </g>
+        </g>
+      </g>
+      <g id="BO">
+        <polygon id="Panel-3" data-name="Panel" class="cls-21" points="754 144 462 144 450 108 766 108 754 144"/>
+        <text id="Best_of_X" data-name="Best of X" class="cls-4" transform="translate(614.24 131.04)"><tspan class="cls-15" x="0" y="0">MEJ</tspan><tspan class="cls-13" x="37.3" y="0">O</tspan><tspan class="cls-15" x="49.57" y="0">R</tspan><tspan class="cls-9" x="61.6" y="0"> </tspan><tspan class="cls-12" x="66.26" y="0">D</tspan><tspan class="cls-11" x="75.57" y="0">E</tspan><tspan class="cls-10" x="83.9" y="0"> </tspan><tspan class="cls-14" x="88.55" y="0">7</tspan></text>
+        <rect id="Divisor" class="cls-17" x="595.35" y="114.79" width="1.81" height="19.88"/>
+        <text id="Game_X" data-name="Game X" class="cls-6" transform="translate(506.87 131.05)"><tspan x="0" y="0">JU</tspan><tspan class="cls-31" x="21.67" y="0">E</tspan><tspan x="32.29" y="0">GO 7</tspan></text>
+      </g>
+    </g>
+    <g id="Orange_Team" data-name="Orange Team">
+      <g id="Logo">
+        <polygon id="Panel-4" data-name="Panel" class="cls-21" points="1192 108 1096 108 1120 36 1216 36 1192 108"/>
+        <use transform="translate(1131 45) scale(.07)" xlink:href="#image"/>
+      </g>
+      <g id="Name">
+        <polygon id="Panel-5" data-name="Panel" class="cls-20" points="1096 108 766 108 790 36 1120 36 1096 108"/>
+        <text class="cls-5" transform="translate(802.38 80.56) scale(.78 1)"><tspan class="cls-33" x="0" y="0">S</tspan><tspan class="cls-38" x="17.86" y="0">P</tspan><tspan class="cls-29" x="34.78" y="0">A</tspan><tspan class="cls-27" x="53.73" y="0">C</tspan><tspan x="72.49" y="0">ES</tspan><tspan class="cls-28" x="107.21" y="0">T</tspan><tspan class="cls-32" x="121.91" y="0">AT</tspan><tspan class="cls-27" x="157.3" y="0">IO</tspan><tspan x="188.69" y="0">N GAMI</tspan><tspan class="cls-27" x="292.12" y="0">N</tspan><tspan x="311.36" y="0">G</tspan></text>
+      </g>
+      <g id="Details">
+        <polygon class="cls-19" points="1192 108 766 108 767 106 1191 107 1192 108"/>
+        <polygon class="cls-19" points="1192 108 1191 107 1216 36 1192 108"/>
+      </g>
+    </g>
+    <g id="Blue_Team" data-name="Blue Team">
+      <g id="Logo-2" data-name="Logo">
+        <polygon id="Panel-6" data-name="Panel" class="cls-21" points="24 108 120 108 96 36 0 36 24 108"/>
+        <use transform="translate(35 45) scale(.07)" xlink:href="#image"/>
+      </g>
+      <g id="Name-2" data-name="Name">
+        <polygon id="Panel-7" data-name="Panel" class="cls-20" points="120 108 450 108 426 36 96 36 120 108"/>
+        <text class="cls-5" transform="translate(157.24 80.56) scale(.78 1)"><tspan class="cls-33" x="0" y="0">S</tspan><tspan class="cls-36" x="17.86" y="0">P</tspan><tspan class="cls-29" x="34.78" y="0">A</tspan><tspan class="cls-2" x="53.73" y="0">C</tspan><tspan class="cls-30" x="72.49" y="0">ES</tspan><tspan class="cls-37" x="107.21" y="0">T</tspan><tspan class="cls-26" x="121.91" y="0">AT</tspan><tspan class="cls-2" x="157.3" y="0">IO</tspan><tspan x="188.69" y="0">N GAMI</tspan><tspan class="cls-27" x="292.12" y="0">N</tspan><tspan x="311.36" y="0">G</tspan></text>
+      </g>
+      <g id="Details-2" data-name="Details">
+        <polygon class="cls-24" points="24 108 450 108 449 106 25 107 24 108"/>
+        <polygon class="cls-24" points="24 108 25 107 0 36 24 108"/>
+      </g>
+    </g>
+    <g id="Center">
+      <g id="Score_Clock" data-name="Score Clock">
+        <g id="Orange_Score" data-name="Orange Score">
+          <polygon id="Panel-8" data-name="Panel" class="cls-21" points="766 108 674 108 698 36 790 36 766 108"/>
+          <text id="Score" class="cls-7" transform="translate(718.01 91) scale(.78 1)"><tspan x="0" y="0">0</tspan></text>
+        </g>
+        <g id="Clock">
+          <polygon id="Panel-9" data-name="Panel" class="cls-20" points="674 108 542 108 518 36 698 36 674 108"/>
+          <text class="cls-16" transform="translate(550.63 86.95)"><tspan x="0" y="0">0:09</tspan></text>
+        </g>
+        <g id="Blue_Score" data-name="Blue Score">
+          <polygon id="Panel-10" data-name="Panel" class="cls-21" points="450 108 542 108 518 36 426 36 450 108"/>
+          <text id="Score-2" data-name="Score" class="cls-8" transform="translate(470.01 91) scale(.78 1)"><tspan x="0" y="0">0</tspan></text>
+        </g>
+      </g>
+      <g id="Details-3" data-name="Details">
+        <polygon class="cls-24" points="447 108 450 108 414 0 447 108"/>
+        <polygon class="cls-19" points="769 108 766 108 802 0 769 108"/>
+        <polygon class="cls-24" points="572 36 426 36 425 35 572 36"/>
+        <polygon class="cls-19" points="790 36 644 36 791 35 790 36"/>
+        <polygon class="cls-24" points="542 108 450 108 449 106 542 108"/>
+        <polygon class="cls-19" points="766 108 674 108 767 106 766 108"/>
+      </g>
+      <g id="Title">
+        <polygon id="Panel-11" data-name="Panel" class="cls-21" points="790 36 426 36 414 0 802 0 790 36"/>
+        <text id="Title-2" data-name="Title" class="cls-3" transform="translate(500.16 22.12) scale(.78 1)"><tspan class="cls-34" x="0" y="0">P</tspan><tspan class="cls-35" x="12.32" y="0">R</tspan><tspan class="cls-1" x="25.68" y="0">OSTREAMER | GRAN FINAL</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
