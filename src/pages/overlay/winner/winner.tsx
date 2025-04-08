@@ -177,7 +177,7 @@ const Winner: Component = () => {
   if (ColorA == Blue) {
     winnerName = matchState().blue.name
   } else {
-    winnerName = matchState().orange.name
+    winnerName = matchState().blue.name
   }
 
   return (
