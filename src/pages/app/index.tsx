@@ -1,15 +1,15 @@
-import RlWsStatusProvider from '@/contexts/rlWsStatus'
-import Explorer from '@components/explorer'
-import Topbar from '@components/topbar'
+import { Explorer } from '@components/explorer'
+import { Topbar } from '@components/topbar'
 import { DbProvider } from '@contexts/db'
+import RlWsStatusProvider from '@contexts/rl-ws-status'
 import { StoreProvider } from '@contexts/store'
 import { Route, useNavigate } from '@solidjs/router'
 import { isTauri } from '@tauri-apps/api/core'
 import { Component, ParentProps } from 'solid-js'
-import Dev from './dev'
-import Home from './home'
-import Match from './match'
-import Tournament from './tournament'
+import { Dev } from './dev'
+import { Home } from './home'
+import { Match } from './match'
+import { Tournament } from './tournament'
 
 const Layout: Component<ParentProps> = props => {
   const navigate = useNavigate()
@@ -46,4 +46,4 @@ const AppPages = () => {
   )
 }
 
-export default AppPages
+export { AppPages }

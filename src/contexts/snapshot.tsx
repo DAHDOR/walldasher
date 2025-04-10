@@ -1,7 +1,7 @@
 import { MatchEnded } from '@models/ingame/events/MatchEnded'
 import GameState, { DEFAULT_GAME_STATE } from '@models/ingame/GameState'
 import { createContext, createSignal, useContext } from 'solid-js'
-import { useGameState } from './gameState'
+import { useGameState } from './game-state'
 import { useWS } from './ws'
 
 const [snapshot, setSnapshot] = createSignal<GameState>(DEFAULT_GAME_STATE)

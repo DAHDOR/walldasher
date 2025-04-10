@@ -14,7 +14,7 @@
     "paths": {
       "@components/*": ["./src/components/*"],
       "@contexts/*": ["./src/contexts/*"],
-      "@start/*": ["./src/start/*"],
+      "@start/*": ["src/lib/start/*"],
       "@models/*": ["./src/models/*"],
       "@assets/*": ["./src/assets/*"],
       "@assets": ["./src/assets"],

@@ -2,12 +2,12 @@ import { useWS } from '@/contexts/ws'
 import Guard from '@pages/Guard'
 import { Route, useNavigate } from '@solidjs/router'
 import { Component, ParentProps } from 'solid-js'
-import InGame from './ingame'
-import NextUp from './nextup'
-import Phase from './phase'
-import PostGame from './postgame'
-import RoundRobin from './roundrobin'
-import Winner from './winner'
+import { InGame } from './ingame'
+import { NextUp } from './nextup'
+import { Phase } from './phase'
+import { PostGame } from './postgame'
+import { RoundRobin } from './roundrobin'
+import { Winner } from './winner'
 
 const Layout: Component<ParentProps> = props => {
   const ws = useWS()
@@ -42,4 +42,4 @@ const OverlayPages = () => {
   )
 }
 
-export default OverlayPages
+export { OverlayPages }
