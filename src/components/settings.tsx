@@ -9,7 +9,8 @@ import {
 import { Icon } from 'solid-heroicons'
 import { cog_6Tooth } from 'solid-heroicons/solid'
 import { Component } from 'solid-js'
-import { APIForm } from './api-form-old'
+import { RLForm } from './rl-form'
+import { StartForm } from './start-form'
 
 const Settings: Component = () => {
   return (
@@ -22,16 +23,8 @@ const Settings: Component = () => {
           <DialogTitle>Configuración</DialogTitle>
         </DialogHeader>
         <div class="flex flex-col gap-4 p-4">
-          <APIForm
-            label="Start.gg"
-            placeholder="Llave de autenticación de Start.gg"
-            info='Obtén tu llave de la API en los "Developer Settings" de Start.gg'
-          />
-          <APIForm
-            label="Rocket League"
-            placeholder="ej.: localhost:49122"
-            info="Ruta de conexión al servidor WS de Rocket League"
-          />
+          <StartForm />
+          <RLForm />
         </div>
       </DialogContent>
     </Dialog>

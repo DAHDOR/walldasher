@@ -13,7 +13,7 @@ import {
   Team,
   Tournament
 } from '../models/db'
-import { uint8ArrayStringTouint8Array as uint8ArrayStringToUint8Array } from './images'
+import { fixTeamLogo, fixTeamLogos } from './images'
 
 class DB {
   private db: Database
@@ -48,7 +48,7 @@ class DB {
 
   insertBracket = async (bracket: Bracket) =>
     await this.db.execute(
-      'INSERT INTO stats (id, phase, identifier, type) VALUES ($1, $2, $3, $4)',
+      'INSERT INTO bracket (id, phase, identifier, type) VALUES ($1, $2, $3, $4)',
       [bracket.id, bracket.phase, bracket.identifier, bracket.type]
     )
 
@@ -133,7 +133,6 @@ class DB {
       tournament.logo
     ])
 
-  // UPDATE functions
   updateBracket = async (bracket: Bracket) =>
     await this.db.execute(
       'UPDATE bracket SET phase = $1, identifier = $2, type = $3 WHERE id = $4',
@@ -222,226 +221,61 @@ class DB {
       tournament.id
     ])
 
-  // SELECT functions
+  selectTournaments = async () =>
+    await this.db.select<Tournament[]>('SELECT * FROM tournament')
 
-  selectTournaments = async (): Promise<Tournament[]> => {
-    try {
-      return await this.db.select<Tournament[]>('SELECT * FROM tournament')
-    } catch (error) {
-      console.error('Error selecting tournaments:', error)
-      throw error
-    }
-  }
+  selectTournamentById = async (id: number) =>
+    (
+      await this.db.select<Tournament[]>('SELECT * FROM tournament WHERE id = $1', [id])
+    )[0]
 
-  selectTournamentById = async (id: number): Promise<Tournament | undefined> => {
-    try {
-      const results = await this.db.select<Tournament[]>(
-        'SELECT * FROM tournament WHERE id = $1',
-        [id]
-      )
-      return results[0]
-    } catch (error) {
-      console.error('Error selecting tournament by id:', error)
-      throw error
-    }
-  }
+  selectEvents = async () => await this.db.select<Event[]>('SELECT * FROM event')
 
-  selectEvents = async (): Promise<Event[]> => {
-    try {
-      return await this.db.select<Event[]>('SELECT * FROM event')
-    } catch (error) {
-      console.error('Error selecting events:', error)
-      throw error
-    }
-  }
+  selectEventById = async (id: number) =>
+    (await this.db.select<Event[]>('SELECT * FROM event WHERE id = $1', [id]))[0]
 
-  selectEventById = async (id: number): Promise<Event | undefined> => {
-    try {
-      const results = await this.db.select<Event[]>('SELECT * FROM event WHERE id = $1', [
-        id
-      ])
-      return results[0]
-    } catch (error) {
-      console.error('Error selecting event by id:', error)
-      throw error
-    }
-  }
+  selectGames = async () => await this.db.select<Game[]>('SELECT * FROM game')
 
-  selectGames = async (): Promise<Game[]> => {
-    try {
-      return await this.db.select<Game[]>('SELECT * FROM game')
-    } catch (error) {
-      console.error('Error selecting games:', error)
-      throw error
-    }
-  }
+  selectGameById = async (id: number) =>
+    await this.db.select<Game[]>('SELECT * FROM game WHERE id = $1', [id])
 
-  selectGameById = async (id: number): Promise<Game | undefined> => {
-    try {
-      const results = await this.db.select<Game[]>('SELECT * FROM game WHERE id = $1', [
-        id
-      ])
-      return results[0]
-    } catch (error) {
-      console.error('Error selecting game by id:', error)
-      throw error
-    }
-  }
+  selectMatches = async () => await this.db.select<Match[]>('SELECT * FROM match')
 
-  selectMatches = async (): Promise<Match[]> => {
-    try {
-      return await this.db.select<Match[]>('SELECT * FROM match')
-    } catch (error) {
-      console.error('Error selecting matches:', error)
-      throw error
-    }
-  }
+  selectMatchById = async (id: number) =>
+    (await this.db.select<Match[]>('SELECT * FROM match WHERE id = $1', [id]))[0]
 
-  selectMatchById = async (id: number): Promise<Match | undefined> => {
-    try {
-      const results = await this.db.select<Match[]>('SELECT * FROM match WHERE id = $1', [
-        id
-      ])
-      return results[0]
-    } catch (error) {
-      console.error('Error selecting match by id:', error)
-      throw error
-    }
-  }
+  selectPhases = async () => await this.db.select<Phase[]>('SELECT * FROM phase')
 
-  selectPhases = async (): Promise<Phase[]> => {
-    try {
-      return await this.db.select<Phase[]>('SELECT * FROM phase')
-    } catch (error) {
-      console.error('Error selecting phases:', error)
-      throw error
-    }
-  }
+  selectPhaseById = async (id: number) =>
+    (await this.db.select<Phase[]>('SELECT * FROM phase WHERE id = $1', [id]))[0]
 
-  selectPhaseById = async (id: number): Promise<Phase | undefined> => {
-    try {
-      const results = await this.db.select<Phase[]>('SELECT * FROM phase WHERE id = $1', [
-        id
-      ])
-      return results[0]
-    } catch (error) {
-      console.error('Error selecting phase by id:', error)
-      throw error
-    }
-  }
+  selectPlayers = async () => await this.db.select<Player[]>('SELECT * FROM player')
 
-  selectPlayers = async (): Promise<Player[]> => {
-    try {
-      return await this.db.select<Player[]>('SELECT * FROM player')
-    } catch (error) {
-      console.error('Error selecting players:', error)
-      throw error
-    }
-  }
+  selectPlayerById = async (id: number) =>
+    (await this.db.select<Player[]>('SELECT * FROM player WHERE id = $1', [id]))[0]
 
-  selectPlayerById = async (id: number): Promise<Player | undefined> => {
-    try {
-      const results = await this.db.select<Player[]>(
-        'SELECT * FROM player WHERE id = $1',
-        [id]
-      )
-      return results[0]
-    } catch (error) {
-      console.error('Error selecting player by id:', error)
-      throw error
-    }
-  }
+  selectRounds = async () => await this.db.select<Round[]>('SELECT * FROM round')
 
-  selectRounds = async (): Promise<Round[]> => {
-    try {
-      return await this.db.select<Round[]>('SELECT * FROM round')
-    } catch (error) {
-      console.error('Error selecting rounds:', error)
-      throw error
-    }
-  }
+  selectRoundById = async (id: number) =>
+    (await this.db.select<Round[]>('SELECT * FROM round WHERE id = $1', [id]))[0]
 
-  selectRoundById = async (id: number): Promise<Round | undefined> => {
-    try {
-      const results = await this.db.select<Round[]>('SELECT * FROM round WHERE id = $1', [
-        id
-      ])
-      return results[0]
-    } catch (error) {
-      console.error('Error selecting round by id:', error)
-      throw error
-    }
-  }
+  selectStandings = async () => await this.db.select<Standing[]>('SELECT * FROM standing')
 
-  selectStandings = async (): Promise<Standing[]> => {
-    try {
-      return await this.db.select<Standing[]>('SELECT * FROM standing')
-    } catch (error) {
-      console.error('Error selecting standings:', error)
-      throw error
-    }
-  }
+  selectStandingById = async (id: number) =>
+    (await this.db.select<Standing[]>('SELECT * FROM standing WHERE id = $1', [id]))[0]
 
-  selectStandingById = async (id: number): Promise<Standing | undefined> => {
-    try {
-      const results = await this.db.select<Standing[]>(
-        'SELECT * FROM standing WHERE id = $1',
-        [id]
-      )
-      return results[0]
-    } catch (error) {
-      console.error('Error selecting standing by id:', error)
-      throw error
-    }
-  }
+  selectStats = async () => await this.db.select<Stat[]>('SELECT * FROM stat')
 
-  selectStats = async (): Promise<Stat[]> => {
-    try {
-      return await this.db.select<Stat[]>('SELECT * FROM stat')
-    } catch (error) {
-      console.error('Error selecting stats:', error)
-      throw error
-    }
-  }
+  selectStatById = async (id: number) =>
+    (await this.db.select<Stat[]>('SELECT * FROM stat WHERE id = $1', [id]))[0]
 
-  selectStatById = async (id: number): Promise<Stat | undefined> => {
-    try {
-      const results = await this.db.select<Stat[]>('SELECT * FROM stat WHERE id = $1', [
-        id
-      ])
-      return results[0]
-    } catch (error) {
-      console.error('Error selecting stat by id:', error)
-      throw error
-    }
-  }
+  selectTeams = async () =>
+    fixTeamLogos(await this.db.select<Team[]>('SELECT * FROM team'))
 
-  selectTeams = async (): Promise<Team[]> => {
-    try {
-      const teams = await this.db.select<Team[]>('SELECT * FROM team')
-      for (const team of teams) {
-        team.logo = uint8ArrayStringToUint8Array(team.logo as unknown as string)
-      }
-      return teams
-    } catch (error) {
-      console.error('Error selecting teams:', error)
-      throw error
-    }
-  }
-
-  selectTeamById = async (id: number): Promise<Team | undefined> => {
-    try {
-      const results = await this.db.select<Team[]>('SELECT * FROM team WHERE id = $1', [
-        id
-      ])
-      const team = results[0]
-      team.logo = uint8ArrayStringToUint8Array(team.logo as unknown as string)
-      return team
-    } catch (error) {
-      console.error('Error selecting team by id:', error)
-      throw error
-    }
-  }
+  selectTeamById = async (id: number) =>
+    fixTeamLogo(
+      (await this.db.select<Team[]>('SELECT * FROM team WHERE id = $1', [id]))[0]
+    )
 }
 
 export default DB

@@ -10,9 +10,9 @@ import {
 import { TextField, TextFieldInput } from '@components/ui/text-field'
 import { showToast } from '@components/ui/toast'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@components/ui/tooltip'
-import { useStartKey } from '@contexts/store'
 import { useWS } from '@contexts/ws'
 import { getFullTournament } from '@lib/start/get'
+import { getStartKey } from '@lib/store'
 import { getSlugFromUrl } from '@lib/utils'
 import { Icon } from 'solid-heroicons'
 import { plus } from 'solid-heroicons/solid'
@@ -20,7 +20,6 @@ import { createSignal, Match, Switch } from 'solid-js'
 
 const AddTournament = () => {
   const ws = useWS()
-  const [key] = useStartKey()
 
   const [url, setUrl] = createSignal('')
   const [loading, setLoading] = createSignal(false)
@@ -34,7 +33,8 @@ const AddTournament = () => {
     const slug = getSlugFromUrl(url())
     if (!slug) showToast({ title: 'URL inválida', variant: 'error' })
     else
-      getFullTournament(key(), slug)
+      getStartKey()
+        .then(key => getFullTournament(key, slug))
         .then(tournament => {
           ws.send('tournament', 'update_state', tournament)
           showToast({ title: 'Torneo agregado', variant: 'success' })

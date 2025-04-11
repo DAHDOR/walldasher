@@ -1,7 +1,8 @@
+import { Team } from '@models/db'
 import { open } from '@tauri-apps/plugin-dialog'
 import { readFile } from '@tauri-apps/plugin-fs'
 
-export const uint8ArrayStringTouint8Array = (string: string) =>
+export const uint8ArrayStringToUint8Array = (string: string) =>
   new Uint8Array(JSON.parse(string) as number[])
 
 /**
@@ -153,3 +154,28 @@ export const svgFileToBlobWithXmlnsFix = async (path: string) =>
  */
 export const svgFileToURLWithXmlnsFix = async (path: string) =>
   URL.createObjectURL(await svgFileToBlobWithXmlnsFix(path))
+
+/**
+ * Iterates over an array of teams, fixing each team's logo using the fixTeamLogo function.
+ *
+ * @param teams - An array of Team objects that will have their logos fixed.
+ * @returns The same array of Team objects after applying logo fixes.
+ */
+export const fixTeamLogos = (teams: Team[]) => {
+  for (let i = 0; i < teams.length; i++) fixTeamLogo(teams[i])
+  return teams
+}
+
+/**
+ * Converts the team's logo from a string representation to a Uint8Array.
+ *
+ * This function interprets the team's logo property (assumed to be a string) using the
+ * uint8ArrayStringToUint8Array conversion, and updates the team.logo property with the
+ * resulting Uint8Array.
+ *
+ * @param team - The team object whose logo property will be converted.
+ */
+export const fixTeamLogo = (team: Team) => {
+  team.logo = uint8ArrayStringToUint8Array(team.logo as unknown as string)
+  return team
+}

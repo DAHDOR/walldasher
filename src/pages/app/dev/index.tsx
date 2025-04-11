@@ -1,6 +1,6 @@
 import { useWS } from '@/contexts/ws'
 import { Button } from '@components/ui/button'
-import { useDb } from '@contexts/db'
+import { useDB } from '@contexts/db'
 import { openPngFile, pngBytesToURL } from '@lib/images'
 import { DEFAULT_BLUE_TEAM } from '@models/MatchState'
 import { DEFAULT_TOURNAMENT_STATE } from '@models/TournamentState'
@@ -9,7 +9,7 @@ import { createEffect, createSignal } from 'solid-js'
 
 const Dev = () => {
   const ws = useWS()
-  const db = useDb()
+  const db = useDB()
 
   const [team, setTeam] = createSignal(DEFAULT_BLUE_TEAM)
   const [logo, setLogo] = createSignal<string>('')

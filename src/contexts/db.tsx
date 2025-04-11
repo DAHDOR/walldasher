@@ -1,35 +1,26 @@
+import { DB_PATH } from '@lib/consts'
 import DB from '@lib/db'
-import { isTauri } from '@tauri-apps/api/core'
 import Database from '@tauri-apps/plugin-sql'
 import {
   Accessor,
   createContext,
-  createEffect,
   createSignal,
-  onMount,
   ParentComponent,
   useContext
 } from 'solid-js'
 
-const DbContext = createContext<Accessor<DB>>(null)
+const DBContext = createContext<Accessor<DB>>(null)
 
-const DbProvider: ParentComponent = props => {
-  const [db, setDb] = createSignal<DB>(null)
+const DBProvider: ParentComponent = props => {
+  const [db, setDB] = createSignal<DB>(null)
 
-  const createDb = (db: Database) => setDb(new DB(db))
+  Database.load(DB_PATH)
+    .then(db => setDB(new DB(db)))
+    .catch(console.error)
 
-  onMount(() => {
-    if (isTauri())
-      Database.load('sqlite:walldasher.db').then(createDb).catch(console.error)
-  })
-
-  createEffect(() => {
-    console.log('db', db())
-  })
-
-  return <DbContext.Provider value={db}>{props.children}</DbContext.Provider>
+  return <DBContext.Provider value={db}>{props.children}</DBContext.Provider>
 }
 
-const useDb = () => useContext(DbContext)
+const useDB = () => useContext(DBContext)
 
-export { DbProvider, useDb }
+export { DBProvider, useDB }

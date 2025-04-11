@@ -7,11 +7,11 @@ import {
   CardTitle
 } from '@components/ui/card'
 import { showToast } from '@components/ui/toast'
-import { useStartKey } from '@contexts/store'
 import { useTournamentState } from '@contexts/tournament-state'
 import { useWS } from '@contexts/ws'
+import { getStartKey } from '@lib/store'
 import { DEFAULT_ROUND_MATCH, MatchSelect, RoundMatch } from '@models/TournamentState'
-import { Component, createSignal, For, Match, Show, Switch } from 'solid-js'
+import { Component, createEffect, createSignal, For, Match, Show, Switch } from 'solid-js'
 import { AddTournament } from './add-tournament'
 import { NoKey } from './no-key'
 
@@ -91,14 +91,20 @@ const Page = () => {
 }
 
 const Tournament: Component = () => {
-  const [startKey] = useStartKey()
+  const [hasKey, setHasKey] = createSignal<boolean | null>(null)
+
+  createEffect(() => {
+    getStartKey()
+      .then(key => setHasKey(!!key))
+      .catch(console.error)
+  })
 
   return (
     <Switch>
-      <Match when={startKey()}>
+      <Match when={hasKey() || hasKey() === null}>
         <Page />
       </Match>
-      <Match when={!startKey()}>
+      <Match when={hasKey() === false}>
         <NoKey />
       </Match>
     </Switch>

@@ -11,6 +11,7 @@ interface APIFormData {
   label: string
   placeholder: string
   info: string
+  validate: (value: string) => Promise<void>
 }
 
 interface APIFormProps {
@@ -18,9 +19,19 @@ interface APIFormProps {
 }
 
 const APIForm: Component<APIFormProps> = ({ form }) => {
-  const onInput = (e: Event) => {
+  const onInput = (e: InputEvent) => {
     form.setValue((e.target as HTMLInputElement).value)
-    form.markDirty(true)
+    form.markSubmitted(false)
+    form.setErrors([])
+  }
+
+  const onValidate = () => {
+    form.markSubmitted(true)
+    form.markPending(true)
+    form.data
+      .validate(form.value)
+      .then(() => form.markPending(false))
+      .catch(console.error)
   }
 
   return (
@@ -31,31 +42,29 @@ const APIForm: Component<APIFormProps> = ({ form }) => {
         </TooltipTrigger>
         <TooltipContent>{form.data.info}</TooltipContent>
       </Tooltip>
-
       <TextFieldInput
         value={form.value}
         type="text"
-        onblur={() => form.markTouched(true)}
-        oninput={onInput}
+        onInput={onInput}
         placeholder={form.data.placeholder}
       />
       <Button
-        disabled={form.value == ''}
+        disabled={form.value.length === 0 || form.isSubmitted}
         onclick={onValidate}
         type="submit"
         class="w-20 px-2 py-0"
       >
         <Switch>
-          <Match when={state() === DIRTY}>
+          <Match when={!form.isSubmitted}>
             <Icon path={arrowUpTray} />
           </Match>
-          <Match when={state() === VALIDATING}>
+          <Match when={form.isPending}>
             <Spinner />
           </Match>
-          <Match when={state() === VALID}>
+          <Match when={!form.isPending && form.isSubmitted && form.isValid}>
             <Icon path={checkCircle} class="!w-5 !h-5" />
           </Match>
-          <Match when={state() === INVALID}>
+          <Match when={!form.isPending && form.isSubmitted && !form.isValid}>
             <Icon path={xCircle} class="!w-5 !h-5" />
           </Match>
         </Switch>
@@ -64,4 +73,4 @@ const APIForm: Component<APIFormProps> = ({ form }) => {
   )
 }
 
-export { APIForm }
+export { APIForm, type APIFormData }
