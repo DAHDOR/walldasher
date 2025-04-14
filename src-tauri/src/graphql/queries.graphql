@@ -4,7 +4,7 @@ query UserID {
   }
 }
 
-query Tournaments {
+query UserTournaments {
   currentUser {
     tournaments {
       nodes {
@@ -59,7 +59,7 @@ query PhaseGroupSets($phaseGroupId: ID!) {
     id
     displayIdentifier
     bracketType
-    sets {
+    sets(perPage: 500) {
       nodes {
         id
         identifier
@@ -86,6 +86,7 @@ query PhaseGroupSets($phaseGroupId: ID!) {
 
 query EventPlayers($eventId: ID!) {
   event(id: $eventId) {
+    name
     tournament {
       id
     }
